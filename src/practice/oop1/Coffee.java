@@ -7,7 +7,10 @@ public enum Coffee {
     AMERICANO("Americano", 1500),
     CAPPUCCINO("Cappuccino", 2000),
     CARAMEL_MAKI("CaramelMaki", 2500),
-    ESPRESSO("Espresso", 2500);
+    ESPRESSO("Espresso", 2500),
+//    COLD_BREW("ColdBrew", 2000),
+//    SMOODY("Smoody", 3000),
+    ;
 
     private String coffeeName;
     private int coffeePrice;
