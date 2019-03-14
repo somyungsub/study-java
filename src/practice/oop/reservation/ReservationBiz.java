@@ -1,4 +1,4 @@
-package practice.oop2;
+package practice.oop.reservation;
 
 import java.util.ArrayList;
 import java.util.List;

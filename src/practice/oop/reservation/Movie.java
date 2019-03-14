@@ -1,4 +1,4 @@
-package practice.oop2;
+package practice.oop.reservation;
 
 public class Movie extends Art{
     public static final int DRAMA_PRICE = 50;

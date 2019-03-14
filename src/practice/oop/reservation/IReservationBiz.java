@@ -1,4 +1,4 @@
-package practice.oop2;
+package practice.oop.reservation;
 
 public interface IReservationBiz {
     void addReservation(Art art);

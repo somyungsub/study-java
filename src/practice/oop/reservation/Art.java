@@ -1,4 +1,4 @@
-package practice.oop2;
+package practice.oop.reservation;
 
 public class Art {
     private int price;

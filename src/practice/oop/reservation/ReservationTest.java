@@ -1,4 +1,4 @@
-package practice.oop2;
+package practice.oop.reservation;
 
 public class ReservationTest {
     public static void main(String[] args) {
