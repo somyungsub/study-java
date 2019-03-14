@@ -1,4 +1,4 @@
-package practice.oop1;
+package practice.oop.cafe;
 
 /*
     바리스타
