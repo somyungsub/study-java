@@ -58,7 +58,7 @@ public class Account {
         transactions.stream().forEach(transaction -> {
             sb.append("은행 : ").append(transaction.getBankName()).append("\t")
               .append("업무 : ").append(transaction.getTransType())
-              .append("(").append(transaction.getMoney()).append(")\t")
+              .append("(").append(transaction.getMoney()).append("원)\t")
               .append("거래일자 : ").append(transaction.getTransacitonDate()).append("\t")
               .append("거래시간 : ").append(transaction.getTransactionTime()).append(System.lineSeparator());
 

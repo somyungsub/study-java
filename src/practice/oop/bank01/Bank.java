@@ -73,12 +73,13 @@ public class Bank {
 
     private Account getAccount(BankWorkType bankWorkType) {
         Predicate<Account> predicate;
+        String next = scanner.next();
         switch (bankWorkType) {
             case SEARCH_NAME:
-                predicate = account -> account.getName().equals(scanner.next());
+                predicate = account -> account.getName().equals(next);
                 break;
             case SEARCH_ACCOUNT:
-                predicate = account -> account.getAccountNo().equals(scanner.next());
+                predicate = account -> account.getAccountNo().equals(next);
                 break;
             default:
                 return new Account();
