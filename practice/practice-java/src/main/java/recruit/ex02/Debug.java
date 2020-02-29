@@ -1,8 +1,7 @@
 package recruit.ex02;
 
-import org.junit.Test;
 
-public class DebugTest {
+public class Debug {
     private int n = 1;
 
     public void first() {
