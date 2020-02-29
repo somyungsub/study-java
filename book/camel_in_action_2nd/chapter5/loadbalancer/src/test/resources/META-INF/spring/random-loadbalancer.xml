@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <camelContext xmlns="http://camel.apache.org/schema/spring">
+
+        <route>
+            <from uri="direct:start"/>
+            <!-- use the load balancer EIP in a random fashion -->
+            <loadBalance>
+                <random/>
+                <!-- these are the 3 processors which we balance across -->
+                <to uri="seda:a"/>
+                <to uri="seda:b"/>
+                <to uri="seda:c"/>
+            </loadBalance>
+        </route>
+
+        <!-- service A -->
+        <route>
+            <from uri="seda:a"/>
+            <log message="A received: ${body}"/>
+        </route>
+
+        <!-- service B -->
+        <route>
+            <from uri="seda:b"/>
+            <log message="B received: ${body}"/>
+        </route>
+
+        <!-- service C -->
+        <route>
+            <from uri="seda:c"/>
+            <log message="C received: ${body}"/>
+        </route>
+
+    </camelContext>
+
+</beans>

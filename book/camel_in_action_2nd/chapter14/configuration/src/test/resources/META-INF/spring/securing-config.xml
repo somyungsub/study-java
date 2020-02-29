@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <bean id="ftpServer" class="camelinaction.FtpServerBean"
+        init-method="startServer" destroy-method="shutdownServer"/>
+
+  <!-- define the jasypt properties parser with the given password to be used -->
+  <bean id="jasypt" class="org.apache.camel.component.jasypt.JasyptPropertiesParser">
+    <property name="password" value="supersecret"/>
+  </bean>
+
+  <camelContext xmlns="http://camel.apache.org/schema/spring">
+    <propertyPlaceholder id="properties"
+                         location="classpath:rider-test.properties"
+                         propertiesParserRef="jasypt"/>
+
+    <!-- notice we can use the Camel property placeholders directly in the urls {{key}} -->
+    <route>
+      <from uri="file:target/inbox"/>
+      <to uri="ftp://rider:{{ftp.password}}@localhost:21000/target/outbox"/>
+    </route>
+
+  </camelContext>
+
+</beans>

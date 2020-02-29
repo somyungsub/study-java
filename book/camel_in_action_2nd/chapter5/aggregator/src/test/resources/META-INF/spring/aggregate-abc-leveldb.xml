@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <!-- this is our aggregation strategy defined as a spring bean -->
+    <bean id="myAggregationStrategy" class="camelinaction.MyAggregationStrategy"/>
+
+    <!-- define a persistent repository to be used by the aggregator -->
+    <bean id="myRepo" class="org.apache.camel.component.leveldb.LevelDBAggregationRepository">
+        <!-- the repository must have an unique name -->
+        <property name="repositoryName" value="myrepo"/>
+        <!-- and we must tell which file to use as store -->
+        <property name="persistentFileName" value="data/myrepo.dat"/>
+    </bean>
+
+    <camelContext xmlns="http://camel.apache.org/schema/spring">
+
+        <route>
+            <from uri="file://target/inbox"/>
+            <!-- do a little logging when we load the file -->
+            <log message="Consuming ${file:name}"/>
+            <convertBodyTo type="java.lang.String"/>
+            <!-- aggregate using the aggregation strategy and complete when 3 messages
+                 has been aggregated -->
+            <aggregate strategyRef="myAggregationStrategy" completionSize="3"
+                       aggregationRepositoryRef="myRepo">
+                <!-- a correlation expression must be provided -->
+                <correlationExpression>
+                    <!-- aggregate all messages into the same group -->
+                    <constant>true</constant>
+                </correlationExpression>
+                <!-- log the published outgoing message -->
+                <log message="Sending out ${body}"/>
+                <!-- and send it to a mock endpoint -->
+                <to uri="mock:result"/>
+            </aggregate>
+        </route>
+
+    </camelContext>
+
+</beans>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+  <!-- a bean for order service -->
+  <bean id="orderService" class="camelinaction.dummy.DummyOrderService"/>
+
+  <camelContext xmlns="http://camel.apache.org/schema/spring">
+
+     <onException>
+      <exception>camelinaction.OrderInvalidException</exception>
+      <handled><constant>true</constant></handled>
+      <setHeader headerName="Exchange.HTTP_RESPONSE_CODE">
+        <constant>400</constant>
+      </setHeader>
+      <setBody>
+        <constant/>
+      </setBody>
+    </onException>
+
+    <onException>
+      <exception>camelinaction.OrderNotFoundException</exception>
+      <handled><constant>true</constant></handled>
+      <setHeader headerName="Exchange.HTTP_RESPONSE_CODE">
+        <constant>404</constant>
+      </setHeader>
+      <setBody>
+        <constant/>
+      </setBody>
+    </onException>
+
+    <onException>
+      <exception>java.lang.Exception</exception>
+      <handled><constant>true</constant></handled>
+      <setHeader headerName="Exchange.HTTP_RESPONSE_CODE">
+        <constant>500</constant>
+      </setHeader>
+      <setBody>
+        <simple>${exception.message}\n</simple>
+      </setBody>
+    </onException>
+
+    <restConfiguration component="servlet" bindingMode="json_xml"
+                       contextPath="chapter10-swagger-ui/rest" port="8080"
+                       apiContextPath="api-doc" apiContextListing="true"
+                       enableCORS="true">
+
+      <!-- we want json output in pretty mode -->
+      <dataFormatProperty key="prettyPrint" value="true"/>
+
+      <!-- setup swagger api descriptions -->
+      <apiProperty key="base.path" value="rest"/>
+      <apiProperty key="api.version" value="2.0.0"/>
+      <apiProperty key="api.title" value="Rider Auto Parts Order Services"/>
+      <apiProperty key="api.description" value="Order Service that allows customers to submit orders and query status"/>
+      <apiProperty key="api.contact.name" value="Rider Auto Parts"/>
+
+    </restConfiguration>
+
+    <rest path="/orders"
+          consumes="application/json,application/xml"
+          produces="application/json,application/xml">
+      <description>Order Service</description>
+
+      <get uri="/{id}" outType="camelinaction.Order">
+        <description>Service to get details of an existing order</description>
+        <param name="id" type="path" description="The order id"/>
+        <responseMessage code="200" message="The order with the given id"/>
+        <responseMessage code="404" message="Order not found"/>
+        <responseMessage code="500" message="Server error"/>
+        <to uri="bean:orderService?method=getOrder(${header.id})"/>
+      </get>
+
+      <post type="camelinaction.Order" outType="String">
+        <description>Service to submit a new order</description>
+        <responseMessage code="200" message="The created order id"/>
+        <responseMessage code="400" message="Invalid input data"/>
+        <responseMessage code="500" message="Server error"/>
+        <to uri="bean:orderService?method=createOrder"/>
+      </post>
+
+      <put type="camelinaction.Order">
+        <description>Service to update an existing order</description>
+        <responseMessage code="400" message="Invalid input data"/>
+        <responseMessage code="500" message="Server error"/>
+        <to uri="bean:orderService?method=updateOrder"/>
+      </put>
+
+      <delete uri="{id}">
+        <description>Service to cancel an existing order</description>
+        <param name="id" type="path" description="The order id"/>
+        <responseMessage code="404" message="Order not found"/>
+        <responseMessage code="500" message="Server error"/>
+        <to uri="bean:orderService?method=cancelOrder(${header.id})"/>
+      </delete>
+
+    </rest>
+
+  </camelContext>
+
+</beans>

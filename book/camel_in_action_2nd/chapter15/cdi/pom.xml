@@ -1,0 +1,104 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.camelinaction</groupId>
+    <artifactId>chapter15</artifactId>
+    <version>2.0.0</version>
+    <relativePath>..</relativePath>
+  </parent>
+
+  <artifactId>riderautoparts-cdi</artifactId>
+  <name>Camel in Action 2 :: Chapter 15 :: Running Camel in WildFly using CDI</name>
+  <packaging>jar</packaging>
+
+  <properties>
+    <version.wildfly.camel>5.0.0</version.wildfly.camel>
+  </properties>
+
+  <dependencies>
+
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-cdi</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.enterprise</groupId>
+      <artifactId>cdi-api</artifactId>
+      <version>1.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.wildfly.camel</groupId>
+      <artifactId>wildfly-camel-subsystem-core</artifactId>
+      <version>${version.wildfly.camel}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-log4j12</artifactId>
+    </dependency>
+
+  </dependencies>
+ 
+  <!-- Dependency Management -->
+  <dependencyManagement>
+    <dependencies>
+      <!-- WildFly Camel -->
+      <dependency>
+        <groupId>org.wildfly.camel</groupId>
+        <artifactId>wildfly-camel</artifactId>
+        <version>${version.wildfly.camel}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>org.wildfly.camel</groupId>
+        <artifactId>wildfly-camel-patch</artifactId>
+        <version>${version.wildfly.camel}</version>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <!-- Profiles -->
+  <profiles>
+    <profile>
+      <id>deploy</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.wildfly.plugins</groupId>
+            <artifactId>wildfly-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>wildfly-deploy</id>
+                <phase>install</phase>
+                <goals>
+                  <goal>deploy-only</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>wildfly-undeploy</id>
+                <phase>clean</phase>
+                <goals>
+                  <goal>undeploy</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
+</project>
+

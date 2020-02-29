@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+    ">
+
+    <camelContext id="camel" trace="true" xmlns="http://camel.apache.org/schema/spring">
+
+        <route>
+            <from uri="file://src/test/resources?noop=true&amp;fileName=order.csv"/>
+            <unmarshal><csv/></unmarshal>
+            <split>
+                <!-- use simple language to refer to the body -->
+                <simple>body</simple>
+                <to uri="mock:queue.csv"/>
+            </split>
+        </route>
+
+    </camelContext>
+
+</beans>

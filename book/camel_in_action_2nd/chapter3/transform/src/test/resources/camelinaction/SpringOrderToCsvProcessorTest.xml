@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <!-- processor which can format to csv -->
+    <bean id="csvProcessor" class="camelinaction.OrderToCsvProcessor"/>
+
+    <camelContext trace="true" id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <route>
+            <from uri="direct:start"/>
+            <!-- format inhouse to csv using a processor-->
+            <process ref="csvProcessor"/>
+            <!-- and save it to a file -->
+            <to uri="file://target/orders/received?fileName=report-${header.Date}.csv"/>
+        </route>
+    </camelContext>
+
+</beans>

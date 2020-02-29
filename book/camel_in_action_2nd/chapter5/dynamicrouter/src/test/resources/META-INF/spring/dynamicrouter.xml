@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <!-- bean implementing the dynamic logic where to route the message -->
+    <bean id="myDynamicRouter" class="camelinaction.DynamicRouterBean"/>
+
+    <camelContext xmlns="http://camel.apache.org/schema/spring">
+
+        <route>
+            <from uri="direct:start"/>
+            <!-- use the dynamic router EIP -->
+            <dynamicRouter>
+                <!-- use a method call expression to tell where to go -->
+                <method ref="myDynamicRouter" method="route"/>
+            </dynamicRouter>
+            <!-- after the dynamic router EIP send to mock result endpoint -->
+            <to uri="mock:result"/>
+        </route>
+
+    </camelContext>
+
+</beans>

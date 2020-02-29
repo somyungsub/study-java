@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <bean id="secretKey" class="camelinaction.SpringMessageEncryptionTest" factory-method="loadKey"/>
+
+    <camelContext xmlns="http://camel.apache.org/schema/spring">                   
+        <dataFormats>
+            <crypto id="myCrypto" algorithm="DES" keyRef="secretKey" />
+        </dataFormats>             
+        <route>
+            <from uri="direct:start" />
+            <marshal ref="myCrypto" />
+            <to uri="mock:encrypted" />
+            <unmarshal ref="myCrypto" />
+            <to uri="mock:unencrypted" />
+        </route>
+    </camelContext>
+
+</beans>

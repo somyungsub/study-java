@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <camelContext id="camel" trace="true" xmlns="http://camel.apache.org/schema/spring">
+
+        <dataFormats>
+            <jaxb id="jaxb" contextPath="camelinaction"/>
+        </dataFormats>
+
+        <route>
+            <from uri="direct:order"/>
+            <marshal ref="jaxb"/>
+            <to uri="seda:queue:order"/>
+        </route>
+
+        <route>
+            <from uri="seda:queue:order"/>
+            <unmarshal ref="jaxb"/>
+            <to uri="mock:order"/>
+        </route>
+
+    </camelContext>
+
+</beans>

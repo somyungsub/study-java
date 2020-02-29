@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://camel.apache.org/schema/cxf"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+         http://camel.apache.org/schema/cxf http://camel.apache.org/schema/cxf/camel-cxf.xsd">
+
+
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <!-- and use servlet transport -->
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+
+    <!-- notice address is just relative to the servlet mapping -->
+    <cxf:cxfEndpoint id="inventoryEndpoint"
+                     address="/inventory"
+                     serviceClass="camelinaction.inventory.InventoryEndpoint"/>
+
+</beans>

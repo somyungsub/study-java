@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
+
+  <persistence-unit name="camel" transaction-type="RESOURCE_LOCAL">
+    <class>camelinaction.PurchaseOrder</class>
+
+    <properties>
+      <property name="openjpa.ConnectionDriverName" value="org.apache.derby.jdbc.EmbeddedDriver" />
+      <property name="openjpa.ConnectionURL" value="jdbc:derby:memory:order;create=true" />
+      <property name="openjpa.ConnectionUserName" value="sa" />
+      <property name="openjpa.ConnectionPassword" value="" />
+      <property name="openjpa.jdbc.SynchronizeMappings" value="buildSchema" />
+    </properties>
+
+  </persistence-unit>
+</persistence>

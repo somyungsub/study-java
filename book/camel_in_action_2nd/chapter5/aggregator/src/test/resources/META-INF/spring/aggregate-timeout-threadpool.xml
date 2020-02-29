@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:camel="http://camel.apache.org/schema/spring"
+       xsi:schemaLocation="
+         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+         http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <!-- this is our aggregation strategy defined as a spring bean -->
+    <bean id="myAggregationStrategy" class="camelinaction.MyAggregationStrategy"/>
+
+    <camelContext xmlns="http://camel.apache.org/schema/spring">
+        <threadPoolProfile id="myThreadPool" maxPoolSize="2"/>        
+
+        <route>
+            <from uri="direct:start"/>
+            <!-- log the incoming message -->
+            <log message="Sending ${body}"/>
+            <!-- aggregate using the aggregation strategy and complete when either
+                 2 messages has been aggregated or 5 sec timeout occurred -->
+            <aggregate strategyRef="myAggregationStrategy" completionSize="2" completionTimeout="5000" timeoutCheckerExecutorServiceRef="myThreadPool">
+                <!-- a correlation expression must be provided -->
+                <correlationExpression>
+                    <!-- we use the xpath expression,
+                         but you can use any Camel Expression you like -->
+                    <xpath>/order/@customer</xpath>
+                </correlationExpression>
+                <!-- log the published outgoing message -->
+                <log message="Sending out ${body}"/>
+                <!-- and send it to a mock endpoint -->
+                <to uri="mock:result"/>
+            </aggregate>
+        </route>
+
+    </camelContext>
+
+</beans>

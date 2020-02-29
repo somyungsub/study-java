@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:broker="http://activemq.apache.org/schema/core"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd">
+
+  <!-- define the activemq Camel component so we can integrate with the AMQ broker below -->
+  <bean id="activemq" class="org.apache.activemq.camel.component.ActiveMQComponent">
+    <property name="brokerURL" value="tcp://localhost:61616"/>
+    <!-- tone down logging verbosity for unhandled exceptions -->
+    <property name="errorHandlerLogStackTrace" value="false"/>
+  </bean>
+
+  <!-- setup a local JMS Broker for testing purpose -->
+  <!-- in reality it may be a remote JMS broker -->
+  <broker:broker useJmx="false" persistent="false" brokerName="localhost">
+    <broker:transportConnectors>
+      <broker:transportConnector uri="tcp://localhost:61616"/>
+    </broker:transportConnectors>
+  </broker:broker>
+
+  <!-- the order service -->
+  <bean id="order" class="camelinaction.OrderService"/>
+
+  <!-- the camel route -->
+  <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+
+    <route>
+      <!-- incoming orders arrive on this queue -->
+      <from uri="activemq:queue:order"/>
+      <log message="Incoming order ${body}"/>
+
+      <!-- process the order -->
+      <choice>
+        <when>
+          <!-- if the order is valid then process it and send it to the confirm queue -->
+          <method ref="order" method="validateOrder"/>
+          <log message="Valid order ${body}"/>
+          <bean ref="order" method="processOrder"/>
+          <to uri="activemq:queue:confirm"/>
+        </when>
+        <otherwise>
+          <!-- for invalid orders move them to the invalid queue -->
+          <log message="Invalid order ${body}"/>
+          <to uri="activemq:queue:invalid"/>
+        </otherwise>
+      </choice>
+
+    </route>
+
+  </camelContext>
+
+</beans>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd
+    ">
+
+  <camelContext id="orderService" xmlns="http://camel.apache.org/schema/spring">
+
+    <!-- use the jetty component with the rest services -->
+    <restConfiguration component="jetty" port="8080" contextPath="/order"/>
+
+    <!-- a rest service using rest-dsl that can return wisdom -->
+    <rest produces="text/xml">
+      <!-- a GET service on /status -->
+      <get uri="/status">
+        <to uri="direct:status"/>
+      </get>
+    </rest>
+
+    <!-- call a backend service using JMS to check the order status -->
+    <route>
+      <from uri="direct:status"/>
+      <!-- transform the request into XML with the order id -->
+      <transform>
+        <simple><![CDATA[<order><id>${header.id}</id></order>]]></simple>
+      </transform>
+      <to uri="jms:queue:order.status"/>
+    </route>
+
+  </camelContext>
+
+  <!-- setup JMS component that uses the jmsConnectionFactory -->
+  <!-- configure jmsConnectionFactory with the JMS provider you are using such as WebSphere, ActiveMQ etc. -->
+  <bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+    <!-- setup the JMS connection factory to your broker -->
+    <property name="connectionFactory" ref="jmsConnectionFactory"/>
+  </bean>
+
+</beans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd">
+
+    <keyStoreParameters xmlns="http://camel.apache.org/schema/spring" id="keystore" 
+           resource="./cia_keystore.jks" password="supersecret" />
+    <keyStoreParameters xmlns="http://camel.apache.org/schema/spring" id="truststore" 
+           resource="./cia_truststore.jks" password="supersecret" />
+
+    <camelContext xmlns="http://camel.apache.org/schema/spring">                                
+        <route>
+            <from uri="direct:sign"/>
+            <to uri="crypto:sign://keystore?keyStoreParameters=#keystore&amp;
+                     alias=jon&amp;
+                     password=secret"/>
+            <to uri="mock:signed"/>
+            <to uri="direct:verify"/>
+        </route>
+        <route>
+            <from uri="direct:verify"/>
+            <to uri="crypto:verify://keystore?keyStoreParameters=#truststore&amp;
+                     alias=jon&amp;
+                     password=secret"/>
+            <to uri="mock:verified"/>
+        </route>
+    </camelContext>
+
+</beans>
