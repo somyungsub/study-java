@@ -9,9 +9,11 @@ import java.io.OutputStream;
 public class FileCopier {
 
     public static void main(String args[]) throws Exception {
-        File inboxDirectory = new File("data/inbox");
-        File outboxDirectory = new File("data/outbox");
-        
+        File inboxDirectory = new File("book/camel_in_action_2nd/chapter1/file-copy/data/inbox");
+        File outboxDirectory = new File("book/camel_in_action_2nd/chapter1/file-copy/data/outbox");
+//        File inboxDirectory = new File("data/inbox");
+//        File outboxDirectory = new File("data/outbox");
+
         outboxDirectory.mkdir();
         
         File[] files = inboxDirectory.listFiles();
@@ -19,7 +21,7 @@ public class FileCopier {
             if (source.isFile()) {
                 File dest = new File(
                         outboxDirectory.getPath() 
-                        + File.separator 
+                        + File.separator
                         + source.getName()); 
                 copyFile(source, dest);
             }

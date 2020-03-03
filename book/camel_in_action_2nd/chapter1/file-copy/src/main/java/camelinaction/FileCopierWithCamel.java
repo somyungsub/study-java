@@ -10,16 +10,20 @@ public class FileCopierWithCamel {
         // create CamelContext
         CamelContext context = new DefaultCamelContext();
 
+        String fromPath = "book/camel_in_action_2nd/chapter1/file-copy/data/inbox?noop=true";
+        String toPath = "book/camel_in_action_2nd/chapter1/file-copy/data/outbox";
+
         // add our route to the CamelContext
         context.addRoutes(new RouteBuilder() {
             public void configure() {
-                from("file:data/inbox?noop=true").to("file:data/outbox");
+//                from("file:data/inbox?noop=true").to("file:data/outbox");
+                from("file:"+fromPath).to("file:"+toPath);
             }
         });
 
         // start the route and let it do its work
         context.start();
-        Thread.sleep(10000);
+        Thread.sleep(1000);
 
         // stop the CamelContext
         context.stop();
