@@ -1,0 +1,122 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example.chapter9</groupId>
+  <artifactId>tweet-lang-timewindow-count</artifactId>
+  <version>1.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>tweet-lang-timewindow-count</name>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>1.8</java.version>
+    <kafka.version>1.1.0</kafka.version>
+    <spark.version>2.3.1</spark.version>
+    <scala.version>2.11.8</scala.version>
+    <jopt-simple.version>5.0.4</jopt-simple.version>
+  </properties>
+
+  <dependencies>
+    <!-- 
+      kafka-clients、spark-sql_2.11、spark-sql-kafka-0.10_2.11は、
+      KafkaとStructured Streamingを組み合わせる上で必須となる依存ライブラリ。
+    -->
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+      <version>${kafka.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql-kafka-0-10_2.11</artifactId>
+      <version>${spark.version}</version>
+    </dependency>
+    <!--
+      spark-sql_2.11はSparkのランタイムに同梱されているので、
+      spark-sql_2.11とspark-sql_2.11が依存するライブラリがassemblyプラグインでコピーされないように
+      scopeをprovidedに設定する。
+    -->
+    <dependency>
+      <groupId>org.apache.spark</groupId>
+      <artifactId>spark-sql_2.11</artifactId>
+      <version>${spark.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <!--
+      サンプルコードでjopt-simpleを利用しているために依存関係ライブラリとして加える。
+      KafkaとStructured Streamingを組み合わせる場合において必須
+    -->
+    <dependency>
+      <groupId>net.sf.jopt-simple</groupId>
+      <artifactId>jopt-simple</artifactId>
+      <version>${jopt-simple.version}</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.7.0</version>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target> 
+        </configuration>
+      </plugin>
+
+      <!-- Scalaで記述されたソースコードをMavenプロジェクトでビルドするためのプラグイン -->
+      <plugin>
+        <groupId>net.alchim31.maven</groupId>
+        <artifactId>scala-maven-plugin</artifactId>
+        <version>3.2.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <scala.version>${scala.version}</scala.version>
+        </configuration>
+      </plugin>
+
+      <!-- 
+        依存関係のあるライブラリをassemblyディレクトリにコピーする。 
+        scopeがprovidedに設定されたライブラリ及びそれが依存するライブラリや、
+        excludeArtifactIdsタグで指定されたライブラリはコピーの対象から外す。
+      -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+          </execution>
+        </executions> 
+        <configuration>
+          <includeScope>runtime</includeScope>
+          <outputDirectory>assembly</outputDirectory>
+          <!-- Sparkのランタイムに同梱されているため、コピーの対象から外す依存ライブラリ -->
+          <excludeArtifactIds>
+            unused,
+            spark-tags_2.11,
+            scala-library,
+            snappy-java,
+            slf4j-api,
+            lz4-java
+          </excludeArtifactIds>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
