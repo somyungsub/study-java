@@ -24,5 +24,7 @@
     </build>
   <modules>
     <module>practice/practice-java</module>
+    <module>book/jpa-programming</module>
+    <module>book/스파크완벽가이드</module>
   </modules>
 </project>

@@ -183,4 +183,7 @@ mvnw.*
 lib/
 HELP.md
 
+# 스파크완벽가이드 소스코드 -> 용량이커서 제외
+Spark-The-Definitive-Guide/
+
 # End of https://www.gitignore.io/api/maven
