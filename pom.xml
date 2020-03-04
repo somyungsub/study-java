@@ -27,5 +27,6 @@
     <module>book/JPA프로그래밍</module>
     <module>book/스파크완벽가이드</module>
     <module>book/실전아파치카프카</module>
+    <module>book/RxJava리액티브프로그래밍</module>
   </modules>
 </project>
