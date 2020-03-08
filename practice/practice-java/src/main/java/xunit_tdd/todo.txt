@@ -1,0 +1,7 @@
+토비님 xunit 관련 영상
+- https://www.youtube.com/watch?v=tdKFZcZSJmg
+
+[X] 테스트 메소드 실행
+[X] setUp 테스트 메소드 보다 먼저 실행
+[X] tearDown 나중에 실행 - 비록 실패했다고 하더라도
+[ ] 테스트 결과 수집
