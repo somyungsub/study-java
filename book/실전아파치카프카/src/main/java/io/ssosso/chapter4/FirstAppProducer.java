@@ -1,4 +1,4 @@
-package io.ssosso;
+package io.ssosso.chapter4;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
