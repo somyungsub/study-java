@@ -29,5 +29,6 @@
     <module>book/실전아파치카프카</module>
     <module>book/RxJava리액티브프로그래밍</module>
     <module>book/스프링마이크로서비스코딩공작소</module>
+    <module>book/TDD시작하기</module>
   </modules>
 </project>
