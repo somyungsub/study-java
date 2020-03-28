@@ -194,6 +194,7 @@ Spark-The-Definitive-Guide/
 ### Gradle ###
 .gradle
 build/
+*.tgz
 
 # Ignore Gradle GUI config
 gradle-app.setting
