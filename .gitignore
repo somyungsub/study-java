@@ -182,8 +182,32 @@ mvnw.*
 
 lib/
 HELP.md
+LICENSE
 
 # 스파크완벽가이드 소스코드 -> 용량이커서 제외
 Spark-The-Definitive-Guide/
+
+
+# Created by https://www.gitignore.io/api/gradle
+# Edit at https://www.gitignore.io/?templates=gradle
+
+### Gradle ###
+.gradle
+build/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+# # Work around https://youtrack.jetbrains.com/issue/IDEA-116898
+# gradle/wrapper/gradle-wrapper.properties
+
+### Gradle Patch ###
+**/build/
 
 # End of https://www.gitignore.io/api/maven
