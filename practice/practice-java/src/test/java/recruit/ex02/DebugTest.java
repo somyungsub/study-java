@@ -7,32 +7,6 @@ import static org.junit.Assert.assertEquals;
 public class DebugTest {
 
   @Test
-  public void testSecond1() {
-    Debug debugTest = new Debug();
-    assertEquals(debugTest.second(10), 10);
-  }
-  @Test
-  public void testSecond2() {
-    Debug debugTest = new Debug();
-    assertEquals(debugTest.second(10), 10);
-  }
-  @Test
-  public void testSecond3() {
-    Debug debugTest = new Debug();
-    assertEquals(debugTest.second(10), 10);
-  }
-  @Test
-  public void testSecond4() {
-    Debug debugTest = new Debug();
-    assertEquals(debugTest.second(10), 10);
-  }
-  @Test
-  public void testSecond5() {
-    Debug debugTest = new Debug();
-    assertEquals(debugTest.second(10), 10);
-  }
-
-  @Test
   public void testCase1() {
     Debug debugTest = new Debug();
     assertEquals(debugTest.twoSum(10,20), 30);
