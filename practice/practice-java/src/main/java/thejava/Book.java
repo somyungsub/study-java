@@ -1,12 +1,17 @@
 package thejava;
 
+
+@MyAnnotation("sso")
 public class Book {
   private String a = "a";
   private static String B = "BOOK";
   private static final String C = "BOOK";
   public String d = "d";
+
+  @MyAnnotation("eeee")
   protected String e = "e";
 
+  @MyAnnotation("aasdada")
   public Book() {
   }
 
@@ -19,6 +24,8 @@ public class Book {
             '}';
   }
 
+
+  @MyAnnotation("fff")
   private void f() {
     System.out.println("F");
   }
