@@ -1,5 +1,8 @@
 package thejava.proxy;
 
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
 import org.junit.Test;
 
 import java.lang.reflect.InvocationHandler;
@@ -33,5 +36,4 @@ public class BookServiceTest {
     bookService.rent();
     bookService.returnBook(new Book());
   }
-
 }
