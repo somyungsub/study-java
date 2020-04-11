@@ -1,7 +1,6 @@
 package thejava.cglib;
 
 import net.bytebuddy.ByteBuddy;
-import net.bytebuddy.implementation.FixedValue;
 import net.bytebuddy.implementation.InvocationHandlerAdapter;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
