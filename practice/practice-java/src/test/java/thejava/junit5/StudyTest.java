@@ -26,6 +26,22 @@ class StudyTest {
   }
 
   @Test
+  @DisplayName("스터디만들기 - 커스텀 태그") // 권장
+  @FastTest
+  void test_custom_tag_fast() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - 커스텀 태그2") // 권장
+  @SlowTest
+  void test_custom_tag_slow() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
   @DisplayName("스터디만들기 - tag") // 권장
   @Tag("fast")  // -> local 환경에서 테스트 원함
   void test_tag() {
