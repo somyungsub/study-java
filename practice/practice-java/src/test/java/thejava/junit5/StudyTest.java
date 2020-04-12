@@ -2,6 +2,8 @@ package thejava.junit5;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.lang.reflect.Executable;
 import java.time.Duration;
@@ -24,6 +26,29 @@ class StudyTest {
     Study study = new Study(10);
     assertNotNull(study);
   }
+
+  @DisplayName("스터디만들기 - 반복") // 권장
+  @RepeatedTest(10)
+  void test_repeat() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @DisplayName("스터디만들기 - 반복2") // 권장
+  @RepeatedTest(value = 10, name = "{displayName}, {currentRepetition}/{totalRepetitions}")
+  void test_repeat2(RepetitionInfo info) {
+    System.out.println("test");
+    System.out.println(info.getCurrentRepetition());
+    System.out.println(info.getTotalRepetitions());
+  }
+
+  @DisplayName("스터디만들기 - 파라미터")
+  @ParameterizedTest(name = "{index} {displayName} message={0}")
+  @ValueSource(strings = {"날씨가", "많이", "더워지고", "있다"})
+  void parameterizedTest(String message) {
+    System.out.println(message);
+  }
+
 
   @Test
   @DisplayName("스터디만들기 - 커스텀 태그") // 권장
