@@ -1,20 +1,160 @@
 package thejava.junit5;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.*;
 
+import java.lang.reflect.Executable;
+import java.time.Duration;
+import java.util.function.Supplier;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
+import static org.junit.jupiter.api.Assumptions.assumingThat;
 
+
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+    // DisplayName 을 더 권장
 class StudyTest {
 
+
   @Test
-  void test() {
-    Study study = new Study();
-    assertNotNull(study);
-    System.out.println("create");
+  public void throw_confirm() {
+    IllegalArgumentException exception
+        = assertThrows(IllegalArgumentException.class, () -> new Study(-10));
+    assertEquals("limit는 0보다 커야한다.", exception.getMessage());
   }
 
   @Test
-  public void create() {
+  public void timeout() {
+    assertTimeout(Duration.ofSeconds(10), () -> new Study());
+  }
+
+  @Test
+  public void timeout_fail() {
+    assertTimeout(Duration.ofSeconds(1), () -> {
+          new Study();
+          Thread.sleep(500);
+        }
+    );
+  }
+
+  @Test
+  public void timeout_preemptively() {
+
+    // 1초쯤 바로 종료 시킴
+    assertTimeoutPreemptively(Duration.ofSeconds(2), () -> {
+          new Study();
+          Thread.sleep(1500);
+        }
+    );
+    // TODO ThreadLocal 살펴보기.. -> 스프링 트랜잭션 ? 공유안됨.. 테스트에서 제대로 적용 안 될 수 있음
+  }
+
+  @Test
+  @DisplayName("스터디만들기") // 권장
+  void test() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기") // 권장
+  @EnabledIfEnvironmentVariable(named = "TEST_ENV", matches = "LOCAL")
+  void test_env() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기") // 권장
+  @EnabledIfEnvironmentVariable(named = "TEST_ENV", matches = "ssosso")
+  void test_env2() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - java version") // 권장
+  @EnabledOnJre({JRE.JAVA_8, JRE.JAVA_9, JRE.JAVA_10, JRE.JAVA_11})
+  void test_java_version() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - java version other") // 권장
+  @EnabledOnJre(JRE.OTHER)
+  void test_java_version2() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기-운영체제 enable")
+  @EnabledOnOs(OS.MAC)
+  void test_enabledOnOs() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+  @Test
+  @DisplayName("스터디만들기-운영체제 disable") // 권장
+  @DisabledOnOs(OS.MAC)
+  void test_disabledOnOs() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 조건에따라") // 권장
+  void study_condition() {
+    // LOCAL 인 경우만 테스트 실행
+    String test_env = System.getenv("TEST_ENV");
+//    System.out.println("test_env = " + test_env);
+//    assumeTrue("LOCAL".equalsIgnoreCase(test_env));
+
+    assumingThat("LOCAL".equalsIgnoreCase(test_env), () -> {
+      // doing
+      System.out.println("local");
+      final Study study = new Study(100);
+      assertThat(study.getLimit()).isGreaterThan(0);
+    });
+
+    assumingThat("DEV".equalsIgnoreCase(test_env), () -> {
+      // doing
+      System.out.println("dev");
+      final Study study = new Study(-10);
+      assertThat(study.getLimit()).isLessThan(0);
+    });
+
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 \uD83D\uDE31")
+  public void create_new_study() {
+    Study study = new Study();
+//    assertNotNull(study);
+    // 기대, 실제, 실패시 출력 메세지
+//    assertEquals(StudyStatus.DRAFT, study.getStatus(), () -> "스터디를 처음 만들면 상태값이 DRAFT여야 한다.");
+//    assertEquals(StudyStatus.DRAFT, study.getStatus(), () -> "스터디를 처음 만들면 상태값이 " + StudyStatus.DRAFT + " 여야 한다.");
+//    assertTrue(1 < 2);
+//    assertNull(null);
+//    assertTrue(study.getLimit() > 0, "스터디 최대 참석 가능 인원은 0보다 커야 한다");
+
+    // 한번에 처리하기
+    assertAll(
+        () -> assertNotNull(study),
+        () -> assertNull(study),
+        () -> assertEquals(StudyStatus.DRAFT, study.getStatus(), () -> "스터디를 처음 만들면 상태값이 " + StudyStatus.DRAFT + " 여야 한다."),
+        () -> assertTrue(study.getLimit() > 0, "스터디 최대 참석 가능 인원은 0보다 커야 한다")
+    );
+  }
+
+  @Test
+  @DisplayName("스터디만들기 \uD83D\uDE31")
+  public void create_new_again() {
     System.out.println("create1");
   }
 
@@ -47,10 +187,6 @@ class StudyTest {
   void afterEach() {
     System.out.println("after each");
   }
-
-
-
-
 
 
 }
