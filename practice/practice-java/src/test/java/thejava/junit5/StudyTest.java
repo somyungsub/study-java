@@ -13,43 +13,10 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 
+// DisplayName 을 더 권장
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-    // DisplayName 을 더 권장
 class StudyTest {
 
-
-  @Test
-  public void throw_confirm() {
-    IllegalArgumentException exception
-        = assertThrows(IllegalArgumentException.class, () -> new Study(-10));
-    assertEquals("limit는 0보다 커야한다.", exception.getMessage());
-  }
-
-  @Test
-  public void timeout() {
-    assertTimeout(Duration.ofSeconds(10), () -> new Study());
-  }
-
-  @Test
-  public void timeout_fail() {
-    assertTimeout(Duration.ofSeconds(1), () -> {
-          new Study();
-          Thread.sleep(500);
-        }
-    );
-  }
-
-  @Test
-  public void timeout_preemptively() {
-
-    // 1초쯤 바로 종료 시킴
-    assertTimeoutPreemptively(Duration.ofSeconds(2), () -> {
-          new Study();
-          Thread.sleep(1500);
-        }
-    );
-    // TODO ThreadLocal 살펴보기.. -> 스프링 트랜잭션 ? 공유안됨.. 테스트에서 제대로 적용 안 될 수 있음
-  }
 
   @Test
   @DisplayName("스터디만들기") // 권장
@@ -59,7 +26,23 @@ class StudyTest {
   }
 
   @Test
-  @DisplayName("스터디만들기") // 권장
+  @DisplayName("스터디만들기 - tag") // 권장
+  @Tag("fast")  // -> local 환경에서 테스트 원함
+  void test_tag() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - tag2") // 권장
+  @Tag("slow")  // -> CI 환경에서 테스트 원함
+  void test_tag2() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - 환경변수매칭") // 권장
   @EnabledIfEnvironmentVariable(named = "TEST_ENV", matches = "LOCAL")
   void test_env() {
     Study study = new Study(10);
@@ -67,7 +50,7 @@ class StudyTest {
   }
 
   @Test
-  @DisplayName("스터디만들기") // 권장
+  @DisplayName("스터디만들기 - 환경변수매칭2") // 권장
   @EnabledIfEnvironmentVariable(named = "TEST_ENV", matches = "ssosso")
   void test_env2() {
     Study study = new Study(10);
@@ -129,6 +112,39 @@ class StudyTest {
 
     Study study = new Study(10);
     assertNotNull(study);
+  }
+
+  @Test
+  public void throw_confirm() {
+    IllegalArgumentException exception
+        = assertThrows(IllegalArgumentException.class, () -> new Study(-10));
+    assertEquals("limit는 0보다 커야한다.", exception.getMessage());
+  }
+
+  @Test
+  public void timeout() {
+    assertTimeout(Duration.ofSeconds(10), () -> new Study());
+  }
+
+  @Test
+  public void timeout_fail() {
+    assertTimeout(Duration.ofSeconds(1), () -> {
+          new Study();
+          Thread.sleep(500);
+        }
+    );
+  }
+
+  @Test
+  public void timeout_preemptively() {
+
+    // 1초쯤 바로 종료 시킴
+    assertTimeoutPreemptively(Duration.ofSeconds(2), () -> {
+          new Study();
+          Thread.sleep(1500);
+        }
+    );
+    // TODO ThreadLocal 살펴보기.. -> 스프링 트랜잭션 ? 공유안됨.. 테스트에서 제대로 적용 안 될 수 있음
   }
 
   @Test
