@@ -24,9 +24,8 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 
 // DisplayName 을 더 권장
-
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
-@TestInstance(TestInstance.Lifecycle.PER_CLASS) // 동일 인스턴스 내에서 메서드 실행하기 위함, 기본은 메서드마다 각 인스턴스를 생성하여 실행
+//@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+//@TestInstance(TestInstance.Lifecycle.PER_CLASS) // 동일 인스턴스 내에서 메서드 실행하기 위함, 기본은 메서드마다 각 인스턴스를 생성하여 실행
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
