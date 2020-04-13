@@ -24,8 +24,10 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 
 // DisplayName 을 더 권장
+
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS) // 동일 인스턴스 내에서 메서드 실행하기 위함, 기본은 메서드마다 각 인스턴스를 생성하여 실행
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class StudyTest {
 
   int value = 1;
@@ -36,6 +38,39 @@ class StudyTest {
     Study study = new Study(10);
     assertNotNull(study);
   }
+
+  @Test
+  @DisplayName("스터디만들기 - order1") // 권장
+  @Order(1)
+  void test_order() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - order3") // 권장
+  @Order(3)
+  void test_order3() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - order2") // 권장
+  @Order(2)
+  void test_order2() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - order22") // 권장
+  @Order(2)
+  void test_order22() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
 
   @Test
   @DisplayName("스터디만들기 - field")
