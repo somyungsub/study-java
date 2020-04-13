@@ -25,14 +25,32 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
 
 // DisplayName 을 더 권장
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS) // 동일 인스턴스 내에서 메서드 실행하기 위함, 기본은 메서드마다 각 인스턴스를 생성하여 실행
 class StudyTest {
 
+  int value = 1;
 
   @Test
   @DisplayName("스터디만들기") // 권장
   void test() {
     Study study = new Study(10);
     assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - field")
+  void test_field() {
+    Study study = new Study(value++);
+    System.out.println(study.getLimit());
+    System.out.println(this);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - field2")
+  void test_field2() {
+    Study study = new Study(value++);
+    System.out.println(study.getLimit());
+    System.out.println(this);
   }
 
   @DisplayName("스터디만들기 - 반복") // 권장
@@ -298,13 +316,13 @@ class StudyTest {
     System.out.println("disable");
   }
 
-  // 전체코드에서 딱 1번 전에
+  // 전체코드에서 딱 1번 전에 -> 반드시 static, this -> instance가 동일한 경우는 상관 없음
   @BeforeAll
   static void beforeAll() {
     System.out.println("before All");
   }
 
-  // 전체코드에서 딱 1번 후에
+  // 전체코드에서 딱 1번 후에 -> 반드시 static,  this -> instance가 동일한 경우는 상관 없음
   @AfterAll
   static void afterAll() {
     System.out.println("after All");
