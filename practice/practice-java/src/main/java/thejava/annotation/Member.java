@@ -17,5 +17,4 @@ public class Member {
     return this.age == member.getAge();
   }
 
-
 }
