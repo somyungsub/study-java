@@ -16,11 +16,18 @@ public class Member {
 
   @Id @GeneratedValue
   private Long id;
+
   private String name;
 
   private int age;
 
+  private String email;
+
   public boolean isSameAge(thejava.annotation.Member member) {
     return this.age == member.getAge();
+  }
+
+  public String getEmail() {
+    return email;
   }
 }
