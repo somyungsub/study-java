@@ -29,8 +29,8 @@ import static org.mockito.Mockito.when;
 // mockito-junit-jupiter 라이브러리에서 제공
 @ExtendWith(MockitoExtension.class)
 class StudyServiceTest {
-
-  @Mock // 이 애노테이션만으로 인스턴스가 생성되지는 않음 -> Class에 @ExtendWith 선언 필요
+// 이 애노테이션만으로 인스턴스가 생성되지는 않음 -> Class에 @ExtendWith 선언 필요
+  @Mock
   MemberService memberService;
 
   @Mock
@@ -39,8 +39,8 @@ class StudyServiceTest {
   @Test
   @DisplayName("테스트")
   void test1() {
-//    MemberService memberService = Mockito.mock(MemberService.class);
-//    StudyRepository studyRepository = Mockito.mock(StudyRepository.class);
+    MemberService memberService = Mockito.mock(MemberService.class);
+    StudyRepository studyRepository = Mockito.mock(StudyRepository.class);
     StudyService studyService = new StudyService(memberService, studyRepository);
     assertNotNull(studyService);
   }
@@ -56,10 +56,10 @@ class StudyServiceTest {
 
   @Test
   @DisplayName("스터디 생성")
-  void createStudyService(@Mock MemberService memberS,
-                           @Mock StudyRepository studyRepo) {
+  void createStudyService(@Mock MemberService memberService,
+                           @Mock StudyRepository studyRepository) {
 
-    StudyService studyService = new StudyService(memberS, studyRepo);
+    StudyService studyService = new StudyService(memberService, studyRepository);
     assertNotNull(studyService);
 
     // given
@@ -87,10 +87,10 @@ class StudyServiceTest {
 
   @Test
   @DisplayName("스터디 생성2")
-  void createStudyService2(@Mock MemberService memberS,
-                          @Mock StudyRepository studyRepo) {
+  void createStudyService2(@Mock MemberService memberService,
+                          @Mock StudyRepository studyRepository) {
 
-    StudyService studyService = new StudyService(memberS, studyRepo);
+    StudyService studyService = new StudyService(memberService, studyRepository);
     assertNotNull(studyService);
 
     // given
@@ -114,7 +114,68 @@ class StudyServiceTest {
     });
 
     assertEquals(Optional.empty(), memberService.findById(3L));
+  }
+  @Test
+  @DisplayName("스터디 실제생성")
+  void createStudyService3(@Mock MemberService memberService,
+                          @Mock StudyRepository studyRepository) {
 
+    StudyService studyService = new StudyService(memberService, studyRepository);
+    assertNotNull(studyService);
+
+    // given - member
+    Member member = new Member();
+    member.setId(1L);
+    member.setEmail("ssosso@gmail.com");
+
+    // when & then
+    when(memberService.findById(1L)).thenReturn(Optional.of(member));
+    final Optional<Member> byId = memberService.findById(1L);
+    assertEquals("ssosso@gmail.com", byId.get().getEmail());
+
+    // given - study
+    Study study = new Study(10, "Test~~");
+
+    // when
+    when(studyRepository.save(study)).thenReturn(study);
+//    studyService.createNewStudy(1L, study);
+//    assertEquals(member, study.getMember());
+
+    final Study newStudy = studyService.createNewStudy(1L, study);
+    assertNotNull(newStudy);
+    assertEquals(member, newStudy.getMember());
+    assertEquals(member, study.getMember());
+  }
+
+  @Test
+  @DisplayName("스터디 실제생성 - 파라미터 없이")
+  void createStudyService4() {
+
+    StudyService studyService = new StudyService(memberService, studyRepository);
+    assertNotNull(studyService);
+
+    // given - member
+    Member member = new Member();
+    member.setId(1L);
+    member.setEmail("ssosso@gmail.com");
+
+    // when & then
+    when(memberService.findById(1L)).thenReturn(Optional.of(member));
+    final Optional<Member> byId = memberService.findById(1L);
+    assertEquals("ssosso@gmail.com", byId.get().getEmail());
+
+    // given - study
+    Study study = new Study(10, "Test~~");
+
+    // when
+    when(studyRepository.save(study)).thenReturn(study);
+//    studyService.createNewStudy(1L, study);
+//    assertEquals(member, study.getMember());
+
+    final Study newStudy = studyService.createNewStudy(1L, study);
+    assertNotNull(newStudy);
+    assertEquals(member, newStudy.getMember());
+    assertEquals(member, study.getMember());
   }
 
 }
