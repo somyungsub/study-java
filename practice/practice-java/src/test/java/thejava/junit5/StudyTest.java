@@ -2,7 +2,9 @@ package thejava.junit5;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.*;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.extension.ParameterContext;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
 import org.junit.jupiter.params.aggregator.ArgumentsAccessor;
@@ -22,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.junit.jupiter.api.Assumptions.assumingThat;
 
-
+//@ExtendWith(FindSlowTestExtension.class)  // 선언적 등록 방법
 // DisplayName 을 더 권장
 //@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS) // 동일 인스턴스 내에서 메서드 실행하기 위함, 기본은 메서드마다 각 인스턴스를 생성하여 실행
@@ -30,6 +32,9 @@ import static org.junit.jupiter.api.Assumptions.assumingThat;
 class StudyTest {
 
   int value = 1;
+
+  @RegisterExtension
+  static FindSlowTestExtension findSlowTestExtension = new FindSlowTestExtension(1000L);
 
   @Test
   @DisplayName("스터디만들기") // 권장
@@ -191,6 +196,15 @@ class StudyTest {
   @DisplayName("스터디만들기 - 커스텀 태그2") // 권장
   @SlowTest
   void test_custom_tag_slow() {
+    Study study = new Study(10);
+    assertNotNull(study);
+  }
+
+  @Test
+  @DisplayName("스터디만들기 - extend") // 권장
+//  @SlowTest
+  void test_custom_tag_slow_extend() throws InterruptedException {
+    Thread.sleep(2000L);
     Study study = new Study(10);
     assertNotNull(study);
   }
