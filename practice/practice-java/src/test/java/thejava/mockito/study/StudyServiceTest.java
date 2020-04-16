@@ -3,6 +3,7 @@ package thejava.mockito.study;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoSession;
@@ -22,8 +23,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 
 // mockito-junit-jupiter 라이브러리에서 제공
@@ -174,6 +174,55 @@ class StudyServiceTest {
     assertNotNull(newStudy);
     assertEquals(member, newStudy.getMember());
     assertEquals(member, study.getMember());
+  }
+
+  @Test
+  @DisplayName("mock 객체 확인")
+  void mock_confirm() {
+
+    StudyService studyService = new StudyService(memberService, studyRepository);
+    assertNotNull(studyService);
+
+    // given - member
+    Member member = new Member();
+    member.setId(1L);
+    member.setEmail("ssosso@gmail.com");
+
+    Study study = new Study(10, "Test~!!");
+
+    // when & then
+    when(memberService.findById(1L)).thenReturn(Optional.of(member));
+    when(studyRepository.save(study)).thenReturn(study);
+
+    studyService.createNewStudy(1L, study);
+
+    assertEquals(member, study.getMember());
+
+    // 어떤 액션도 일어나면안됨...
+//    verifyNoMoreInteractions(memberService);  // 아래 실행으로 인해 에러남
+
+    // 호출 1번된지 확인
+    verify(memberService, times(1)).notify(study);
+    verify(memberService, times(1)).notify(member);
+
+    // 호출 순서 확인
+    final InOrder inOrder = inOrder(memberService);
+
+    // study -> member 순서로 호출되는지 확인
+    inOrder.verify(memberService).notify(study);
+    inOrder.verify(memberService).notify(member);
+
+    // 이시점 이후 어떤 액션도 일어나면안됨...
+    verifyNoMoreInteractions(memberService);
+    verify(studyRepository, timeout(3000)).save(study);   // 3초 이내에 실행되어야함
+    verify(memberService, timeout(3000)).notify(member);  // 3초 이내에 실행되어야함
+
+
+    // 절대 호출되면 안되는거 확인
+//    verify(memberService, never()).validate(any());
+
+//    verify(memberService, times(1)).notify(any());
+//    memberService.notify();
   }
 
 }
