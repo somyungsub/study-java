@@ -169,8 +169,6 @@ class StudyServiceTest {
 
     // when
     when(studyRepository.save(study)).thenReturn(study);
-//    studyService.createNewStudy(1L, study);
-//    assertEquals(member, study.getMember());
 
     final Study newStudy = studyService.createNewStudy(1L, study);
     assertNotNull(newStudy);
