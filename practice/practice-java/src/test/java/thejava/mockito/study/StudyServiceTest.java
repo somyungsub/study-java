@@ -255,4 +255,24 @@ class StudyServiceTest {
 
   }
 
+  @Test
+  @DisplayName("BDD 연습문제")
+  void mock_practice() {
+
+    // Given
+    StudyService studyService = new StudyService(memberService, studyRepository);
+    Study study = new Study(10, "Mock 연습문제");
+
+    given(studyRepository.save(study)).willReturn(study);
+
+    // When
+    final Study openStudy = studyService.openStudy(study);
+
+    // Then
+    assertEquals(StudyStatus.OPENED, openStudy.getStatus());  // OPEN 변경확인
+    assertNotNull(openStudy.getStartDate());
+    then(memberService).should().notify(study);
+
+  }
+
 }

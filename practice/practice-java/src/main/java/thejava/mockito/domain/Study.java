@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -24,6 +26,8 @@ public class Study {
   private int limit;
 
   private String name;
+
+  private LocalDateTime startDate;
 
   @ManyToOne
   private Member member;
@@ -55,5 +59,11 @@ public class Study {
 
   public void setOwner(Member member) {
     this.member = member;
+  }
+
+  public void open() {
+    this.status = StudyStatus.OPENED;
+    this.startDate = LocalDateTime.now();
+    System.out.println("Study open !!!");
   }
 }

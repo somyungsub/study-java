@@ -1,5 +1,5 @@
 package thejava.mockito.study;
 
 public enum StudyStatus {
-  DRAFT, STATED, CLOSED
+  DRAFT, STATED, CLOSED, OPENED
 }
