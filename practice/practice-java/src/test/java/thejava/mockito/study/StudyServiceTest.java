@@ -262,6 +262,8 @@ class StudyServiceTest {
     // Given
     StudyService studyService = new StudyService(memberService, studyRepository);
     Study study = new Study(10, "Mock 연습문제");
+    assertNull(study.getStartDate());
+    assertEquals(StudyStatus.DRAFT, study.getStatus());
 
     given(studyRepository.save(study)).willReturn(study);
 
