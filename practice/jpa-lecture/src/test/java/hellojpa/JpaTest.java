@@ -2,11 +2,8 @@ package hellojpa;
 
 import org.junit.jupiter.api.*;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-
-import static org.junit.jupiter.api.Assertions.*;
+import javax.persistence.*;
+import java.util.List;
 
 class JpaTest {
 
@@ -41,7 +38,7 @@ class JpaTest {
   public void test_persist_save() {
 
     System.out.println("before");
-    final Member member = Member.builder().age(30).id(100L).email("sstest@").name("sso").build();
+    final Member member = createMember(100L);
     em.persist(member);
     System.out.println("after");
 
@@ -51,6 +48,10 @@ class JpaTest {
     System.out.println("find1 = " + find1);
     System.out.println("find2 = " + find2);
 
+  }
+
+  private Member createMember(long id) {
+    return Member.builder().age(30).id(id).email("sstest@").name("sso").build();
   }
 
   @Test
@@ -76,9 +77,9 @@ class JpaTest {
   @Test
   @DisplayName("영속성 컨텍스트 테스트 [1차캐시] - 지연쓰기")
   public void test_persist_save_lazy() {
-    final Member member = Member.builder().age(30).id(101L).email("sstest@").name("sso").build();
-    final Member member2 = Member.builder().age(30).id(102L).email("sstest@").name("sso").build();
-    final Member member3 = Member.builder().age(30).id(103L).email("sstest@").name("sso").build();
+    final Member member = createMember(101L);
+    final Member member2 = createMember(102L);
+    final Member member3 = createMember(103L);
 
     System.out.println("before");
     em.persist(member);
@@ -113,6 +114,91 @@ class JpaTest {
     System.out.println("after");
 
     // commit 시점에 delete 실행
+  }
+
+  @Test
+  @DisplayName("영속성 컨텍스트 Flush")
+  public void test_flush() {
+    final Member member = createMember(201L);
+
+    em.persist(member);
+    em.flush(); // 직접 호출 -> 저장된 SQL 즉시 실행 -> DB와 동기화, commit x
+
+    System.out.println("before");
+    System.out.println("after");
+
+    // commit 시점에 -> flush 자동 실행
+  }
+
+
+  @Test
+  @DisplayName("영속성 컨텍스트 Flush - JPQL")
+  public void test_flush_jpql() {
+    final Member member = createMember(501L);
+    final Member member2 = createMember(502L);
+    final Member member3 = createMember(503L);
+
+    em.persist(member);
+    em.persist(member2);
+    em.persist(member3);
+
+    System.out.println("before");
+
+    // JPQL 실행 -> 플러시가 자동으로 호출 -> 즉시반영 되는 이유 : 영속된 데이터가 없다면, 조회가 불가하므로
+    final TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
+    final List<Member> members = query.getResultList();
+    members.forEach(System.out::println);
+
+    System.out.println("after");
+  }
+
+  @Test
+  @DisplayName("영속성 컨텍스트 Flush Mode - commit")
+  public void test_flush_commit_mode() {
+    final Member member = createMember(601L);
+    final Member member2 = createMember(602L);
+    final Member member3 = createMember(603L);
+
+    em.persist(member);
+    em.persist(member2);
+    em.persist(member3);
+
+    // commit 시점에 flush -> JPQL 데이터 출력문 : 601,602,603 데이터 출력안됨 위 테스트랑 다른 이유 [Flush 시점차이]
+    // 설정위치 중요 -> 여기까지 persist 된 내용은 commit 시점에 반양하기
+    em.setFlushMode(FlushModeType.COMMIT);  // default : FlushModeType.AUTO
+
+    System.out.println("before");
+
+    // JPQL은 바로 실행됨 -> em.persist 실행 시점은 commit 시점에
+    final TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
+    final List<Member> members = query.getResultList();
+    members.forEach(System.out::println);
+
+    System.out.println("after");
+  }
+
+  @Test
+  @DisplayName("영속성 컨텍스트 Flush Mode - commit2")
+  public void test_flush_commit_mode2() {
+    final Member member = createMember(701L);
+    final Member member2 = createMember(702L);
+    final Member member3 = createMember(703L);
+
+    em.persist(member);
+    em.persist(member2);
+    em.persist(member3);
+
+    System.out.println("before");
+
+    // JPQL은 바로 실행됨 -> em.persist 실행 시점은 commit 시점에
+    final TypedQuery<Member> query = em.createQuery("select m from Member m", Member.class);
+    final List<Member> members = query.getResultList();
+    members.forEach(System.out::println);
+
+    // 설정 위치에 따라 flush 영역이 달라짐
+    em.setFlushMode(FlushModeType.COMMIT);  // default : FlushModeType.AUTO
+
+    System.out.println("after");
   }
 
 }
