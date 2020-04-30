@@ -38,12 +38,12 @@ class JpaTest {
   public void test_persist_save() {
 
     System.out.println("before");
-    final Member member = createMember(100L);
+    final Member member = createMember(101L);
     em.persist(member);
     System.out.println("after");
 
-    Member find1 = em.find(Member.class, 100L);
-    Member find2 = em.find(Member.class, 100L);
+    Member find1 = em.find(Member.class, 101L);
+    Member find2 = em.find(Member.class, 101L);
 
     System.out.println("find1 = " + find1);
     System.out.println("find2 = " + find2);
@@ -200,5 +200,64 @@ class JpaTest {
 
     System.out.println("after");
   }
+
+  @Test
+  @DisplayName("영속성 컨텍스트 준영속화 - detach")
+  public void test_detach() {
+    final Member member = em.find(Member.class, 100L);
+    final Member member2 = em.find(Member.class, 101L);
+    final Member member3 = em.find(Member.class, 101L);
+    member.setName("준영속 변경");
+
+    System.out.println("before");
+
+    // 준영속화, 컨텍스트 분리, DB 변경확인 -> 반영안됨
+    em.detach(member);  // 특정객체만
+
+    final Member detachMember = em.find(Member.class, 100L); // 쿼리 실행여부 확인
+    final Member detachMember2 = em.find(Member.class, 101L); // 쿼리 실행여부 확인
+    final Member detachMember3 = em.find(Member.class, 102L); // 쿼리 실행여부 확인
+
+    System.out.println("after");
+  }
+  @Test
+  @DisplayName("영속성 컨텍스트 준영속화 - detach")
+  public void test_persist2() {
+    System.out.println("1");
+    final Member member = em.find(Member.class, 100L);
+    System.out.println("2");
+    final Member member2 = em.find(Member.class, 101L);
+    System.out.println("3");
+    final Member member3 = em.find(Member.class, 101L);
+
+    System.out.println("4");
+    final Member detachMember = em.find(Member.class, 100L); // 쿼리 실행여부 확인
+
+    System.out.println("5");
+    final Member detachMember2 = em.find(Member.class, 101L); // 쿼리 실행여부 확인
+
+    System.out.println("6");
+    final Member detachMember3 = em.find(Member.class, 102L); // 쿼리 실행여부 확인
+
+    System.out.println("after");
+  }
+
+  @Test
+  @DisplayName("영속성 컨텍스트 준영속화 - clear")
+  public void test_clear() {
+    final Member member = em.find(Member.class, 100L);
+    member.setName("준영속 변경");
+
+    System.out.println("before");
+
+    // 전체 비움
+    em.clear();
+
+    final Member member2 = em.find(Member.class, 100L);
+
+    System.out.println("after");
+  }
+
+
 
 }
