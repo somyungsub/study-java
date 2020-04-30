@@ -2,6 +2,7 @@ package hellojpa;
 
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -13,11 +14,14 @@ import javax.persistence.Table;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "MBR")
+//@Table(name = "MBR")
 public class Member {
 
   @Id
+  @Column(name = "MBR_ID", unique = true)
   Long id;
+
+  @Column(name = "MBR_AGE")
   int age;
   String name;
   String email;

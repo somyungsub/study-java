@@ -40,11 +40,11 @@ public class EntityMappingTest {
   @Test
   public void test() {
     System.out.println("before");
-    final Member member = createMember(101L);
+    final Member member = createMember(103L);
     em.persist(member);
     System.out.println("after");
 
-    Member find1 = em.find(Member.class, 101L);
+    Member find1 = em.find(Member.class, 103L);
     System.out.println(find1);
   }
 }
