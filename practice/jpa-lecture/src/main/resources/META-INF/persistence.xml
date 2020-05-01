@@ -22,7 +22,7 @@
             <property name="hibernate.use_sql_comments" value="true"/>
 
             <!--  데이터베이스 스키자 자동생성 속성  -->
-            <property name="hibernate.hbm2ddl.auto" value="create" />
+<!--            <property name="hibernate.hbm2ddl.auto" value="create" />-->
         </properties>
     </persistence-unit>
 </persistence>
