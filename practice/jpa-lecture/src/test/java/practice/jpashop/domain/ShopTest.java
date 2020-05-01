@@ -35,9 +35,6 @@ class ShopTest {
     em.close();
   }
 
-
-
-
   @Test
   public void test() {
     assertNotNull(emf);
@@ -51,9 +48,47 @@ class ShopTest {
     final Long memberId = order.getMemberId();
 
     final Member member = em.find(Member.class, memberId);
-    final Member member1 = order.getMember();
+  }
 
+  @Test
+  public void test3() {
+    final Team teamA = Team.builder().name("TeamA").build();
+    em.persist(teamA);
 
+    final Member member1 = Member.builder()
+            .username("member1")
+            .team(teamA)
+            .build();
+    em.persist(member1);
+
+    System.out.println("teamA = " + teamA);
+    System.out.println("member1 = " + member1);
+
+    em.flush();
+    em.clear();
+    System.out.println("====================");
+
+    final Member member = em.find(Member.class, member1.getId());
+    System.out.println("member = " + member);
+  }
+
+  @Test
+  public void test4() {
+    final Team teamA = Team.builder().name("TeamB").build();
+    em.persist(teamA);
+
+    em.flush();
+    em.clear();
+    System.out.println("====================");
+
+    final Member member = em.find(Member.class, 3L);
+    System.out.println("member = " + member);
+
+    // update
+    final Team team = em.find(Team.class, 5L);
+    member.setTeam(team);
+
+    System.out.println("member = " + member);
   }
 
 }

@@ -1,8 +1,6 @@
 package practice.jpashop.domain;
 
-import lombok.CustomLog;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +8,10 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Table(name = "ORDERS") // order 예약어관련 에러방지차원
 public class Order {
 
@@ -25,9 +27,6 @@ public class Order {
 
   @Enumerated(EnumType.STRING)
   private OrderStatus orderStatus;
-
-
-  private Member member;
 
 
 }
