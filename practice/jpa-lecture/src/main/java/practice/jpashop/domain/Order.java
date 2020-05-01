@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Table(name = "ORDERS") // order 예약어관련 에러방지차원
 public class Order {
 
@@ -27,6 +27,5 @@ public class Order {
 
   @Enumerated(EnumType.STRING)
   private OrderStatus orderStatus;
-
 
 }
