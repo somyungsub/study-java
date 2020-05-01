@@ -51,7 +51,7 @@ class JpaTest {
   }
 
   private Member createMember(long id) {
-    return Member.builder().age(30).id(id).email("sstest@").name("sso").build();
+    return Member.builder().age(30).id(id).email("sstest@").username("sso").build();
   }
 
   @Test
@@ -95,7 +95,7 @@ class JpaTest {
   public void test_persist_update() {
 
     final Member member = em.find(Member.class, 101L);
-    member.setName("update name test dirty check2");
+    member.setUsername("update name test dirty check2");
 
     System.out.println("before");
     System.out.println("after");
@@ -207,7 +207,7 @@ class JpaTest {
     final Member member = em.find(Member.class, 100L);
     final Member member2 = em.find(Member.class, 101L);
     final Member member3 = em.find(Member.class, 101L);
-    member.setName("준영속 변경");
+    member.setUsername("준영속 변경");
 
     System.out.println("before");
 
@@ -246,7 +246,7 @@ class JpaTest {
   @DisplayName("영속성 컨텍스트 준영속화 - clear")
   public void test_clear() {
     final Member member = em.find(Member.class, 100L);
-    member.setName("준영속 변경");
+    member.setUsername("준영속 변경");
 
     System.out.println("before");
 
