@@ -47,7 +47,7 @@ class ShopTest {
   public void test2() {
 
     Order order = em.find(Order.class, 1L);
-    final Long memberId = order.getMemberId();
+    final Long memberId = order.getMember().getId();
 
     final Member member = em.find(Member.class, memberId);
   }
@@ -116,5 +116,34 @@ class ShopTest {
     members.forEach(m -> System.out.println("m : " + m.getUsername()));
     System.out.println("members = " + member.getTeam());
   }
+
+  @Test
+  @DisplayName("양방향 연관관계")
+  public void test6() {
+    final Team teamB = new Team();
+    teamB.setName("TeamB");
+    System.out.println("teamB = " + teamB);
+    em.persist(teamB);
+
+    final Member member1 = Member.builder().username("ss1").build().addTeam(teamB);
+    final Member member2 = Member.builder().username("ss1").build().addTeam(teamB);
+    final Member member3 = Member.builder().username("ss1").build().addTeam(teamB);
+
+    em.persist(member1);
+    em.persist(member2);
+    em.persist(member3);
+
+//    em.flush();
+//    em.clear();
+    System.out.println("====================");
+
+    final Member member = em.find(Member.class, member1.getId());
+    final List<Member> members = member.getTeam().getMembers();
+
+    members.forEach(m -> System.out.println("m : " + m.getUsername()));
+//    System.out.println("members = " + member.getTeam());
+  }
+
+
 
 }

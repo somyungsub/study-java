@@ -3,12 +3,12 @@ package practice.jpashop.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
 @Setter
 @Builder
-@ToString
 @NoArgsConstructor @AllArgsConstructor
 public class Member {
 
@@ -25,8 +25,17 @@ public class Member {
 
   private String zipcode;
 
+//  @OneToMany(mappedBy = "member")
+//  private List<Order> orders;
+
   @ManyToOne
   @JoinColumn(name = "TEAM_ID")
   private Team team;
 
+
+  public Member addTeam(Team team){
+    this.team = team;
+    team.getMembers().add(this);
+    return this;
+  }
 }

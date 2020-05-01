@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ORDERS") // order 예약어관련 에러방지차원
@@ -20,12 +19,16 @@ public class Order {
   @Column(name = "ORDER_ID")
   private Long id;
 
-  @Column(name = "MEMBER_ID")
-  private Long memberId;  // 주문Id
+  @ManyToOne
+  @JoinColumn(name = "MEMBER_ID")
+  private Member member;
 
   private LocalDateTime orderDate;
 
   @Enumerated(EnumType.STRING)
   private OrderStatus orderStatus;
 
+
+  //  @Column(name = "MEMBER_ID")
+//  private Long memberId;  // 주문Id
 }

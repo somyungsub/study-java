@@ -10,7 +10,6 @@ import java.util.List;
 @Setter
 @Getter
 @Builder
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class Team {
@@ -24,4 +23,9 @@ public class Team {
 
   @OneToMany(mappedBy = "team") // 연결된 제네릭 타입의 필드명
   private List<Member> members = new ArrayList<>();
+
+  public void addMember(Member member) {
+    member.setTeam(this);
+    members.add(member);
+  }
 }
