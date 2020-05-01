@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Date;
 
-@Entity
+@Entity(name = "Member2")
 @Setter
 @Getter
 @ToString

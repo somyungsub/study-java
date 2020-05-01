@@ -11,7 +11,7 @@
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="javax.persistence.jdbc.user" value="ssosso"/>
             <property name="javax.persistence.jdbc.password" value="ssosso"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:6432/test"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:6432/jpashop"/>
 
             <!-- 방언 : 중간 매개체, DB벤더별 다른 부분을 맞춰주는 매개체 [페이징 등] -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
@@ -22,7 +22,7 @@
             <property name="hibernate.use_sql_comments" value="true"/>
 
             <!--  데이터베이스 스키자 자동생성 속성  -->
-            <property name="hibernate.hbm2ddl.auto" value="none" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
         </properties>
     </persistence-unit>
 </persistence>
