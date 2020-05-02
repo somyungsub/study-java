@@ -10,7 +10,9 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Item {
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn  // default : dtype
+public class Item extends BaseEntity{
 
   @Id
   @GeneratedValue

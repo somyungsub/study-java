@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "ORDERS") // order 예약어관련 에러방지차원
-public class Order {
+public class Order extends BaseEntity{
 
   @Id
   @GeneratedValue

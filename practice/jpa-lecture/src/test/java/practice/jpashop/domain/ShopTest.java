@@ -1,6 +1,11 @@
 package practice.jpashop.domain;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
+import practice.jpashop.extend.Book;
+import practice.jpashop.extend.Movie;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -22,7 +27,7 @@ class ShopTest {
   }
 
   @BeforeEach
-  void beforeEachSetup(){
+  void beforeEachSetup() {
     em = emf.createEntityManager();
     em.getTransaction().begin();
   }
@@ -31,6 +36,7 @@ class ShopTest {
   static void close() {
     emf.close();
   }
+
   @AfterEach
   void afterClose() {
     em.getTransaction().commit();
@@ -100,7 +106,8 @@ class ShopTest {
     final Team teamA = Team.builder().name("TeamB").build();
     em.persist(teamA);
     final Member member1 = Member.builder().team(teamA).username("ss1").build();
-    em.persist(member1);;
+    em.persist(member1);
+    ;
     final Member member2 = Member.builder().team(teamA).username("ss2").build();
     em.persist(member2);
     final Member member3 = Member.builder().team(teamA).username("ss3").build();
@@ -144,6 +151,23 @@ class ShopTest {
 //    System.out.println("members = " + member.getTeam());
   }
 
+  @DisplayName("insert - book item")
+  @ParameterizedTest(name = "[{index}] : {displayName}")
+  @CsvSource(value = {
+          "12000, JPA, 김연한",
+          "10000, JPA2, ssosso"
+  })
+  public void insert_book(String price, String userName, String bookName) {
+
+    BookItem book = new BookItem();
+
+    book.setAuthor(userName);
+    book.setName(bookName);
+    book.setPrice(Integer.parseInt(price));
+
+    em.persist(book);
+
+  }
 
 
 }
