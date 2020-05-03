@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -480,4 +481,80 @@ class ShopTest {
     // -> 자식객체 다 삭제됨
     em.remove(parent1);
   }
+
+  @Test
+  @DisplayName("값타입 - 임베디드 타입")
+  public void embedded() {
+
+    Member member = new Member();
+    member.setUsername("hello");
+//    member.setHomeAddress(new Address("city", "street", "zipcode", new Phone()));
+    member.setHomeAddress(new Address("city", "street", "zipcode"));
+    member.setWorkPeriod(new Period(LocalDateTime.now(), LocalDateTime.now()));
+
+    em.persist(member);
+  }
+
+  @Test
+  @DisplayName("값타입 - 불변객체")
+  public void immutable() {
+    Address address = new Address("city", "street", "60606");
+
+    Member member = new Member();
+    member.setUsername("hello");
+    member.setHomeAddress(address);
+    em.persist(member);
+
+    Member member2 = new Member();
+    member2.setUsername("hello2");
+    member2.setHomeAddress(address);
+    em.persist(member2);
+
+  }
+
+  @Test
+  @DisplayName("값타입 - 부수효과")
+  public void immutable2() {
+    Address address = new Address("city", "street", "60606");
+
+    Member member = new Member();
+    member.setUsername("hello");
+    member.setHomeAddress(address);
+    em.persist(member);
+
+    Member member2 = new Member();
+    member2.setUsername("hello2");
+    member2.setHomeAddress(address);
+    em.persist(member2);
+
+    // member1, member2의 city 값이 같이변경 됨...... 참조 값을 같이 갖고 있어서 그래....
+    // 인스턴스를 따로 쓰거나, 깊은 복사를 해서 사용해야함
+    // update 실행도 2번 이뤄짐 -> member1, member2
+    member.getHomeAddress().setCity("newCity");
+
+  }
+
+  @Test
+  @DisplayName("값타입 - 부수효과 값 복사")
+  public void immutable_copy() {
+    Address address = new Address("city", "street", "60606");
+
+    Member member = new Member();
+    member.setUsername("hello");
+    member.setHomeAddress(address);
+    em.persist(member);
+
+    // 인스턴스가 다름
+    Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode());
+
+    Member member2 = new Member();
+    member2.setUsername("hello2");
+    member2.setHomeAddress(copyAddress);
+    em.persist(member2);
+
+    // 이러면 이제 member2 city 값 변경은 안되겄지
+    member.getHomeAddress().setCity("newCity");
+
+  }
+
 }

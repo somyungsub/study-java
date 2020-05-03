@@ -3,6 +3,7 @@ package practice.jpashop.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -19,11 +20,22 @@ public class Member {
 
   private String username;
 
-  private String city;
+  // 기간 Period
+  @Embedded
+  private Period workPeriod;
 
-  private String street;
+  // 주소
+  @Embedded
+  private Address homeAddress;
 
-  private String zipcode;
+  // 주소 -> 컬럼 중복의 경우 설정 필요 (@AttributeOverrides)
+  @Embedded
+  @AttributeOverrides({
+          @AttributeOverride(name = "zipcode", column = @Column(name = "WORK_ZIPCODE")),
+          @AttributeOverride(name = "city", column = @Column(name = "WORK_CITY")),
+          @AttributeOverride(name = "street", column = @Column(name = "WORK_STREET"))
+  })
+  private Address workAddress;
 
 //  @OneToMany(mappedBy = "member")
 //  private List<Order> orders;
