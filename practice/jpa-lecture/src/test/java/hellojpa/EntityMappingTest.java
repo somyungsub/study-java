@@ -1,6 +1,7 @@
 package hellojpa;
 
 import org.junit.jupiter.api.*;
+import practice.jpashop.domain.Item;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

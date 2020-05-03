@@ -28,7 +28,7 @@ public class Member {
 //  @OneToMany(mappedBy = "member")
 //  private List<Order> orders;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)  // 지연로딩, defalut : EAGER(같이 자주 사용하는 경우 성능최적화 대상)
   @JoinColumn(name = "TEAM_ID")
   private Team team;
 
