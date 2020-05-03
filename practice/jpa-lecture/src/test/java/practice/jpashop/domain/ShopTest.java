@@ -557,4 +557,92 @@ class ShopTest {
 
   }
 
+  @Test
+  @DisplayName("값타입 - 컬렉션 타입 조회")
+  public void value_collection() {
+    final Address build = Address.builder().city("city1").street("steet").zipcode("123456").build();
+    final Address build2 = Address.builder().city("city2").street("steet2").zipcode("123456").build();
+    final Address build3 = Address.builder().city("city223").street("stee1321t2").zipcode("6112132").build();
+
+    Member member = new Member();
+    member.setUsername("member1");
+    member.setHomeAddress(build);
+
+    member.getFavoriteFoods().add("치킨");
+    member.getFavoriteFoods().add("족발");
+    member.getFavoriteFoods().add("피자");
+
+//    member.getAddressHistory().add(build2);
+//    member.getAddressHistory().add(build3);
+
+    em.persist(member);
+
+    em.flush();
+    em.clear();
+
+    System.out.println("===============================");
+    final Member member1 = em.find(Member.class, member.getId());
+    System.out.println("member1 = " + member1);
+    System.out.println("===============================");
+    member1.getFavoriteFoods().forEach(System.out::println);
+    System.out.println("===============================");
+    member1.getAddressHistory().forEach(System.out::println);
+  }
+
+  @Test
+  @DisplayName("값타입 - 컬렉션 타입 수정")
+  public void value_collection_update() {
+    final Address build = Address.builder().city("city1").street("steet").zipcode("123456").build();
+    final Address build2 = Address.builder().city("city2").street("steet2").zipcode("123456").build();
+    final Address build3 = Address.builder().city("city223").street("stee1321t2").zipcode("6112132").build();
+
+    AddressEntity addressEntity = new AddressEntity();
+    addressEntity.setAddress(build);
+    AddressEntity addressEntity2 = new AddressEntity();
+    addressEntity.setAddress(build2);
+    AddressEntity addressEntity3 = new AddressEntity();
+    addressEntity.setAddress(build3);
+
+
+    Member member = new Member();
+    member.setUsername("member1");
+    member.setHomeAddress(build);
+
+    member.getFavoriteFoods().add("치킨");
+    member.getFavoriteFoods().add("족발");
+    member.getFavoriteFoods().add("피자");
+
+//    member.getAddressHistory().add(build2);
+//    member.getAddressHistory().add(build3);
+    member.getAddressHistory().add(addressEntity2);
+    member.getAddressHistory().add(addressEntity3);
+
+    em.persist(member);
+
+    em.flush();
+    em.clear();
+
+    System.out.println("===============================");
+    final Member member1 = em.find(Member.class, member.getId());
+    member1.setHomeAddress(new Address("old",build.getStreet(), build.getZipcode())); // update 인스턴스자체를 변경
+    System.out.println("member1 = " + member1);
+
+    System.out.println("=============== UPDATE ================");
+    member1.getFavoriteFoods().remove("치킨");
+    member1.getFavoriteFoods().add("한식");
+    member1.getFavoriteFoods().forEach(System.out::println);
+
+    System.out.println("================ UPDATE ===============");
+//    member1.getAddressHistory().remove(addressEntity2);
+//    build2.setCity("new TEST CITY");
+//    member1.getAddressHistory().add(build2);
+//    member1.getAddressHistory().add(addressEntity2);
+    member1.getAddressHistory().forEach(System.out::println);
+  }
+
+  @Test
+  public void test123() {
+    
+  }
+
 }

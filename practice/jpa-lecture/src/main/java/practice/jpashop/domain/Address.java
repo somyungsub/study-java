@@ -11,6 +11,7 @@ import javax.persistence.OneToOne;
 @Getter
 @Builder
 @AllArgsConstructor @NoArgsConstructor
+@EqualsAndHashCode
 public class Address {
 
   private String city;
