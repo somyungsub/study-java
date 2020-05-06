@@ -70,6 +70,9 @@ public class Member {
   @JoinColumn(name = "MEMBER_ID")
   private List<AddressEntity> addressHistory = new ArrayList<>();
 
+  @Column(length = 450)
+  private String test;
+
 
   private static final String fixedLength = "446";
 

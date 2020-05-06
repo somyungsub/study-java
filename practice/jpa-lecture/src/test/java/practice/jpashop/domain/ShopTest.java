@@ -642,7 +642,7 @@ class ShopTest {
 
   @Test
   public void test123() {
-    
+
   }
 
 }
