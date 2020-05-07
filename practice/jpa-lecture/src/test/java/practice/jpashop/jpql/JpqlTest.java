@@ -7,6 +7,7 @@ import jpql.TeamJpql;
 import org.junit.jupiter.api.*;
 import practice.jpashop.domain.Item;
 import practice.jpashop.domain.Member;
+import practice.jpashop.domain.Team;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -14,6 +15,7 @@ import javax.persistence.Persistence;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Collection;
 import java.util.List;
 
 class JpqlTest {
@@ -362,6 +364,47 @@ class JpqlTest {
 
     System.out.println("resultList = " + resultList);
 
+  }
+
+  @Test
+  @DisplayName(" 경로탐색  ")
+  public void way() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("1234566");
+    memberJpql.setAge(30);
+    memberJpql.changeTeam(teamJpql);
+    memberJpql.setMemberJpqlType(MemberJpqlType.ADMIN);
+
+    em.persist(teamJpql);
+    em.persist(memberJpql);
+
+    em.flush();
+    em.clear();
+
+    System.out.println("=======================================================");
+
+    String sql = "select m.username from MemberJpql m";         //  상태필드
+    String sql2 = "select m.teamJpql from MemberJpql m";                      // 연관필드 : 묵시점 조인
+    String sql3 = "select t.memberJpqls from TeamJpql t";                     // 컬렉션 : 더이상 참조가 불가
+    String sql4 = "select t.memberJpqls.size from TeamJpql t";                // 컬렉션 : size 정도
+    String sql5 = "select m.username from TeamJpql t join t.memberJpqls m";   // 명시적 join으로 -> 탐색 가능하게 하기
+
+    List<String> resultList = em.createQuery(sql, String.class).getResultList();
+    List<TeamJpql> resultList2 = em.createQuery(sql2, TeamJpql.class).getResultList();
+    Collection resultList3 = em.createQuery(sql3, Collection.class).getResultList();
+    List<Integer> resultList4 = em.createQuery(sql4, Integer.class).getResultList();
+    List<String> resultList5 = em.createQuery(sql5, String.class).getResultList();
+
+
+    System.out.println("resultList = " + resultList);
+    System.out.println("resultList2 = " + resultList2);
+    System.out.println("resultList3 = " + resultList3);
+    System.out.println("resultList4 = " + resultList4);
+    System.out.println("resultList5 = " + resultList5);
 
   }
 
