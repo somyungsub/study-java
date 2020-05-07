@@ -1,6 +1,8 @@
 package practice.jpashop.jpql;
 
 import jpql.MemberJpql;
+import jpql.ProductJpql;
+import jpql.TeamJpql;
 import org.junit.jupiter.api.*;
 import practice.jpashop.domain.Member;
 
@@ -66,6 +68,7 @@ class JpqlTest {
   public void queryDSL() {
 
   }
+
   @Test
   @DisplayName("Native Query 기초")
   public void nativeQuery() {
@@ -101,6 +104,99 @@ class JpqlTest {
             .getResultList();
 
     System.out.println("resultList = " + resultList);
+    resultList.forEach(memberJpql1 -> {
+      System.out.println("memberJpql1 = " + memberJpql1.getAge());
+    });
+
+  }
+
+  @Test
+  @DisplayName(" inner join ")
+  public void join() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("Team!");
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("Team!");
+    memberJpql.setAge(30);
+    memberJpql.changeTeam(teamJpql);
+
+    ProductJpql productJpql = new ProductJpql();
+    productJpql.setName("Team!");
+
+    em.persist(productJpql);
+    em.persist(teamJpql);
+    em.persist(memberJpql);
+
+    em.flush();
+    em.clear();
+
+    /*
+        ** 1:M -> @OneToMany 에 fetch를 Lazy로 잡지 않을 경우 셀렉트문 한번 더 나감 **
+        select
+            teamjpql0_.TEAM_ID as team_id1_29_0_,
+            teamjpql0_.name as name2_29_0_
+        from
+            TeamJpql teamjpql0_
+        where
+            teamjpql0_.TEAM_ID=?
+     */
+
+//    final String sql = "select m from MemberJpql m inner join m.teamJpql";
+//    final String sql = "select m from MemberJpql m inner join m.teamJpql t where t.name = :teamName"; // inner 생략 가능
+//    final String sql = "select m from MemberJpql m left outer join m.teamJpql t";         // outer는 생략 가능
+//    final String sql = "select m from MemberJpql m, TeamJpql t where m.username = t.name";  // 카티션 곱
+//    final String sql = "select m from MemberJpql m left join m.teamJpql t on t.name='Team!' ";  // left 조인 -> on 절 -> and 절
+//    final String sql = "select m from MemberJpql m left join TeamJpql  t on t.name='Team!' ";  // left 조인 -> on 절 -> and 절
+    final String sql = "select m from MemberJpql m left join ProductJpql t on t.name='Team!' ";  // left 조인 -> on 절 -> and 절
+
+
+    final List<MemberJpql> resultList = em.createQuery(sql, MemberJpql.class)
+//            .setParameter("teamName", "Team!")
+            .getResultList();
+
+    System.out.println("resultList = " + resultList.size());
+
+    resultList.forEach(memberJpql1 -> {
+      System.out.println("memberJpql1 = " + memberJpql1.getAge());
+    });
+
+  }
+
+  @Test
+  @DisplayName(" 서브쿼리 ")
+  public void sub_query() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("Team!");
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("Team!");
+    memberJpql.setAge(30);
+    memberJpql.changeTeam(teamJpql);
+
+    ProductJpql productJpql = new ProductJpql();
+    productJpql.setName("Team!");
+
+    em.persist(productJpql);
+    em.persist(teamJpql);
+    em.persist(memberJpql);
+
+    em.flush();
+    em.clear();
+
+    // from  서브쿼리는  안됨 -> 약점, -> 조인으로 풀수 있으면 풀고, 안되면 쿼리 2번 실행 등으로 해결 필요, 네이티브 쿼리 해결
+    // 그럼에도 네이티브를 쓰지 않는 이유...
+    final String sql = "select (select m from MemberJpql m1) as avgAve from MemberJpql m join TeamJpql t on m.username = 'Team!'";
+
+
+    final List<MemberJpql> resultList = em.createQuery(sql, MemberJpql.class)
+//            .setParameter("teamName", "Team!")
+            .getResultList();
+
+    System.out.println("resultList = " + resultList.size());
+
     resultList.forEach(memberJpql1 -> {
       System.out.println("memberJpql1 = " + memberJpql1.getAge());
     });

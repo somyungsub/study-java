@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -18,5 +19,6 @@ public class TeamJpql {
   private String name;
 
   @OneToMany(mappedBy = "teamJpql")
-  private List<MemberJpql> memberJpqls;
+  private List<MemberJpql> memberJpqls = new ArrayList<>();
+
 }
