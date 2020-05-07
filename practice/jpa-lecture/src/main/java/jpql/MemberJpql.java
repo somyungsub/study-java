@@ -2,12 +2,14 @@ package jpql;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Setter
 @Getter
+@ToString
 public class MemberJpql {
   @Id
   @GeneratedValue

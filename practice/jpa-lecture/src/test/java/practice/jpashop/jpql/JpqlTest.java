@@ -367,8 +367,8 @@ class JpqlTest {
   }
 
   @Test
-  @DisplayName(" 경로탐색  ")
-  public void way() {
+  @DisplayName(" 경로탐색 - 명시적,묵시적 조인  ")
+  public void inner_join() {
 
     TeamJpql teamJpql = new TeamJpql();
     teamJpql.setName("TeamA");
@@ -407,5 +407,132 @@ class JpqlTest {
     System.out.println("resultList5 = " + resultList5);
 
   }
+
+  @Test
+  @DisplayName("\uD83C\uDF1F 경로탐색 - 페치조인 (실무에서 엄청 많이 사용하고 중요) ")
+  public void fetch_join() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+    em.persist(teamJpql);
+
+    TeamJpql teamJpql2 = new TeamJpql();
+    teamJpql2.setName("TeamB");
+    em.persist(teamJpql2);
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("회원1");
+    memberJpql.setTeamJpql(teamJpql);
+    em.persist(memberJpql);
+
+    MemberJpql memberJpql2 = new MemberJpql();
+    memberJpql2.setUsername("회원2");
+    memberJpql2.setTeamJpql(teamJpql);
+    em.persist(memberJpql2);
+
+    MemberJpql memberJpql3 = new MemberJpql();
+    memberJpql3.setUsername("회원3");
+    memberJpql3.setTeamJpql(teamJpql2);
+    em.persist(memberJpql3);
+
+
+    em.flush();
+    em.clear();
+
+    System.out.println("=======================================================");
+
+
+    // 총 쿼리 3번 (전체 셀렉 1, 팀 조회 2)... 최악의 경우  : N + 1 [회원쿼리1, 팀(연관,즉시든 지연이든 발생) N번(팀연관갯수만큼) 발생]
+//    String sql = "select m from MemberJpql m";
+
+    /*
+      해결방안
+      - fetch 조인
+      - member 조인할 때, team도 조회 하고 싶어 -> 즉시로딩과 동일, 그러나 동적으로 내맘대로 할 수 있다!
+     */
+
+    // 회원-팀 연관 페치조인 : 멤버조인 -> 한번에 페치로 팀을 1번에 들고와  -> 이미 영속화가 된 데이터를(진짜 커밋된) 들고와서 셀렉트를 해오게됨
+    // 지연로딩을 해도 fetch 조인이 우선순위 높음
+    String sql = "select m from MemberJpql m join fetch m.teamJpql"; // inner 조인으로 쿼리 1번 나감
+
+    List<MemberJpql> resultList = em.createQuery(sql, MemberJpql.class).getResultList();
+    resultList.forEach(member -> {
+      // 페치조인안할 경우 다음과 같이 실행됨
+      // 회원 1 -> 지연 로딩 셀렉트 (팀A)
+      // 회원 2 -> 1차캐시 사용 (팀A)
+      // 회원 3 -> 지연로딩 셀렉트 (팀B)
+      System.out.println(member.getUsername() + ", "+member.getTeamJpql().getName());
+    });
+
+  }
+
+  @Test
+  @DisplayName("\uD83C\uDF1F 경로탐색 - 컬렉션 페치조인 (이것도 중요, 1:N -> Team 기준에서 볼 때) ")
+  public void collection_fetch_join() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+    em.persist(teamJpql);
+
+    TeamJpql teamJpql2 = new TeamJpql();
+    teamJpql2.setName("TeamB");
+    em.persist(teamJpql2);
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("회원1");
+    memberJpql.setTeamJpql(teamJpql);
+    em.persist(memberJpql);
+
+    MemberJpql memberJpql2 = new MemberJpql();
+    memberJpql2.setUsername("회원2");
+    memberJpql2.setTeamJpql(teamJpql);
+    em.persist(memberJpql2);
+
+    MemberJpql memberJpql3 = new MemberJpql();
+    memberJpql3.setUsername("회원3");
+    memberJpql3.setTeamJpql(teamJpql2);
+    em.persist(memberJpql3);
+
+
+    em.flush();
+    em.clear();
+
+    System.out.println("=======================================================");
+
+    // 팀으로 페치 조인
+    /*
+      문제
+      - 1:N 조인 -> 중복 출력 됨... 디비에서 데이터를  회원갯수만큼 들고옴.. 문제
+      - JPA에서 할 수 있는 .. 미리알 수 있는 방법이 없다
+      - 불필요한 경우, 명시적으로 해결 -> distinct로 제거
+        1. sql distinct 추가
+        2. 애플리케이션에서 제거
+     */
+//    String sql = "select t from TeamJpql t";  // 팀갯수 2
+    String sql2 = "select t from TeamJpql t join fetch t.memberJpqls";  // 3 (데이터중복)
+    List<TeamJpql> resultList2 = em.createQuery(sql2, TeamJpql.class).getResultList();
+    resultList2.forEach(team ->  {
+      System.out.println(team.getName()+", " + team.getMemberJpqls());
+
+      team.getMemberJpqls().forEach(memberJpql1 -> {
+        System.out.println("->memberJpql1 = " + memberJpql1); // 중복 출력됨 팀 A에 대해서.. 회원 2명이 팀A 소속
+      });
+    });
+
+
+    System.out.println("========================distinct===============================");
+
+    // JPA -> distinct 엔티티 입장에서 중복 제거
+    String sql3 = "select distinct t from TeamJpql t join fetch t.memberJpqls";
+    List<TeamJpql> resultList3 = em.createQuery(sql3, TeamJpql.class).getResultList();
+    resultList3.forEach(team ->  {
+      System.out.println(team.getName()+", " + team.getMemberJpqls());
+      team.getMemberJpqls().forEach(memberJpql1 -> {
+        System.out.println("->memberJpql1 = " + memberJpql1);
+      });
+    });
+  }
+
+
 
 }
