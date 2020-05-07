@@ -226,8 +226,8 @@ class JpqlTest {
     em.persist(memberJpql);
 
     em.flush();
-    em.clear();
 
+    em.clear();
 //    final String sql = "select m.username, 'HELLO', true from MemberJpql m";
     final String sql = "select m.username, 'HELLO', true from MemberJpql m where m.memberJpqlType =:userType";
 
@@ -252,6 +252,82 @@ class JpqlTest {
 
     // DTYPE = "B"  -> 쿼리문 확인
     em.createQuery("select i from Item i where type(i) = Book ", Item.class).getResultList();
+  }
+  
+  
+  @Test
+  @DisplayName(" JPQL - case ")
+  public void case_condition() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("ssosso");
+    memberJpql.setAge(30);
+    memberJpql.changeTeam(teamJpql);
+    memberJpql.setMemberJpqlType(MemberJpqlType.ADMIN);
+
+    em.persist(teamJpql);
+    em.persist(memberJpql);
+
+    em.flush();
+    em.clear();
+
+    String sql = "select " +
+            "case when m.age <= 10 then '학생요금'" +
+            "     when m.age >= 60 then '경로요금'" +
+            "     else '일반요금' " +
+            "end " +
+            "from MemberJpql m";
+
+    List<String> resultList = em.createQuery(sql, String.class).getResultList();
+
+
+    String sql2 = "select " +
+            "case t.name " +
+            "   when 'TeamA' then '인센110' " +
+            "   when 'TeamB' then '인센120' " +
+            "   else '인센105' " +
+            "end " +
+            "from TeamJpql t";
+    final List<String> resultList1 = em.createQuery(sql2, String.class).getResultList();
+    System.out.println("resultList1 = " + resultList1);
+  }
+
+  @Test
+  @DisplayName(" JPQL - nullif, coalesce ")
+  public void case_condition2() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setAge(30);
+    memberJpql.changeTeam(teamJpql);
+    memberJpql.setMemberJpqlType(MemberJpqlType.ADMIN);
+
+    em.persist(teamJpql);
+    em.persist(memberJpql);
+
+//    em.flush();
+//    em.clear();
+
+    // 이름없는 사람
+    String sql = "select coalesce(m.username, '이름 없는 사람') from MemberJpql m";
+    List<String> resultList = em.createQuery(sql, String.class).getResultList();
+    System.out.println("resultList = " + resultList);
+
+    // null
+    memberJpql.setUsername("관리자");
+    String sql2 = "select nullif(m.username, '관리자') from MemberJpql m";
+    final List<String> resultList1 = em.createQuery(sql2, String.class).getResultList();
+    System.out.println("resultList1 = " + resultList1);
+
+    // ssosso
+    memberJpql.setUsername("ssosso");
+    final List<String> resultList2 = em.createQuery(sql2, String.class).getResultList();
+    System.out.println("resultList2 = " + resultList2);
   }
 
 }
