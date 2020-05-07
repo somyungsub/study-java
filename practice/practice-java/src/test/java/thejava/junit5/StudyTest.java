@@ -147,7 +147,7 @@ class StudyTest {
   }
 
   @DisplayName("스터디만들기 - csv")
-  @ParameterizedTest(name = "{index} {displayName} study={0}")
+  @ParameterizedTest(name = "{index} {displayName} param = {0}, {1}")
   @CsvSource({"10,'자바 스터디'", "20, spring"})
   void parameterizedTest6(Integer limit, String name) {
     final Study study = new Study(limit, name);
@@ -332,7 +332,7 @@ class StudyTest {
   }
 
   @Test
-  @DisplayName("스터디만들기 \uD83D\uDE31")
+  @DisplayName("스터디만들기 \uD83D\uDE31 \\xF0\\x9F\\x98\\xB1")
   public void create_new_study() {
     Study study = new Study();
 //    assertNotNull(study);
