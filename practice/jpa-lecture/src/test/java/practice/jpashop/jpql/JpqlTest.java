@@ -1,5 +1,6 @@
 package practice.jpashop.jpql;
 
+import jpql.MemberJpql;
 import org.junit.jupiter.api.*;
 import practice.jpashop.domain.Member;
 
@@ -77,6 +78,33 @@ class JpqlTest {
   public void jdbc() {
     System.out.println("==== 수동 플러시 시점 필요 ====");
     System.out.println("JDBC는 JPA가 아니므로 별개의 영역으로 관리 됨 -> em.flush ");
+  }
+
+
+  @Test
+  @DisplayName("paging ")
+  public void paging() {
+
+    for (int i = 0; i < 100; i++) {
+      MemberJpql memberJpql = new MemberJpql();
+      memberJpql.setUsername("sss");
+      memberJpql.setAge(i);
+      em.persist(memberJpql);
+    }
+
+    em.flush();
+    em.clear();
+
+    final List<MemberJpql> resultList = em.createQuery("select m from MemberJpql m order by m.age desc ", MemberJpql.class)
+            .setFirstResult(0)
+            .setMaxResults(20)
+            .getResultList();
+
+    System.out.println("resultList = " + resultList);
+    resultList.forEach(memberJpql1 -> {
+      System.out.println("memberJpql1 = " + memberJpql1.getAge());
+    });
+
   }
 
 }
