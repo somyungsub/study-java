@@ -1,9 +1,11 @@
 package practice.jpashop.jpql;
 
 import jpql.MemberJpql;
+import jpql.MemberJpqlType;
 import jpql.ProductJpql;
 import jpql.TeamJpql;
 import org.junit.jupiter.api.*;
+import practice.jpashop.domain.Item;
 import practice.jpashop.domain.Member;
 
 import javax.persistence.EntityManager;
@@ -201,6 +203,55 @@ class JpqlTest {
       System.out.println("memberJpql1 = " + memberJpql1.getAge());
     });
 
+  }
+
+  @Test
+  @DisplayName(" JPQL 타입 ")
+  public void jpql_type() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("Team!");
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("Team!");
+    memberJpql.setAge(30);
+    memberJpql.changeTeam(teamJpql);
+    memberJpql.setMemberJpqlType(MemberJpqlType.ADMIN);
+
+    ProductJpql productJpql = new ProductJpql();
+    productJpql.setName("Team!");
+
+    em.persist(productJpql);
+    em.persist(teamJpql);
+    em.persist(memberJpql);
+
+    em.flush();
+    em.clear();
+
+//    final String sql = "select m.username, 'HELLO', true from MemberJpql m";
+    final String sql = "select m.username, 'HELLO', true from MemberJpql m where m.memberJpqlType =:userType";
+
+
+    final List<Object[]> resultList = em.createQuery(sql)
+            .setParameter("userType", MemberJpqlType.ADMIN)
+            .getResultList();
+
+    System.out.println("resultList = " + resultList.size());
+
+    resultList.forEach(objects -> {
+      System.out.println("objects[0] = " + objects[0]);
+      System.out.println("objects[1] = " + objects[1]);
+      System.out.println("objects[2] = " + objects[2]);
+
+    });
+  }
+
+  @Test
+  @DisplayName(" JPQL 상속 ")
+  public void jpql_type_extends() {
+
+    // DTYPE = "B"  -> 쿼리문 확인
+    em.createQuery("select i from Item i where type(i) = Book ", Item.class).getResultList();
   }
 
 }

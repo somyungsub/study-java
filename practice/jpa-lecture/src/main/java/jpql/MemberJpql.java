@@ -19,6 +19,9 @@ public class MemberJpql {
   @JoinColumn(name = "TEAM_ID")
   private TeamJpql teamJpql;
 
+  @Enumerated(EnumType.STRING)
+  private MemberJpqlType memberJpqlType;
+
   public void changeTeam(TeamJpql teamJpql) {
     this.teamJpql = teamJpql;
     teamJpql.getMemberJpqls().add(this);
