@@ -330,4 +330,39 @@ class JpqlTest {
     System.out.println("resultList2 = " + resultList2);
   }
 
+  @Test
+  @DisplayName(" JPQL 기본함수 -  ")
+  public void jpql_function() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("1234566");
+    memberJpql.setAge(30);
+    memberJpql.changeTeam(teamJpql);
+    memberJpql.setMemberJpqlType(MemberJpqlType.ADMIN);
+
+    em.persist(teamJpql);
+    em.persist(memberJpql);
+
+    em.flush();
+    em.clear();
+
+    // 이름없는 사람
+//    String sql = "select 'a' || 'b' from MemberJpql  m";
+//    String sql = "select concat('a','b') from MemberJpql  m";
+//    String sql = "select substring(m.username, 2,3) from MemberJpql  m";
+//    List<String> resultList = em.createQuery(sql, String.class).getResultList();
+
+//    String sql = "select locate('de','abcdefg') from MemberJpql  m";  // 찾은 문자열 위치
+    String sql = "select size(t.memberJpqls) from TeamJpql t";  //  컬렉션 크기
+    List<Integer> resultList = em.createQuery(sql, Integer.class).getResultList();
+
+
+    System.out.println("resultList = " + resultList);
+
+
+  }
+
 }
