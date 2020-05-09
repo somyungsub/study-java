@@ -1,0 +1,11 @@
+version: '3.0'
+
+services:
+  postgre_jpa:
+    image: postgres
+    ports:
+      - 6432:5432
+    environment:
+      - POSTGRES_PASSWORD=ssosso
+      - POSTGRES_USER=ssosso
+      - POSTGRES_DB=jpashop

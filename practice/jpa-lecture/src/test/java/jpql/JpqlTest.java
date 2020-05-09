@@ -1,4 +1,4 @@
-package practice.jpashop.jpql;
+package jpql;
 
 import jpql.MemberJpql;
 import jpql.MemberJpqlType;
@@ -531,6 +531,63 @@ class JpqlTest {
         System.out.println("->memberJpql1 = " + memberJpql1);
       });
     });
+  }
+
+  @Test
+  @DisplayName("\uD83C\uDF1F 페치 조인의 특징과 한계 ")
+  public void collection_fetch_join2() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+    em.persist(teamJpql);
+
+    TeamJpql teamJpql2 = new TeamJpql();
+    teamJpql2.setName("TeamB");
+    em.persist(teamJpql2);
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("회원1");
+    memberJpql.setTeamJpql(teamJpql);
+    em.persist(memberJpql);
+
+    MemberJpql memberJpql2 = new MemberJpql();
+    memberJpql2.setUsername("회원2");
+    memberJpql2.setTeamJpql(teamJpql);
+    em.persist(memberJpql2);
+
+    MemberJpql memberJpql3 = new MemberJpql();
+    memberJpql3.setUsername("회원3");
+    memberJpql3.setTeamJpql(teamJpql2);
+    em.persist(memberJpql3);
+
+
+    em.flush();
+    em.clear();
+
+    System.out.println("=======================================================");
+
+    // fetch join -> 별칭 쓰지 말기, 필요한 경우만 사용
+//    String sql = "select t from TeamJpql t join fetch t.memberJpqls"; // -> 데이터를 다들고옴.. 페이징 하지 않음... 조심해야됨
+
+    // 아래 loop 에서 N+1 문제 발생, 셀렉트 할 때마다  select 쿼리 실행됨 -> @BatchSize를 통해 즉시로딩화 가능
+    String sql2 = "select t from TeamJpql t";
+
+    List<TeamJpql> resultList = em.createQuery(sql2, TeamJpql.class)
+        .setFirstResult(0)
+        .setMaxResults(2)
+        .getResultList();
+
+    System.out.println("resultList.size() = " + resultList.size());
+
+    resultList.forEach(team ->  {
+      System.out.println("team = " + team.getName() + " | members="+team.getMemberJpqls().size());
+      System.out.println(team.getName()+", " + team.getMemberJpqls());
+
+      team.getMemberJpqls().forEach(memberJpql1 -> {
+        System.out.println("->memberJpql1 = " + memberJpql1); // 중복 출력됨 팀 A에 대해서.. 회원 2명이 팀A 소속
+      });
+    });
+
   }
 
 

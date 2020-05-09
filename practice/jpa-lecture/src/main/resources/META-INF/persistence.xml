@@ -23,6 +23,9 @@
 
             <!--  데이터베이스 스키자 자동생성 속성  -->
             <property name="hibernate.hbm2ddl.auto" value="create" />
+
+            <!--  배치 사이즈 : 글로벌 세팅, 최적화  -->
+            <property name="hibernate.default_batch_fetch_size" value="100"/>
         </properties>
     </persistence-unit>
 </persistence>
