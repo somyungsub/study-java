@@ -618,6 +618,109 @@ class JpqlTest {
       System.out.println("item.getName() = " + item.getName());
       System.out.println("item.getPrice() = " + item.getPrice());
     });
+  }
+
+  @Test
+  @DisplayName("엔티티 직접사용 - 기본키를 사용 ")
+  public void entity_direct_primary() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+    em.persist(teamJpql);
+
+    TeamJpql teamJpql2 = new TeamJpql();
+    teamJpql2.setName("TeamB");
+    em.persist(teamJpql2);
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("회원1");
+    memberJpql.setTeamJpql(teamJpql);
+    em.persist(memberJpql);
+
+    MemberJpql memberJpql2 = new MemberJpql();
+    memberJpql2.setUsername("회원2");
+    memberJpql2.setTeamJpql(teamJpql);
+    em.persist(memberJpql2);
+
+    MemberJpql memberJpql3 = new MemberJpql();
+    memberJpql3.setUsername("회원3");
+    memberJpql3.setTeamJpql(teamJpql2);
+    em.persist(memberJpql3);
+
+    em.flush();
+    em.clear();
+
+    System.out.println("========================= 1 ==============================");
+    String sql = "select count(m) from MemberJpql m";
+
+
+    List<Long> resultList = em.createQuery(sql, Long.class)
+        .getResultList();
+    System.out.println("resultList = " + resultList);
+
+    System.out.println("======================== 2 ===============================");
+    String sql2 = "select m from MemberJpql m join fetch m.teamJpql t where m =: member";
+    List<MemberJpql> resultList2 = em.createQuery(sql2, MemberJpql.class)
+        .setParameter("member", memberJpql2)
+        .getResultList();
+    System.out.println("resultList2 = " + resultList2);
+
+    System.out.println("======================== 3 ===============================");
+    String sql3 = "select m from MemberJpql m join fetch m.teamJpql t where m.id =: memberId";
+    List<MemberJpql> resultList3 = em.createQuery(sql3, MemberJpql.class)
+        .setParameter("memberId", memberJpql3.getId())
+        .getResultList();
+    System.out.println("resultList3 = " + resultList3);
+
+  }
+
+  @Test
+  @DisplayName("엔티티 직접사용 - 외래키 사용 ")
+  public void entity_direct_foreign() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+    em.persist(teamJpql);
+
+    TeamJpql teamJpql2 = new TeamJpql();
+    teamJpql2.setName("TeamB");
+    em.persist(teamJpql2);
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("회원1");
+    memberJpql.setTeamJpql(teamJpql);
+    em.persist(memberJpql);
+
+    MemberJpql memberJpql2 = new MemberJpql();
+    memberJpql2.setUsername("회원2");
+    memberJpql2.setTeamJpql(teamJpql);
+    em.persist(memberJpql2);
+
+    MemberJpql memberJpql3 = new MemberJpql();
+    memberJpql3.setUsername("회원3");
+    memberJpql3.setTeamJpql(teamJpql2);
+    em.persist(memberJpql3);
+
+    em.flush();
+    em.clear();
+
+    TeamJpql findTeam = em.find(TeamJpql.class, teamJpql.getId());
+
+    System.out.println("========================= 연관된 외래키 값 사용 1 ==============================");
+    String sql = "select m from MemberJpql m where m.teamJpql =: teamJqpl";
+
+    List<MemberJpql> resultList = em.createQuery(sql, MemberJpql.class)
+        .setParameter("teamJqpl", findTeam)
+        .getResultList();
+    System.out.println("resultList = " + resultList);
+
+    System.out.println("========================= 연관된 외래키 값 사용 2 ==============================");
+    String sql2 = "select m from MemberJpql m where m.teamJpql.id =: teamId";
+
+    List<MemberJpql> resultList2 = em.createQuery(sql2, MemberJpql.class)
+        .setParameter("teamId", findTeam.getId())
+        .getResultList();
+    System.out.println("resultList2 = " + resultList2);
 
   }
 
