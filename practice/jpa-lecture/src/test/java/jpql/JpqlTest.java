@@ -724,4 +724,103 @@ class JpqlTest {
 
   }
 
+  @Test
+  @DisplayName("Named 쿼리 사용 - 애노테이션")
+  public void named_query_annotation() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+    em.persist(teamJpql);
+
+    TeamJpql teamJpql2 = new TeamJpql();
+    teamJpql2.setName("TeamB");
+    em.persist(teamJpql2);
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("회원1");
+    memberJpql.setTeamJpql(teamJpql);
+    em.persist(memberJpql);
+
+    MemberJpql memberJpql2 = new MemberJpql();
+    memberJpql2.setUsername("회원2");
+    memberJpql2.setTeamJpql(teamJpql);
+    em.persist(memberJpql2);
+
+    MemberJpql memberJpql3 = new MemberJpql();
+    memberJpql3.setUsername("회원3");
+    memberJpql3.setTeamJpql(teamJpql2);
+    em.persist(memberJpql3);
+
+    em.flush();
+    em.clear();
+
+
+    System.out.println("========================= 네임드쿼리 1 ==============================");
+
+    List<MemberJpql> resultList = em.createNamedQuery("Member.findByUsername", MemberJpql.class)
+        .setParameter("username", memberJpql.getUsername())
+        .getResultList();
+
+    System.out.println("resultList = " + resultList);
+
+    System.out.println("========================= 네임드쿼리 2 ==============================");
+
+    List<MemberJpql> resultList2 = em.createNamedQuery("Member.findByUsername", MemberJpql.class)
+        .setParameter("username", memberJpql2.getUsername())
+        .getResultList();
+
+    System.out.println("resultList2 = " + resultList2);
+
+  }
+  @Test
+  @DisplayName("Named 쿼리 사용 - XML")
+  public void named_query_xml() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+    em.persist(teamJpql);
+
+    TeamJpql teamJpql2 = new TeamJpql();
+    teamJpql2.setName("TeamB");
+    em.persist(teamJpql2);
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("회원1");
+    memberJpql.setTeamJpql(teamJpql);
+    em.persist(memberJpql);
+
+    MemberJpql memberJpql2 = new MemberJpql();
+    memberJpql2.setUsername("회원2");
+    memberJpql2.setTeamJpql(teamJpql);
+    em.persist(memberJpql2);
+
+    MemberJpql memberJpql3 = new MemberJpql();
+    memberJpql3.setUsername("회원3");
+    memberJpql3.setTeamJpql(teamJpql2);
+    em.persist(memberJpql3);
+
+    em.flush();
+    em.clear();
+
+
+    System.out.println("========================= 네임드쿼리 XML 1 ==============================");
+    List<MemberJpql> resultList = em.createNamedQuery("Member.XML.findByUsername", MemberJpql.class)
+        .setParameter("username", memberJpql.getUsername())
+        .getResultList();
+
+    System.out.println("resultList = " + resultList);
+
+    System.out.println("========================= 네임드쿼리 XML 2 ==============================");
+    List<MemberJpql> resultList2 = em.createNamedQuery("Member.XML.findByUsername", MemberJpql.class)
+        .setParameter("username", memberJpql2.getUsername())
+        .getResultList();
+
+    System.out.println("resultList2 = " + resultList2);
+
+    System.out.println("========================= 네임드쿼리 XML 3 ==============================");
+    final List<Long> countList = em.createNamedQuery("Member.XML.count", Long.class).getResultList();
+    System.out.println("countList = " + countList);
+
+  }
+
 }
