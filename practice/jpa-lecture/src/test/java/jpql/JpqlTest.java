@@ -5,9 +5,7 @@ import jpql.MemberJpqlType;
 import jpql.ProductJpql;
 import jpql.TeamJpql;
 import org.junit.jupiter.api.*;
-import practice.jpashop.domain.Item;
-import practice.jpashop.domain.Member;
-import practice.jpashop.domain.Team;
+import practice.jpashop.domain.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -590,6 +588,37 @@ class JpqlTest {
 
   }
 
+  @Test
+  @DisplayName("다형성 쿼리 - 별로 중요하진 않음 ")
+  public void extends_query() {
 
+    BookItem bookItem = new BookItem();
+    bookItem.setAuthor("ssosso");
+    bookItem.setPrice(10000);
+    bookItem.setName("JPA");
+    em.persist(bookItem);
+
+    MovieItem movieItem = new MovieItem();
+    movieItem.setActor("김다미");
+    movieItem.setPrice(15000);
+    movieItem.setName("이태원클라쓰");
+    em.persist(movieItem);
+
+    em.flush();
+    em.clear();
+
+    System.out.println("=======================================================");
+//    String sql = "select i from Item i where type(i) in (BookItem , MovieItem )";
+    String sql = "select i from Item i where treat(i as BookItem).author = 'ssosso'";
+
+    final List<Item> resultList = em.createQuery(sql, Item.class).getResultList();
+    System.out.println("resultList = " + resultList);
+    resultList.forEach(item -> {
+      System.out.println("======== START =======");
+      System.out.println("item.getName() = " + item.getName());
+      System.out.println("item.getPrice() = " + item.getPrice());
+    });
+
+  }
 
 }
