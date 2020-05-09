@@ -10,6 +10,12 @@ import javax.persistence.*;
 @Setter
 @Getter
 @ToString
+@NamedQueries(
+    @NamedQuery(
+      name = "Member.findByUsername",
+      query = "select m from MemberJpql m where m.username =: username"
+    )
+)
 public class MemberJpql {
   @Id
   @GeneratedValue

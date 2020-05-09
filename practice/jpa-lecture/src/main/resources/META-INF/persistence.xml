@@ -5,6 +5,7 @@
 
     <!--  EntityManager name  -->
     <persistence-unit name="hello">
+        <mapping-file>META-INF/ormMemberJpql.xml</mapping-file>
         <properties>
 
             <!-- 필수 속성 : JDBC 접근 정보 -->
