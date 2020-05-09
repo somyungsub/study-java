@@ -822,5 +822,55 @@ class JpqlTest {
     System.out.println("countList = " + countList);
 
   }
+  
+  @Test
+  @DisplayName("벌크연산")
+  public void bulk() {
+
+    TeamJpql teamJpql = new TeamJpql();
+    teamJpql.setName("TeamA");
+    em.persist(teamJpql);
+
+    TeamJpql teamJpql2 = new TeamJpql();
+    teamJpql2.setName("TeamB");
+    em.persist(teamJpql2);
+
+    MemberJpql memberJpql = new MemberJpql();
+    memberJpql.setUsername("회원1");
+    memberJpql.setTeamJpql(teamJpql);
+    em.persist(memberJpql);
+
+    MemberJpql memberJpql2 = new MemberJpql();
+    memberJpql2.setUsername("회원2");
+    memberJpql2.setTeamJpql(teamJpql);
+    em.persist(memberJpql2);
+
+    MemberJpql memberJpql3 = new MemberJpql();
+    memberJpql3.setUsername("회원3");
+    memberJpql3.setTeamJpql(teamJpql2);
+    em.persist(memberJpql3);
+
+    em.flush();
+    em.clear();
+
+
+    System.out.println("=======================================================");
+    
+    /*
+      1. flusth -> 데이터베이스 업데이트
+      2. 영속성컨테스트에는 회원 1,2,3 그대로 남아... 그래서 데이터 정합성이 안맞음 -> 초기화 em.clear -> 다시 조회해서 사용해야됨
+     */
+    
+    int executeUpdate = em.createQuery("update MemberJpql m set m.age = 20")
+        .executeUpdate();
+    System.out.println("executeUpdate = " + executeUpdate);
+    System.out.println("memberJpql.getAge() = " + memberJpql.getAge()); // = 0
+    
+    // 영속성 초기화 후 find
+    em.clear(); // 준영속화
+    MemberJpql findMember = em.find(MemberJpql.class, memberJpql.getId());
+    System.out.println("findMember.getAge() = " + findMember.getAge()); // = 20
+
+  }
 
 }
