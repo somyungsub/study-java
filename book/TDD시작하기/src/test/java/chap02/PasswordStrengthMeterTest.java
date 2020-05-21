@@ -76,4 +76,10 @@ class PasswordStrengthMeterTest {
     assertStrength("ABCDE", PasswordStrength.WEAK);
   }
 
+  @Test
+  @DisplayName("9. 아무조건도 충족 안함")
+  public void password_not_contains() {
+    assertStrength("abc", PasswordStrength.WEAK);
+  }
+
 }

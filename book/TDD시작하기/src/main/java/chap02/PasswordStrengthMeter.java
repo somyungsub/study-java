@@ -13,7 +13,7 @@ public class PasswordStrengthMeter {
     }
 
     int metCounts = getMetCounts(password);
-    if (metCounts == 1) {
+    if (metCounts <= 1) {
       return PasswordStrength.WEAK;
     }
     if (metCounts == 2) {
