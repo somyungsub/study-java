@@ -30,5 +30,6 @@
     <module>book/TDD시작하기</module>
     <module>book/KafkaStream_In_Action</module>
     <module>practice/jpa-lecture</module>
+      <module>practice/udemy-junit5</module>
   </modules>
 </project>
