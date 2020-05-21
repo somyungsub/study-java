@@ -31,8 +31,8 @@ class PasswordStrengthMeterTest {
   @DisplayName("3. 약함 - 숫자 포함 x and 나머지 충족")
   public void password_weak() {
 
-    assertStrength("ab!@Abba", PasswordStrength.WEAK);
-    assertStrength("ab!@Abbak", PasswordStrength.WEAK);
+    assertStrength("ab!@Abba", PasswordStrength.NORMAL);
+    assertStrength("ab!@Abbak", PasswordStrength.NORMAL);
 
   }
 
@@ -51,6 +51,12 @@ class PasswordStrengthMeterTest {
 
     assertStrength("ab12!@dfddf", PasswordStrength.NORMAL);
 
+  }
+
+  @Test
+  @DisplayName("6. 한가지만 충족 - 8자리")
+  public void password_onefill_length() {
+    assertStrength("abcdefghi", PasswordStrength.WEAK);
   }
 
   private void assertStrength(String password, PasswordStrength strength) {

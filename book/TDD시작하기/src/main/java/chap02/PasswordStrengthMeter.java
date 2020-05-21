@@ -11,12 +11,16 @@ public class PasswordStrengthMeter {
       return PasswordStrength.INVALID;
     }
 
-    if (!isLengthFill(password) || !containsRegex(password, "[A-Z]")) {
-      return PasswordStrength.NORMAL;
+    boolean containsNum = containsRegex(password, "[0-9]");
+    boolean containsCapital = containsRegex(password, "[A-Z]");
+    boolean isLengthFill = isLengthFill(password);
+
+    if (isLengthFill && !containsNum && ! containsCapital) {
+      return PasswordStrength.WEAK;
     }
 
-    if (!containsRegex(password, "[0-9]")) {
-      return PasswordStrength.WEAK;
+    if (!isLengthFill || !containsCapital || !containsNum) {
+      return PasswordStrength.NORMAL;
     }
 
     return PasswordStrength.STRONG;
