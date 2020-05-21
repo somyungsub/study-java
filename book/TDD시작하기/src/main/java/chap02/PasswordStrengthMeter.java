@@ -5,33 +5,36 @@ import org.springframework.util.StringUtils;
 import java.util.Arrays;
 
 public class PasswordStrengthMeter {
+
   public PasswordStrength meter(String password) {
 
     if (StringUtils.isEmpty(password)) {
       return PasswordStrength.INVALID;
     }
 
+    int metCounts = getMetCounts(password);
+    if (metCounts == 1) {
+      return PasswordStrength.WEAK;
+    }
+    if (metCounts == 2) {
+      return PasswordStrength.NORMAL;
+    }
+    return PasswordStrength.STRONG;
+  }
+
+  private int getMetCounts(String password) {
+
     boolean containsNum = containsRegex(password, "[0-9]");
     boolean containsUpper = containsRegex(password, "[A-Z]");
     boolean isLengthFill = isLengthFill(password);
 
-    if (isLengthFill && !containsNum && ! containsUpper) {
-      return PasswordStrength.WEAK;
-    }
+    int metCounts = 0;
 
-    if (!isLengthFill && containsNum && !containsUpper) {
-      return PasswordStrength.WEAK;
-    }
+    if (containsNum) metCounts++;
+    if (containsUpper) metCounts++;
+    if (isLengthFill) metCounts++;
 
-    if (!isLengthFill && !containsNum && containsUpper) {
-      return PasswordStrength.WEAK;
-    }
-
-    if (!isLengthFill || !containsUpper || !containsNum) {
-      return PasswordStrength.NORMAL;
-    }
-
-    return PasswordStrength.STRONG;
+    return metCounts;
   }
 
   private boolean isLengthFill(String password){
