@@ -21,6 +21,13 @@
             </plugin>
         </plugins>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.2.5.RELEASE</version>
+        </dependency>
+    </dependencies>
   <modules>
     <module>practice/practice-java</module>
     <module>book/JPA프로그래밍</module>

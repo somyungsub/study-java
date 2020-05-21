@@ -7,37 +7,47 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PasswordStrengthMeterTest {
 
+  private PasswordStrengthMeter meter = new PasswordStrengthMeter();
+
   @Test
-  @DisplayName("모든규칙 충족")
+  @DisplayName("1. 모든규칙 충족")
   public void password_strong() {
-    PasswordStrengthMeter meter = new PasswordStrengthMeter();
 
-    PasswordStrength result = meter.meter("abc12!@AB");
-    assertEquals(PasswordStrength.STRONG, result);
+    assertStrength("abc12!@AB", PasswordStrength.STRONG);
+    assertStrength("abc12!Add", PasswordStrength.STRONG);
 
-    PasswordStrength result2 = meter.meter("abc12!Add");
-    assertEquals(PasswordStrength.STRONG, result2);
   }
 
   @Test
-  @DisplayName("중간 - 8자리 미만 + 나머지 충족")
+  @DisplayName("2. 중간 - 8자리 미만 + 나머지 충족")
   public void password_normal() {
-    PasswordStrengthMeter meter = new PasswordStrengthMeter();
 
-    PasswordStrength result = meter.meter("ab12!@A");
-    assertEquals(PasswordStrength.NORMAL, result);
+    assertStrength("ab12!@A", PasswordStrength.NORMAL);
+    assertStrength("abC12!", PasswordStrength.NORMAL);
 
-    PasswordStrength result2 = meter.meter("abC12!");
-    assertEquals(PasswordStrength.NORMAL, result2);
   }
 
   @Test
-  @DisplayName("약함 - 숫자 포함 x and 나머지 충족")
+  @DisplayName("3. 약함 - 숫자 포함 x and 나머지 충족")
   public void password_weak() {
-    PasswordStrengthMeter meter = new PasswordStrengthMeter();
 
-    PasswordStrength result = meter.meter("ab!@Abba");
-    assertEquals(PasswordStrength.WEAK, result);
+    assertStrength("ab!@Abba", PasswordStrength.WEAK);
+    assertStrength("ab!@Abbak", PasswordStrength.WEAK);
+
+  }
+
+  @Test
+  @DisplayName("4. 값이 없는 경우")
+  public void password_invalid() {
+
+    assertStrength(null, PasswordStrength.INVALID);
+    assertStrength("", PasswordStrength.INVALID);
+
+  }
+
+  private void assertStrength(String password, PasswordStrength strength) {
+    PasswordStrength result = meter.meter(password);
+    assertEquals(strength, result);
   }
 
 }

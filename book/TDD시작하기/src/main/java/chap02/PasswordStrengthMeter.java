@@ -1,16 +1,24 @@
 package chap02;
 
+import org.springframework.util.StringUtils;
+
 import java.util.Arrays;
-import java.util.stream.Stream;
 
 public class PasswordStrengthMeter {
   public PasswordStrength meter(String password) {
-    if (!containsRegex(password, "[0-9]")) {
-      return PasswordStrength.WEAK;
+
+    if (StringUtils.isEmpty(password)) {
+      return PasswordStrength.INVALID;
     }
+
     if (!isLengthFill(password)) {
       return PasswordStrength.NORMAL;
     }
+
+    if (!containsRegex(password, "[0-9]")) {
+      return PasswordStrength.WEAK;
+    }
+
     return PasswordStrength.STRONG;
   }
 
