@@ -52,7 +52,7 @@ class PasswordStrengthMeterTest {
 
   @Test
   @DisplayName("5. 대문자를 포함하지 않고 나머지 조건을 충족")
-  public void password_not_contains_capital() {
+  public void password_not_contains_upper() {
 
     assertStrength("ab12!@dfddf", PasswordStrength.NORMAL);
 
@@ -68,6 +68,12 @@ class PasswordStrengthMeterTest {
   @DisplayName("7. 숫자 포함 조건만 충족")
   public void password_only_number() {
     assertStrength("12345", PasswordStrength.WEAK);
+  }
+
+  @Test
+  @DisplayName("8. 대문자만 충족")
+  public void password_only_upper() {
+    assertStrength("ABCDE", PasswordStrength.WEAK);
   }
 
 }

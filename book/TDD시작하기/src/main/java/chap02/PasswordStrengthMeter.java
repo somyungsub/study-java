@@ -12,18 +12,22 @@ public class PasswordStrengthMeter {
     }
 
     boolean containsNum = containsRegex(password, "[0-9]");
-    boolean containsCapital = containsRegex(password, "[A-Z]");
+    boolean containsUpper = containsRegex(password, "[A-Z]");
     boolean isLengthFill = isLengthFill(password);
 
-    if (isLengthFill && !containsNum && ! containsCapital) {
+    if (isLengthFill && !containsNum && ! containsUpper) {
       return PasswordStrength.WEAK;
     }
 
-    if (!isLengthFill && containsNum && !containsCapital) {
+    if (!isLengthFill && containsNum && !containsUpper) {
       return PasswordStrength.WEAK;
     }
 
-    if (!isLengthFill || !containsCapital || !containsNum) {
+    if (!isLengthFill && !containsNum && containsUpper) {
+      return PasswordStrength.WEAK;
+    }
+
+    if (!isLengthFill || !containsUpper || !containsNum) {
       return PasswordStrength.NORMAL;
     }
 
@@ -36,9 +40,10 @@ public class PasswordStrengthMeter {
 
   private boolean containsRegex(String password, String regex) {
 
-    long count = Arrays.stream(password.split("")) // Stream<String[]>
+    long count = Arrays.stream(password.split(""))
             .filter(s -> s.matches(regex))
             .count();
+
     return count > 0;
   }
 
