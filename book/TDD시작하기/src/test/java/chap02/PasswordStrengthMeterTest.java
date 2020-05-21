@@ -45,6 +45,14 @@ class PasswordStrengthMeterTest {
 
   }
 
+  @Test
+  @DisplayName("5. 대문자를 포함하지 않고 나머지 조건을 충족")
+  public void password_not_contains_capital() {
+
+    assertStrength("ab12!@dfddf", PasswordStrength.NORMAL);
+
+  }
+
   private void assertStrength(String password, PasswordStrength strength) {
     PasswordStrength result = meter.meter(password);
     assertEquals(strength, result);

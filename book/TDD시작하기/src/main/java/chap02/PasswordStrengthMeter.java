@@ -11,7 +11,7 @@ public class PasswordStrengthMeter {
       return PasswordStrength.INVALID;
     }
 
-    if (!isLengthFill(password)) {
+    if (!isLengthFill(password) || !containsRegex(password, "[A-Z]")) {
       return PasswordStrength.NORMAL;
     }
 
