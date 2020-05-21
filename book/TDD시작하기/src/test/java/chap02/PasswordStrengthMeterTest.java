@@ -9,6 +9,11 @@ class PasswordStrengthMeterTest {
 
   private PasswordStrengthMeter meter = new PasswordStrengthMeter();
 
+  private void assertStrength(String password, PasswordStrength strength) {
+    PasswordStrength result = meter.meter(password);
+    assertEquals(strength, result);
+  }
+
   @Test
   @DisplayName("1. 모든규칙 충족")
   public void password_strong() {
@@ -59,9 +64,10 @@ class PasswordStrengthMeterTest {
     assertStrength("abcdefghi", PasswordStrength.WEAK);
   }
 
-  private void assertStrength(String password, PasswordStrength strength) {
-    PasswordStrength result = meter.meter(password);
-    assertEquals(strength, result);
+  @Test
+  @DisplayName("7. 숫자 포함 조건만 충족")
+  public void password_only_number() {
+    assertStrength("12345", PasswordStrength.WEAK);
   }
 
 }
