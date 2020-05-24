@@ -64,7 +64,7 @@ public class ExpiryDateCalculatorTest {
 
   @Test
   @DisplayName("첫납부일과 만료일 다를경우 만원납부")
-  public void bill_expire_not_same_만원추가() {
+  public void bill_expire_not_same_10_000() {
     PayData payData = PayData.builder()
         .firstBillingDate(LocalDate.of(2019,1,31))
         .billingDate(LocalDate.of(2019,2,28))
@@ -88,6 +88,62 @@ public class ExpiryDateCalculatorTest {
         .build();
 
     assertExpiryDate(payData3, LocalDate.of(2019, 7, 31));
+  }
+
+  @Test
+  @DisplayName("만원이상은 비례해서 만료일 계산")
+  public void bill_1_000_over_expire_date_calc() {
+
+    assertExpiryDate(
+        PayData.builder()
+            .billingDate(LocalDate.of(2019, 3, 1))
+            .payAmount(20_000)
+            .build()
+        , LocalDate.of(2019, 5, 1));
+
+    assertExpiryDate(
+        PayData.builder()
+            .billingDate(LocalDate.of(2019, 3, 1))
+            .payAmount(30_000)
+            .build()
+        , LocalDate.of(2019, 6, 1));
+
+    assertExpiryDate(
+        PayData.builder()
+            .billingDate(LocalDate.of(2019, 3, 1))
+            .payAmount(50_000)
+            .build()
+        , LocalDate.of(2019, 8, 1));
+
+  }
+
+  @Test
+  @DisplayName("첫납부일과 만료일자 다른경우 - 2만원이상 납부")
+  public void bill_expire_not_same_over_10_000() {
+
+    assertExpiryDate(
+        PayData.builder()
+            .firstBillingDate(LocalDate.of(2019,1,31))
+            .billingDate(LocalDate.of(2019, 2, 28))
+            .payAmount(20_000)
+            .build()
+        , LocalDate.of(2019, 4, 30));
+
+    assertExpiryDate(
+        PayData.builder()
+            .firstBillingDate(LocalDate.of(2019,3,31))
+            .billingDate(LocalDate.of(2019, 4, 30))
+            .payAmount(30_000)
+            .build()
+        , LocalDate.of(2019, 7, 31));
+
+    assertExpiryDate(
+        PayData.builder()
+            .firstBillingDate(LocalDate.of(2019,1,31))
+            .billingDate(LocalDate.of(2019, 2, 28))
+            .payAmount(40_000)
+            .build()
+        , LocalDate.of(2019, 6, 30));
   }
 
   private void assertExpiryDate(PayData payData, LocalDate expectedExpiryDate) {
