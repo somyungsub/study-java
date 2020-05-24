@@ -62,6 +62,34 @@ public class ExpiryDateCalculatorTest {
     );
   }
 
+  @Test
+  @DisplayName("첫납부일과 만료일 다를경우 만원납부")
+  public void bill_expire_not_same_만원추가() {
+    PayData payData = PayData.builder()
+        .firstBillingDate(LocalDate.of(2019,1,31))
+        .billingDate(LocalDate.of(2019,2,28))
+        .payAmount(10_000)
+        .build();
+
+    assertExpiryDate(payData, LocalDate.of(2019, 3, 31));
+
+    PayData payData2 = PayData.builder()
+        .firstBillingDate(LocalDate.of(2019,1,30))
+        .billingDate(LocalDate.of(2019,2,28))
+        .payAmount(10_000)
+        .build();
+
+    assertExpiryDate(payData2, LocalDate.of(2019, 3, 30));
+
+    PayData payData3 = PayData.builder()
+        .firstBillingDate(LocalDate.of(2019,5,31))
+        .billingDate(LocalDate.of(2019,6,30))
+        .payAmount(10_000)
+        .build();
+
+    assertExpiryDate(payData3, LocalDate.of(2019, 7, 31));
+  }
+
   private void assertExpiryDate(PayData payData, LocalDate expectedExpiryDate) {
     ExpiryDateCalculator calculator = new ExpiryDateCalculator();
     LocalDate expiryDate = calculator.calculateExpiryDate(payData);
