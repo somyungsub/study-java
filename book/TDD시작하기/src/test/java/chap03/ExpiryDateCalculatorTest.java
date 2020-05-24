@@ -15,14 +15,24 @@ public class ExpiryDateCalculatorTest {
   @DisplayName("1. 만원 납부 -> 만료일 = 납부일 + 1개월")
   public void bill_expire_basic() {
 
-    LocalDate billingDate = LocalDate.of(2020, 3, 1);
-    int payAmount = 10_000;
+    assertExpiryDate(
+        10_000,
+        LocalDate.of(2020,3,1),
+        LocalDate.of(2020,4,1)
+    );
+
+    assertExpiryDate(
+        10_000,
+        LocalDate.of(2020,5,5),
+        LocalDate.of(2020,6,5)
+    );
+
+  }
+
+  private void assertExpiryDate(int amount, LocalDate billingDate, LocalDate expectedExpiryDate) {
     ExpiryDateCalculator calculator = new ExpiryDateCalculator();
-
-    LocalDate expireDate = calculator.calculateExpiryDate(billingDate, payAmount);
-
-    assertEquals(LocalDate.of(2020, 4, 1), expireDate);
-
+    LocalDate expireDate = calculator.calculateExpiryDate(billingDate, amount);
+    assertEquals(expectedExpiryDate, expireDate);
   }
 
 
