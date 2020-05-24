@@ -152,5 +152,4 @@ public class ExpiryDateCalculatorTest {
     assertEquals(expectedExpiryDate, expiryDate);
   }
 
-
 }
