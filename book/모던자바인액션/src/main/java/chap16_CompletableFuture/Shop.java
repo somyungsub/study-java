@@ -1,5 +1,6 @@
 package chap16_CompletableFuture;
 
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Future;
@@ -7,6 +8,15 @@ import java.util.concurrent.Future;
 public class Shop {
 
   private final Random random = new Random();
+  private String product;
+  private String name;
+
+  public Shop(String name) {
+    this.name = name;
+  }
+
+  public Shop() {
+  }
 
   public double getPrice(String product) {
     // 구현
@@ -24,17 +34,31 @@ public class Shop {
 
   private double calculatePrice(String product) {
     delay();
-    return  random.nextDouble() * product.charAt(0)
+    return random.nextDouble() * product.charAt(0)
             + product.charAt(1);
   }
 
   public Future<Double> getPriceAsync(String product) {
-    CompletableFuture<Double> futurePrice = new CompletableFuture<>();
-    new Thread(() -> {
-      double pridce = calculatePrice(product);
-      futurePrice.complete(pridce);
-    }).start();
-
-    return futurePrice;
+    return CompletableFuture.supplyAsync(() -> calculatePrice(product));
   }
+
+  public String getName() {
+    return this.name;
+  }
+//  public Future<Double> getPriceAsync(String product) {
+//    CompletableFuture<Double> futurePrice = new CompletableFuture<>();
+//    new Thread(() -> {
+//      try {
+//        double price = calculatePrice(product);
+//        futurePrice.complete(price);           // 정상 -> 가격 정보를 저장 하고 Future 종료
+//      } catch (Exception ex) {
+//        futurePrice.completeExceptionally(ex);  // 에러 발생 -> 에러 정보를 저장 하고 Future 종료
+//      }
+//
+//    }).start();
+//
+//    return futurePrice;
+//  }
+
+
 }
