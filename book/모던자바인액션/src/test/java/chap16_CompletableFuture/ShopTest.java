@@ -4,9 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.*;
 
 import static java.util.stream.Collectors.*;
 
@@ -16,8 +14,28 @@ class ShopTest {
           new Shop("BestPrice"),
           new Shop("LetsSaveBig"),
           new Shop("MyFavoriteShop"),
-          new Shop("BuyItAll")
+          new Shop("BuyItAll1"),
+          new Shop("BuyItAll2"),
+          new Shop("BuyItAll3"),
+          new Shop("BuyItAll4"),
+          new Shop("BuyItAll5"),
+          new Shop("BuyItAll6"),
+          new Shop("BuyItAll7"),
+          new Shop("BuyItAll8"),
+          new Shop("BuyItAll9"),
+          new Shop("BuyItAll10"),
+          new Shop("BuyItAll11"),
+          new Shop("BuyItAll12")
   );
+
+  private final Executor executor = Executors.newFixedThreadPool(Math.min(shops.size(), 100), new ThreadFactory() {
+    @Override
+    public Thread newThread(Runnable r) {
+      Thread t = new Thread(r);
+      t.setDaemon(true);
+      return t;
+    }
+  });
 
   @Test
   @DisplayName("비동기테스트")
@@ -83,6 +101,15 @@ class ShopTest {
     System.out.println("duration = " + duration + " ms");
   }
 
+  @Test
+  @DisplayName("Completable 비동기호출 - 스레드풀")
+  public void 비동기호출_스레드풀() {
+    long start = System.nanoTime();
+    System.out.println(findPricesAsyncExecutor("myPhone27S"));
+    long duration = (System.nanoTime() - start) / 1_000_000;
+    System.out.println("duration = " + duration + " ms");
+  }
+
   private List<String> findPrices(String product) {
     return shops
 //            .stream()
@@ -98,6 +125,21 @@ class ShopTest {
                     CompletableFuture.supplyAsync(
                             () -> String.format("%s price is %.2f", shop.getName(), shop.getPrice(product))
                     )
+            )
+            .collect(toList());
+    return priceFutures
+            .stream()
+            .map(CompletableFuture::join)
+            .collect(toList());
+  }
+
+  private List<String> findPricesAsyncExecutor(String product) {
+    List<CompletableFuture<String>> priceFutures = shops
+            .stream()
+            .map(shop ->
+                    CompletableFuture.supplyAsync(
+                            () -> String.format("%s price is %.2f", shop.getName(), shop.getPrice(product))
+                    , executor)
             )
             .collect(toList());
     return priceFutures
