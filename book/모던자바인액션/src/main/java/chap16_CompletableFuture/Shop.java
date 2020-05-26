@@ -48,6 +48,11 @@ public class Shop {
   public String getName() {
     return this.name;
   }
+
+  public Double getPriceDouble(String product) {
+    String price = getPrice(product);
+    return Double.parseDouble(price.split(":")[1]);
+  }
 //  public Future<Double> getPriceAsync(String product) {
 //    CompletableFuture<Double> futurePrice = new CompletableFuture<>();
 //    new Thread(() -> {

@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
@@ -103,10 +102,19 @@ class ShopTest {
   }
 
   @Test
-  @DisplayName("비블록코드 만들기-completable 조합")
+  @DisplayName("비블록코드 만들기-completable compose")
   public void 비블록코드_만들기3() {
     long start = System.nanoTime();
     System.out.println(findPrices2("myPhone27S"));
+    long duration = (System.nanoTime() - start) / 1_000_000;
+    System.out.println("duration = " + duration + " ms");
+  }
+
+  @Test
+  @DisplayName("비블록코드 만들기-completable combine")
+  public void 비블록코드_만들기4() {
+    long start = System.nanoTime();
+    System.out.println(getExchangePrice("myPhone27S"));
     long duration = (System.nanoTime() - start) / 1_000_000;
     System.out.println("duration = " + duration + " ms");
   }
@@ -186,7 +194,7 @@ class ShopTest {
             .map(shop ->
                     CompletableFuture.supplyAsync(
                             () -> String.format("%s price is %.2f", shop.getName(), shop.getPrice(product))
-                    , executor)
+                            , executor)
             )
             .collect(toList());
     return priceFutures
@@ -195,6 +203,24 @@ class ShopTest {
             .collect(toList());
   }
 
+  private List<Double> getExchangePrice(String product) {
+    ExchangeService exchangeService = new ExchangeService();
+    List<CompletableFuture<Double>> futures = shops.stream()
+            .map(shop ->
+                    CompletableFuture.supplyAsync(() -> shop.getPriceDouble(product))
+                            .thenCombine(CompletableFuture.supplyAsync(
+                                    () -> exchangeService.getRate(Money.EUR, Money.USD))
+                                    .completeOnTimeout(1.2, 1, TimeUnit.SECONDS)
+                                    , (price, rate) -> price * rate)
+//                    .orTimeout(2, TimeUnit.SECONDS)
+
+            )
+            .collect(toList());
+
+    return futures.stream()
+            .map(CompletableFuture::join)
+            .collect(toList());
+  }
 
 
   private void doSomethingElse() {
