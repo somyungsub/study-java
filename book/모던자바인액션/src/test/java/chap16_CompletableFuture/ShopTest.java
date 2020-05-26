@@ -93,6 +93,15 @@ class ShopTest {
   }
 
   @Test
+  @DisplayName("비블록코드 만들기")
+  public void 비블록코드_만들기2() {
+    long start = System.nanoTime();
+    System.out.println(findPrices2("myPhone27S"));
+    long duration = (System.nanoTime() - start) / 1_000_000;
+    System.out.println("duration = " + duration + " ms");
+  }
+
+  @Test
   @DisplayName("Completable 비동기호출")
   public void 비동기호출() {
     long start = System.nanoTime();
@@ -110,11 +119,26 @@ class ShopTest {
     System.out.println("duration = " + duration + " ms");
   }
 
+  @Test
+  @DisplayName("getPrice 수정")
+  public void Code사용() {
+    System.out.println(shops.get(0).getPrice("aaa"));
+  }
+
   private List<String> findPrices(String product) {
     return shops
 //            .stream()
             .parallelStream() // 병렬로 처리
             .map(shop -> String.format("%s price is %.2f", shop.getName(), shop.getPrice(product)))
+            .collect(toList());
+  }
+
+  private List<String> findPrices2(String product) {
+    return shops
+            .stream()
+            .map(shop -> shop.getPrice(product))
+            .map(Quote::parse)
+            .map(Discount::applyDiscount)
             .collect(toList());
   }
 
@@ -147,6 +171,8 @@ class ShopTest {
             .map(CompletableFuture::join)
             .collect(toList());
   }
+
+
 
   private void doSomethingElse() {
     System.out.println("==== 다른 작업 수행 ====");

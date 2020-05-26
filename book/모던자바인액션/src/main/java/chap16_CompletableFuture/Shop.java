@@ -18,9 +18,12 @@ public class Shop {
   public Shop() {
   }
 
-  public double getPrice(String product) {
+  public String getPrice(String product) {
     // 구현
-    return calculatePrice(product);
+    double price = calculatePrice(product);
+    Discount.Code code = Discount.Code.values()[random.nextInt(Discount.Code.values().length)];
+
+    return String.format("%s:%.2f:%s", name, price, code);
   }
 
   public static void delay() {
