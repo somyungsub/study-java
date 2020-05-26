@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
@@ -96,6 +97,15 @@ class ShopTest {
   @DisplayName("비블록코드 만들기")
   public void 비블록코드_만들기2() {
     long start = System.nanoTime();
+    System.out.println(findPrices3("myPhone27S"));
+    long duration = (System.nanoTime() - start) / 1_000_000;
+    System.out.println("duration = " + duration + " ms");
+  }
+
+  @Test
+  @DisplayName("비블록코드 만들기-completable 조합")
+  public void 비블록코드_만들기3() {
+    long start = System.nanoTime();
     System.out.println(findPrices2("myPhone27S"));
     long duration = (System.nanoTime() - start) / 1_000_000;
     System.out.println("duration = " + duration + " ms");
@@ -139,6 +149,19 @@ class ShopTest {
             .map(shop -> shop.getPrice(product))
             .map(Quote::parse)
             .map(Discount::applyDiscount)
+            .collect(toList());
+  }
+
+  private List<String> findPrices3(String product) {
+    List<CompletableFuture<String>> priceFutures = shops
+            .stream()
+            .map(shop -> CompletableFuture.supplyAsync(() -> shop.getPrice(product), executor))
+            .map(future -> future.thenApply(Quote::parse))
+            .map(future -> future.thenCompose(quote -> CompletableFuture.supplyAsync(() -> Discount.applyDiscount(quote), executor)))
+            .collect(toList());
+
+    return priceFutures.stream()
+            .map(CompletableFuture::join)
             .collect(toList());
   }
 
