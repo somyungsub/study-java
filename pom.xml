@@ -6,8 +6,8 @@
 
     <groupId>io.ssosso</groupId>
     <artifactId>study-java</artifactId>
-  <packaging>pom</packaging>
-  <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <version>1.0-SNAPSHOT</version>
     <build>
         <plugins>
             <plugin>
@@ -27,16 +27,23 @@
             <artifactId>spring-core</artifactId>
             <version>5.2.5.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.5.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-  <modules>
-    <module>practice/practice-java</module>
-    <module>book/JPA프로그래밍</module>
-    <module>book/스파크완벽가이드</module>
-    <module>book/실전아파치카프카</module>
-    <module>book/RxJava리액티브프로그래밍</module>
-    <module>book/TDD시작하기</module>
-    <module>book/KafkaStream_In_Action</module>
-    <module>practice/jpa-lecture</module>
-      <module>practice/udemy-junit5</module>
-  </modules>
+    <modules>
+        <module>practice/practice-java</module>
+        <module>book/JPA프로그래밍</module>
+        <module>book/스파크완벽가이드</module>
+        <module>book/실전아파치카프카</module>
+        <module>book/RxJava리액티브프로그래밍</module>
+        <module>book/TDD시작하기</module>
+        <module>book/KafkaStream_In_Action</module>
+        <module>practice/jpa-lecture</module>
+        <module>practice/udemy-junit5</module>
+        <module>book/모던자바인액션</module>
+    </modules>
 </project>
