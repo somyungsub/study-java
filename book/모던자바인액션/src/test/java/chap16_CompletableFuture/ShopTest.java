@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.concurrent.*;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.*;
 
@@ -143,6 +144,22 @@ class ShopTest {
     System.out.println(shops.get(0).getPrice("aaa"));
   }
 
+  @Test
+  @DisplayName("실시간처리-thenAccet 사용")
+  public void thenAccept사용() {
+
+    long start = System.nanoTime();
+
+    CompletableFuture[] futures = findPriceStream("myPhone~11Pro")
+            .map(f -> f.thenAccept(s -> System.out.println(s + " done in  " + ((System.nanoTime() - start) / 1_000_000) + " ms")))
+            .toArray(size -> new CompletableFuture[size]);
+    CompletableFuture.allOf(futures).join();  // 모든 비동기처리가 완료 될 때 -> join으로
+//    CompletableFuture.anyOf(futures).join();  // 완료된게 1개라도 있다면!
+
+    long duration = (System.nanoTime() - start) / 1_000_000;
+    System.out.println("All shops have now responded in " + duration + " ms");
+  }
+
   private List<String> findPrices(String product) {
     return shops
 //            .stream()
@@ -220,6 +237,17 @@ class ShopTest {
     return futures.stream()
             .map(CompletableFuture::join)
             .collect(toList());
+  }
+
+  private Stream<CompletableFuture<String>> findPriceStream(String product) {
+    return shops.stream()
+            .map(shop -> CompletableFuture.supplyAsync(
+                    () -> shop.getPrice(product), executor
+            ))
+            .map(future -> future.thenApply(Quote::parse))
+            .map(future -> future.thenCompose(quote -> CompletableFuture.supplyAsync(
+                    () -> Discount.applyDiscount(quote), executor
+            )));
   }
 
 
