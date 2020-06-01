@@ -32,4 +32,11 @@ class Code01Test {
     }
   }
 
+  @Test
+  @DisplayName("점화식제곱계산하기")
+  public void 점화식제곱계산() {
+    System.out.println("code01.power(1, 10) = " + code01.power(1, 10));
+    System.out.println("code01.power(2,10) = " + code01.power(2, 10));
+  }
+
 }

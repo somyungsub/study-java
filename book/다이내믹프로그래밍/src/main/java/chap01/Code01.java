@@ -59,4 +59,14 @@ public class Code01 {
     return n + acc(n - 1);
   }
 
+  public int power(int x, int n) {
+    if (n == 0) {
+      return 1;
+    } else if (x == 1) {
+      return x;
+    } else {
+      return x * power(x, n - 1);
+    }
+  }
+
 }
