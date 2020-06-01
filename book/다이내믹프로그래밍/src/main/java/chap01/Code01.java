@@ -79,4 +79,12 @@ public class Code01 {
     towerOfHanoi(e, d, s, n - 1);
   }
 
+  public void 연습문제1_3구구단(int n, int i) {
+    if (i > 10) {
+      return;
+    }
+    System.out.printf("%d * %d = %d \n", n, i, n * i);
+    연습문제1_3구구단(n, i + 1);
+  }
+
 }

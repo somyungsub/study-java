@@ -46,4 +46,10 @@ class Code01Test {
 
   }
 
+  @Test
+  @DisplayName("연습문제1-3")
+  public void 구구단재귀() {
+    code01.연습문제1_3구구단(5, 1);
+  }
+
 }
