@@ -69,4 +69,14 @@ public class Code01 {
     }
   }
 
+  public void towerOfHanoi(char s, char d, char e, int n) {
+    if (n <= 0) {
+      return;
+    }
+
+    towerOfHanoi(s, e, d, n - 1);
+    System.out.printf("%d번 원반을 %c에서 %c로 옮깁니다.\n", n, s, d);
+    towerOfHanoi(e, d, s, n - 1);
+  }
+
 }

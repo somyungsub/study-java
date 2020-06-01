@@ -39,4 +39,11 @@ class Code01Test {
     System.out.println("code01.power(2,10) = " + code01.power(2, 10));
   }
 
+  @Test
+  @DisplayName("하노이 예제")
+  public void hanoi() {
+    code01.towerOfHanoi('s', 'd', 'e', 3);
+
+  }
+
 }
