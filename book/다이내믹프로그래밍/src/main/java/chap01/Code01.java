@@ -42,4 +42,21 @@ public class Code01 {
     }
     return fact;
   }
+
+  public int[] 연습문제1_2_recursion() {
+    int[] arr = {1, 2, 3, 4, 5, 6};
+    for (int i = 0; i < arr.length; i++) {
+      arr[i] = acc(arr[i]);
+    }
+
+    return arr;
+  }
+
+  private int acc(int n) {
+    if (n <= 1) {
+      return 1;
+    }
+    return n + acc(n - 1);
+  }
+
 }

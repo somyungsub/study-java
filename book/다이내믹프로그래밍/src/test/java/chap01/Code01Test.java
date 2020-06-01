@@ -17,10 +17,19 @@ class Code01Test {
   }
 
   @Test
-  @DisplayName("연습문제1")
+  @DisplayName("연습문제1-1")
   public void 연습문제1_1() {
     System.out.println("factorial = " + code01.연습문제1_1_factorial(5));
     System.out.println("factorial = " + code01.연습문제1_1_factorial_recursion(5));
+  }
+
+  @Test
+  @DisplayName("연습문제1-2")
+  public void 연습문제1_2() {
+    int[] ints = code01.연습문제1_2_recursion();
+    for (int i : ints) {
+      System.out.println("i = " + i);
+    }
   }
 
 }
