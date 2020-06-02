@@ -47,4 +47,13 @@ class Code03Test {
     System.out.println(code03.maxSubStringLength_DP("9430723"));
   }
 
+  @Test
+  @DisplayName("조합")
+  public void combination() {
+    System.out.println(code03.combination(5, 3));
+    System.out.println(code03.combination(4, 1));
+    System.out.println(code03.combination(4, 4));
+    System.out.println(code03.combination(4, 3));
+  }
+
 }

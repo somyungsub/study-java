@@ -153,4 +153,12 @@ public class Code03 {
 
     root.setData(finalSum);
   }
+
+  public int combination(int n, int m) {
+    if (n == 0 || m == 0 || n == m) {
+      return 1;
+    }
+
+    return combination(n - 1, m) + combination(n - 1, m - 1);
+  }
 }
