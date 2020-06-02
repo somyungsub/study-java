@@ -24,6 +24,11 @@ public class Code04 {
     return x < y ? x : y;
   }
 
+  private int getMin(int x, int y, int z) {
+    int min = getMin(x, y);
+    return min < z ? min : z;
+  }
+
   static final int M = 3;
   static final int N = 4;
   int[][] mem = new int[M][N];
@@ -67,6 +72,39 @@ public class Code04 {
     for (int i = 1; i < M; i++) {
       for (int j = 1; j < N; j++) {
         mem[i][j] = getMin(mem[i - 1][j], mem[i][j - 1]) + cost[i][j];
+      }
+    }
+
+    return mem[M - 1][N - 1];
+  }
+
+  public int minPathCostDP_연습문제4_1(int[][] cost) {
+
+    // (0,0)
+    mem[0][0] = cost[0][0];
+
+    // 맨위 비용저장
+    for (int j = 1; j < N; j++) {
+      mem[0][j] = mem[0][j - 1] + cost[0][j];
+    }
+
+    // 맨왼쪽 비용저장
+    for (int i = 1; i < M; i++) {
+      mem[i][0] = mem[i - 1][0] + cost[i][0];
+    }
+
+    // 정방행렬 저장
+    int size = M > N ? N : M;
+    for (int i = 1; i < size; i++) {
+      for (int j = 1; j < size; j++) {
+        mem[i][j] = mem[i - 1][j - 1] + cost[i][j];
+      }
+    }
+
+    // 나머지 셀 비용 저장
+    for (int i = 1; i < M; i++) {
+      for (int j = 1; j < N; j++) {
+        mem[i][j] = getMin(mem[i - 1][j], mem[i][j - 1], mem[i - 1][j - 1]) + cost[i][j];
       }
     }
 
