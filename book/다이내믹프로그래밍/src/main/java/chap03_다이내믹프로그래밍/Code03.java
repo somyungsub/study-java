@@ -1,5 +1,6 @@
 package chap03_다이내믹프로그래밍;
 
+
 public class Code03 {
 
   private int[] memo = new int[1000];
@@ -85,5 +86,71 @@ public class Code03 {
     }
 
     return maxLen;
+  }
+
+  public int maxSubStringLength_DP(String str) {
+    int n = str.length();
+    int maxLen = 0;
+
+    int[][] sum = new int[n][n];
+
+    for (int i = 0; i < n; i++) {
+      sum[i][i] = str.charAt(i) - '0';
+    }
+
+    for (int len = 2; len <= n; len++) {
+      for (int i = 0; i < n - len + 1; i++) {
+        int j = i + len - 1;  // 부분열 앞 길이
+        int k = len / 2;      // 윗 부분 희소행렬
+        sum[i][j] = sum[i][j - k] + sum[j - k + 1][j];  // 점화식
+
+        // 짝수(절반) 이고, 절반합 앞뒤 같고, 길이가 최대길이보다 크다면
+        if (len % 2 == 0 && sum[i][j - k] == sum[j - k + 1][j] && len > maxLen) {
+          maxLen = len; // 최대길이 저장
+        }
+      }
+    }
+
+    return maxLen;
+  }
+
+  // 하향식 접근
+  public int factorial(int n) {
+    if (n == 1 || n == 0) {
+      return 1;
+    }
+
+    return n * factorial(n - 1);
+  }
+
+  public int factorial_DP(int n) {
+
+    int f = 1;
+    for (int i = 2; i <= n; i++) {
+      f = f * i;
+    }
+
+    return f;
+  }
+
+  public void addChildSum(Node root) {
+    if (root == null) {
+      return;
+    }
+
+    addChildSum(root.getLeft());
+
+    addChildSum(root.getRight());
+
+    int finalSum = root.getData();
+    if (root.getLeft() != null) {
+      finalSum += root.getLeft().getData();
+    }
+
+    if (root.getRight() != null) {
+      finalSum += root.getRight().getData();
+    }
+
+    root.setData(finalSum);
   }
 }
