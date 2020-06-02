@@ -23,4 +23,30 @@ public class Code04 {
   private int getMin(int x, int y) {
     return x < y ? x : y;
   }
+
+  int[][] mem = new int[3][4];
+
+  public int minPathCostMemo(int[][] cost, int m, int n) {
+    if (mem[m][n] != 0) {
+      return mem[m][n];
+    }
+
+    if (m == 0 && n == 0) {
+      return (mem[0][0] = cost[0][0]);
+    } else if (m == 0) {
+      mem[m][n] = minPathCost(cost, 0, n - 1) + cost[0][n];
+    } else if (n == 0) {
+      mem[m][n] = minPathCost(cost, m - 1, 0) + cost[m][0];
+    } else {
+      int x = minPathCost(cost, m - 1, n);
+      int y = minPathCost(cost, m, n - 1);
+      mem[m][n] = getMin(x, y) + cost[m][n];
+    }
+
+    return mem[m][n];
+
+
+  }
+
+
 }
