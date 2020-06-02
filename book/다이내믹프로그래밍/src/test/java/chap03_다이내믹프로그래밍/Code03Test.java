@@ -40,4 +40,11 @@ class Code03Test {
     System.out.println(code03.maxSubStringLength("9430723"));
   }
 
+  @Test
+  @DisplayName("부분문자열 다루기 예제 - DP")
+  public void 예제_부분문자열_DP() {
+    System.out.println(code03.maxSubStringLength_DP("142124"));
+    System.out.println(code03.maxSubStringLength_DP("9430723"));
+  }
+
 }
