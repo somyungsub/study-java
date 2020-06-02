@@ -15,4 +15,13 @@ class Code02Test {
     }
   }
 
+  @Test
+  @DisplayName("피보나치")
+  public void fibonacci() {
+    for (int i = 1; i <= 10; i++) {
+      System.out.println(i + " => " + code02.fibonacci(i));
+    }
+
+  }
+
 }
