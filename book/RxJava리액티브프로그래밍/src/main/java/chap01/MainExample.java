@@ -5,28 +5,32 @@ import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainExample {
   public static void main(String[] args) throws InterruptedException {
+//    executeExampleBasic();
+    executeSubscribeCancel();
+  }
 
+  private static void executeExampleBasic() throws InterruptedException {
     // 생산자 정의 -> 생산하기
-    Flowable<String> flowable = Flowable.create(new FlowableOnSubscribe<String>() {
-      @Override
-      public void subscribe(FlowableEmitter<String> emitter) throws Exception {
-        String[] datas = {"Hello, World!", "안녕, RxJava!", "하나더추가"};
-        for (String data : datas) {
+    Flowable<String> flowable = Flowable.create(emitter -> {
+      String[] datas = {"Hello, World!", "안녕, RxJava!", "하나더추가"};
+      for (String data : datas) {
 
-          // 구독해지 -> 처리 중단
-          if (emitter.isCancelled()) {
-            return;
-          }
-
-          // data 통지
-          emitter.onNext(data);
+        // 구독해지 -> 처리 중단
+        if (emitter.isCancelled()) {
+          System.out.println(" 구독해지 !");
+          return;
         }
 
-        // 완료 통지
-        emitter.onComplete();
+        // data 통지
+        emitter.onNext(data);
       }
+
+      // 완료 통지
+      emitter.onComplete();
     }, BackpressureStrategy.BUFFER);// 초과한 데이터는 버퍼링
 
     // 처리정의 -> 처리하기
@@ -39,7 +43,8 @@ public class MainExample {
           @Override
           public void onSubscribe(Subscription subscription) {
             this.subscription = subscription;
-            this.subscription.request(1L);
+//            this.subscription.request(1L);
+            this.subscription.request(Long.MAX_VALUE);  // 개수 제한 없이 통지
           }
 
           @Override
@@ -48,7 +53,7 @@ public class MainExample {
             System.out.println(threadName + " : " + data);        // 데이터 처리 (여기서는 간단히 출력)
 
             // 처리가 끝나고, 다음 1개를 요청하여 수신 대기
-            this.subscription.request(1L);
+//            this.subscription.request(1L);
           }
 
           @Override
@@ -65,6 +70,45 @@ public class MainExample {
 
     // 잠시 대기
     Thread.sleep(500L);
+  }
+
+  public static void executeSubscribeCancel() throws InterruptedException {
+    Flowable.interval(200L, TimeUnit.MILLISECONDS)
+        .subscribe(new Subscriber<Long>() {
+
+          private long startTime;
+          private Subscription subscription;
+
+          @Override
+          public void onSubscribe(Subscription subscription) {
+            this.subscription = subscription;
+            this.startTime = System.currentTimeMillis();
+            this.subscription.request(Long.MAX_VALUE);
+          }
+
+          @Override
+          public void onNext(Long data) {
+            // 구독 시작부터 500밀리초가 지나면 구독을 해지 -> 처리중단
+            if ((System.currentTimeMillis() - startTime) > 1000) {
+              subscription.cancel();
+              System.out.println("구독해지!");
+              return;
+            }
+            System.out.println("data = " + data);
+          }
+
+          @Override
+          public void onError(Throwable throwable) {
+
+          }
+
+          @Override
+          public void onComplete() {
+
+          }
+        });
+
+    Thread.sleep(2000L);
   }
 
 }
