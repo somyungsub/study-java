@@ -1,6 +1,7 @@
 package chap01;
 
-import io.reactivex.rxjava3.core.Flowable;
+
+import io.reactivex.Flowable;
 
 public class Main {
   public static void main(String[] args) {
@@ -22,5 +23,16 @@ public class Main {
     flowable1.subscribe(System.out::println);
     flowable1.subscribe(System.out::println);
     flowable1.subscribe(System.out::println);
+
+    System.out.println("===========================");
+
+    // 생성 -> 필터링(filter) -> 변환(map - 재생성)
+    Flowable<Integer> flowable2 = Flowable.just(1, 2, 3, 4, 5, 6, 7, 8, 9)
+            .filter(i -> i % 2 == 0)
+            .map(i -> i * 100);
+
+    // 소비
+    flowable2.subscribe(o -> System.out.println("o = " + o));
+    flowable2.subscribe(o -> System.out.println("o = " + o));
   }
 }
