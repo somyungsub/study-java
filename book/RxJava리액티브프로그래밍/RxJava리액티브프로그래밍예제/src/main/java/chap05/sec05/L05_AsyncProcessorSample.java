@@ -1,6 +1,6 @@
 package chap05.sec05;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.processors.AsyncProcessor;
 
 /** 예제 5-5 AsyncProcessor 예제*/

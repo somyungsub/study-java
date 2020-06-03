@@ -1,6 +1,6 @@
 package chap05.sec03;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.processors.BehaviorProcessor;
 
 /** 예제 5-3 BehaviorProcessor 예제 */

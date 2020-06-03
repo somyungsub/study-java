@@ -1,8 +1,8 @@
-package chap04.sec03;
+package chap04_DP적용전략.sec03;
 
 import java.util.concurrent.TimeUnit;
 
-import chap04.DebugMaybeObserver;
+import chap04_DP적용전략.DebugMaybeObserver;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 

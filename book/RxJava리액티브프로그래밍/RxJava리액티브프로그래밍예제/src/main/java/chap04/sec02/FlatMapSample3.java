@@ -1,6 +1,6 @@
-package chap04.sec02;
+package chap04_DP적용전략.sec02;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.Flowable;
 
 /** 예제 4 24 flatMap(onNextMapper, onErrorMapper, onCompleteSupplier) 예제 */

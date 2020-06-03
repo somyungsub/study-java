@@ -1,6 +1,6 @@
 package chap06.sec02;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.Flowable;
 
 /** 예제 6-2 doOnNext(onNext) 예제 */

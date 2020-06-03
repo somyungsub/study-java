@@ -1,6 +1,6 @@
 package chap05.sec02;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.processors.PublishProcessor;
 
 /** 예제 5-2 PublishProcessor 예제  */

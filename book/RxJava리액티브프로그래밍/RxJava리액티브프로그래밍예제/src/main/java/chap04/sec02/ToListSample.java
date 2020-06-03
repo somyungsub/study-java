@@ -1,8 +1,8 @@
-package chap04.sec02;
+package chap04_DP적용전략.sec02;
 
 import java.util.List;
 
-import chap04.DebugSingleObserver;
+import chap04_DP적용전략.DebugSingleObserver;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 

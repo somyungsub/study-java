@@ -1,8 +1,8 @@
-package chap04.sec07;
+package chap04_DP적용전략.sec07;
 
 import java.util.concurrent.TimeUnit;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.Flowable;
 
 /** 예제 4-100 repeatWhen(handler) 예제 - 기본 Flowable이 interval 메소드로부터 생성되는 경우 (원래의 Flowable이 다른 스레드에서 처리되는 경우) */

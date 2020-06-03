@@ -1,6 +1,6 @@
 package chap05.sec06;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.processors.UnicastProcessor;
 
 /** 예제 5-7 UnicastProcessor 예제 */

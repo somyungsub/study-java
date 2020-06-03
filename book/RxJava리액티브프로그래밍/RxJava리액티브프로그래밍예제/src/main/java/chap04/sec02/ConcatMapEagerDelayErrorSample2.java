@@ -1,8 +1,8 @@
-package chap04.sec02;
+package chap04_DP적용전략.sec02;
 
 import java.util.concurrent.TimeUnit;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.Flowable;
 
 /** 예제 4-29 concatMapEagerDelayError(mapper, tillTheEnd) 예제 （tillTheEnd=false일 때）*/

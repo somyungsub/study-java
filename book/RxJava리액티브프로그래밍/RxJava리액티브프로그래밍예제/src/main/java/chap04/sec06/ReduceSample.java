@@ -1,6 +1,6 @@
-package chap04.sec06;
+package chap04_DP적용전략.sec06;
 
-import chap04.DebugSingleObserver;
+import chap04_DP적용전략.DebugSingleObserver;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 

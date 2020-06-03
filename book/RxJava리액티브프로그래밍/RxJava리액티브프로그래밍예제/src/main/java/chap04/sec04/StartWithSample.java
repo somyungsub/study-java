@@ -1,8 +1,8 @@
-package chap04.sec04;
+package chap04_DP적용전략.sec04;
 
 import java.util.concurrent.TimeUnit;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.Flowable;
 
 /** 예제 4-78 startWith(other) 예제  */

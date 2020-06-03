@@ -1,6 +1,6 @@
-package chap04.sec07;
+package chap04_DP적용전략.sec07;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.Flowable;
 
 /** 예제 4-95 repeat(long)의 예제 */

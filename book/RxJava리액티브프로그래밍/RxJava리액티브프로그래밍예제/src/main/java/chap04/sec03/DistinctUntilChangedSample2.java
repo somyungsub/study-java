@@ -1,8 +1,8 @@
-package chap04.sec03;
+package chap04_DP적용전략.sec03;
 
 import java.math.BigDecimal;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.Flowable;
 
 /** 예제 4-54 distinctUntilChanged(comparer) 예제  */

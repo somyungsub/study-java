@@ -1,9 +1,9 @@
-package chap04.sec01;
+package chap04_DP적용전략.sec01;
 
 import java.util.Arrays;
 import java.util.List;
 
-import chap04.DebugSubscriber;
+import chap04_DP적용전략.DebugSubscriber;
 import io.reactivex.Flowable;
 
 public class FromIterableSample<T> {
