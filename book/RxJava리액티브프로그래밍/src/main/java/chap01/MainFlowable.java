@@ -1,16 +1,19 @@
 package chap01;
 
 import io.reactivex.*;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainExample {
+public class MainFlowable {
   public static void main(String[] args) throws InterruptedException {
 //    executeExampleBasic();
-    executeSubscribeCancel();
+//    executeSubscribeCancel();
+//    requestMethodSample();
+    disposableExample();
   }
 
   private static void executeExampleBasic() throws InterruptedException {
@@ -109,6 +112,47 @@ public class MainExample {
         });
 
     Thread.sleep(2000L);
+  }
+
+  public static void requestMethodSample() {
+    Flowable.just(1, 2, 3, 4, 5, 6, 7)
+        .subscribe(new Subscriber<Integer>() {
+          @Override
+          public void onSubscribe(Subscription subscription) {
+            System.out.println("onSubscribe start!");
+            subscription.request(Long.MAX_VALUE);
+            System.out.println("onSubscribe end!!");
+          }
+
+          @Override
+          public void onNext(Integer integer) {
+            System.out.println("integer = " + integer);
+          }
+
+          @Override
+          public void onError(Throwable throwable) {
+            throwable.printStackTrace();
+          }
+
+          @Override
+          public void onComplete() {
+            System.out.println("완료!!");
+          }
+        });
+  }
+
+  public static void disposableExample() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(200L, TimeUnit.MILLISECONDS);
+
+    Disposable disposable =
+        flowable.subscribe(
+            data -> System.out.println("data = " + data),
+            Throwable::printStackTrace,
+            () -> System.out.println("완료!!")
+        );
+    Thread.sleep(500L);
+    disposable.dispose();
+
   }
 
 }
