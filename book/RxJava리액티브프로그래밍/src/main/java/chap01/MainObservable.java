@@ -7,10 +7,13 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
+import java.util.concurrent.TimeUnit;
+
 public class MainObservable {
 
   public static void main(String[] args) throws InterruptedException {
-    observableExample();
+//    observableExample();
+    observableDispose();
   }
 
   public static void observableExample() throws InterruptedException {
@@ -43,6 +46,49 @@ public class MainObservable {
 
           @Override
           public void onNext(String data) {
+            String name = Thread.currentThread().getName();
+            System.out.println(name + " : " + data);
+          }
+
+          @Override
+          public void onError(Throwable e) {
+            e.printStackTrace();
+          }
+
+          @Override
+          public void onComplete() {
+            String name = Thread.currentThread().getName();
+            System.out.println(name + " : 완료");
+          }
+        });
+
+    Thread.sleep(2000L);
+  }
+
+  public static void observableDispose() throws InterruptedException {
+    Observable<Long> observable = Observable.interval(200L, TimeUnit.MILLISECONDS);
+
+    observable
+        .observeOn(Schedulers.computation())
+        .subscribe(new Observer<Long>() {
+          private long startTime;
+          private Disposable disposable;
+
+          @Override
+          public void onSubscribe(Disposable disposable) {
+            this.disposable = disposable;
+            this.startTime = System.currentTimeMillis();
+          }
+
+          @Override
+          public void onNext(Long data) {
+
+            if ((System.currentTimeMillis() - startTime) > 1000) {
+              System.out.println("구독해지!!");
+              disposable.dispose();
+              return;
+            }
+
             String name = Thread.currentThread().getName();
             System.out.println(name + " : " + data);
           }
