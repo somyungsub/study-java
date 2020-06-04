@@ -76,4 +76,36 @@ class Code04Test {
     }
   }
 
+  @Test
+  @DisplayName("연습문제4-3 - 타일 3행")
+  public void 연습문제_tile_DP() {
+    for (int i = 0; i < 10; i++) {
+      System.out.println(code04.countWays_연습문제4_3(i+1));
+    }
+  }
+
+  @Test
+  @DisplayName("예제 - 특정점수 도달하는 경우의수")
+  public void score() {
+    for (int i = 0; i < 15; i++) {
+      System.out.println(i+ " => " +code04.waysToScore(i));
+    }
+  }
+
+  @Test
+  @DisplayName("예제 - 특정점수 도달하는 경우의수 DP")
+  public void score_DP() {
+    for (int i = 0; i < 15; i++) {
+      System.out.println(i+ " => " +code04.waysToScore_DP(i));
+    }
+  }
+
+  @Test
+  @DisplayName("연습문제 4-4 - 특정점수 도달하는 경우의수 DP ")
+  public void 연습문제4_4score_DP() {
+    for (int i = 0; i < 15; i++) {
+      System.out.println(i+ " => " +code04.waysToScore_DP_연습문제4_4(i));
+    }
+  }
+
 }
