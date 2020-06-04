@@ -108,4 +108,12 @@ class Code04Test {
     }
   }
 
+  @Test
+  @DisplayName("예제 - 부분배열의 합 최댓값 구하기")
+  public void maxSubArraySum() {
+    int[] arr = {-2, -3, 4, -1, -2, 1, 5, -3};
+
+    System.out.println(code04.maxSubArraySum(arr, arr.length));
+  }
+
 }

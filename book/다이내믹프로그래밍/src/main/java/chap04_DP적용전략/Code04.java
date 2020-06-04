@@ -207,5 +207,21 @@ public class Code04 {
     return arr[n] == 1 ? 1 : arr[n] / 2;
   }
 
+  public int maxSubArraySum(int[] arr, int n) {
+    int maxSum = 0;
+    int tempSum = 0;
+
+    for (int i = 0; i < n; i++) {
+      tempSum = 0;
+      for (int j = i; j < n; j++) {
+        tempSum += arr[j];
+        if (tempSum > maxSum) {
+          maxSum = tempSum;
+        }
+      }
+    }
+
+    return maxSum;
+  }
 
 }
