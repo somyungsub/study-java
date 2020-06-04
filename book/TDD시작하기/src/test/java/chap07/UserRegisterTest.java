@@ -4,17 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserRegisterTest {
   private UserRegister userRegister;
   private StubWeakPasswordChecker stubWeakPasswordChecker= new StubWeakPasswordChecker();
   private MemoryUserRepository fakeRepository = new MemoryUserRepository();
+  private EmailNotifier spyEmailNotifier = new SpyEmailNotifier();
 
   @BeforeEach
   void setUp() {
-    userRegister = new UserRegister(stubWeakPasswordChecker, fakeRepository);
+    userRegister = new UserRegister(stubWeakPasswordChecker, fakeRepository ,spyEmailNotifier);
   }
 
   @Test
@@ -45,5 +45,13 @@ public class UserRegisterTest {
     assertEquals("id", saveUser.getId());
     assertEquals("email", saveUser.getEmail());
 
+  }
+
+  @Test
+  @DisplayName("가입하면 -> 이메일 발송여부 확인 - 스파이사용")
+  public void register_then_sendemail() {
+    userRegister.register("id", "pw", "email@email.com");
+    assertTrue(spyEmailNotifier.isCalled());
+    assertEquals("email@email.com", spyEmailNotifier.getEmail());
   }
 }
