@@ -60,6 +60,20 @@ class Code04Test {
     System.out.println(code04.minPathCostDP_연습문제4_1(cost));
   }
 
+  @Test
+  @DisplayName("예제 - 타일")
+  public void tile() {
+    for (int i = 0; i < 10; i++) {
+      System.out.println(code04.countWays(i+1));
+    }
+  }
 
+  @Test
+  @DisplayName("예제 - 타일 DP")
+  public void tile_DP() {
+    for (int i = 0; i < 10; i++) {
+      System.out.println(code04.countWays_DP(i+1));
+    }
+  }
 
 }
