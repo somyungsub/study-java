@@ -10,12 +10,12 @@ public class UserRegister {
     this.passwordChecker = passwordChecker;
   }
 
-  public UserRegister(WeakPasswordChecker passwordChecker, MemoryUserRepository fakeRepository) {
+  public UserRegister(WeakPasswordChecker passwordChecker, UserRepository fakeRepository) {
     this.passwordChecker = passwordChecker;
     this.fakeRepository = fakeRepository;
   }
 
-  public UserRegister(WeakPasswordChecker passwordChecker, MemoryUserRepository fakeRepository, EmailNotifier emailNotifier) {
+  public UserRegister(WeakPasswordChecker passwordChecker, UserRepository fakeRepository, EmailNotifier emailNotifier) {
     this.passwordChecker = passwordChecker;
     this.fakeRepository = fakeRepository;
     this.emailNotifier = emailNotifier;
