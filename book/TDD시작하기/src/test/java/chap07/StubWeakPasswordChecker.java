@@ -7,4 +7,8 @@ public class StubWeakPasswordChecker implements WeakPasswordChecker {
   public void setWeak(boolean weak) {
     this.weak = weak;
   }
+
+  public boolean checkPasswordWeak(String pw) {
+    return weak;
+  }
 }
