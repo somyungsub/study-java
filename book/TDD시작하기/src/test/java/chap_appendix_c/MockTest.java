@@ -8,8 +8,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
 public class MockTest {
@@ -83,6 +82,19 @@ public class MockTest {
 
     String s = mockList.set(5, "123");
     assertEquals("456", s);
+  }
+
+  @Test
+  @DisplayName("행위검증-메서드호출여부")
+  public void behavior_call() {
+    GameNumGen genMock = mock(GameNumGen.class);
+
+    Game game = new Game(genMock);
+    game.init(GameLevel.EASY);
+
+    then(genMock)            // genMock -> 모킹
+        .should(only())      // 실행되어야 한다 (오직 1번만)
+        .generate(any());    // 이 메서드가(인자는 아무거나 상관없음)
   }
 
 
