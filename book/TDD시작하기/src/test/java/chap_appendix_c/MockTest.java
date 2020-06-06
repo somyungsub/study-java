@@ -2,6 +2,7 @@ package chap_appendix_c;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 
 import java.util.List;
 
@@ -108,6 +109,25 @@ public class MockTest {
     then(genMock)
         .should(atLeast(1))
         .generate(any());
+  }
+
+  @Test
+  @DisplayName("인자캡쳐")
+  public void arg_captor() {
+    EmailNotifier mockEmailNotifier = mock(SpyEmailNotifier.class);
+    UserRegister userRegister = new UserRegister(mockEmailNotifier);
+
+
+    userRegister.register("id", "pw", "email@email.com");
+
+    ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);  // 인자 캡처
+    then(mockEmailNotifier)
+        .should()
+        .sendRegisterEmail(captor.capture()); // 캡처
+
+    String realEmail = captor.getValue();
+    assertEquals("email@email.com", realEmail);
+
   }
 
 
