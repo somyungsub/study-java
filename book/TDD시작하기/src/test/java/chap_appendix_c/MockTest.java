@@ -2,7 +2,10 @@ package chap_appendix_c;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
 
@@ -12,6 +15,8 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.*;
 import static org.mockito.Mockito.mock;
 
+
+@ExtendWith(MockitoExtension.class)
 public class MockTest {
 
   @Test
@@ -128,6 +133,21 @@ public class MockTest {
     String realEmail = captor.getValue();
     assertEquals("email@email.com", realEmail);
 
+  }
+
+  @Mock // Extension -> Mock 관련 애노테이션 사용 가능 (확장모듈에 의해 생성)
+  private GameNumGen genMockExtend;
+
+  @Test
+  @DisplayName("Junit5 확장 - Mockito")
+  public void mockito_junit_jupiter() {
+
+    Game game = new Game(genMockExtend);
+    game.init(GameLevel.EASY);
+
+    then(genMockExtend)
+        .should(atLeast(1))
+        .generate(any());
   }
 
 
