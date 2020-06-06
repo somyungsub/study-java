@@ -97,5 +97,18 @@ public class MockTest {
         .generate(any());    // 이 메서드가(인자는 아무거나 상관없음)
   }
 
+  @Test
+  @DisplayName("행위검증-메서드호출여부 should 사용")
+  public void behavior_call_should() {
+    GameNumGen genMock = mock(GameNumGen.class);
+
+    Game game = new Game(genMock);
+    game.init(GameLevel.EASY);
+
+    then(genMock)
+        .should(atLeast(1))
+        .generate(any());
+  }
+
 
 }
