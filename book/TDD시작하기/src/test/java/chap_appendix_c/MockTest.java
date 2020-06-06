@@ -7,7 +7,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willThrow;
 import static org.mockito.Mockito.mock;
@@ -72,8 +72,17 @@ public class MockTest {
 
     String num2 = genMock.generate(GameLevel.NORMAL);
     assertEquals("456", num2);
+  }
 
+  @Test
+  @DisplayName("인자매칭처리 - 메서드 인자 2개 이상")
+  public void arg_matching_eq() {
+    List<String> mockList = mock(List.class);
 
+    given(mockList.set(anyInt(), eq("123"))).willReturn("456");
+
+    String s = mockList.set(5, "123");
+    assertEquals("456", s);
   }
 
 
