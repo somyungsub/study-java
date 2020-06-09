@@ -1,8 +1,8 @@
 package thejava.annotation;
 
-import me.sso.Magic;
+//import me.sso.Magic;
 
-@Magic
+//@Magic
 public interface Moja {
 
   String pullOut();
