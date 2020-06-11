@@ -33,4 +33,26 @@ class CounterTest {
     executorService.shutdown();
   }
 
+  @Test
+  @DisplayName("atomic")
+  public void atomicInteger() throws ExecutionException, InterruptedException {
+    final AtomicCounter counter = new AtomicCounter();
+    Runnable runnable = () -> {
+      for (int i = 0; i < 10_000; i++) {
+        counter.increment();
+      }
+    };
+
+    ExecutorService executorService = Executors.newCachedThreadPool();
+    Future<Boolean> future1 = executorService.submit(runnable, true);
+    Future<Boolean> future2 = executorService.submit(runnable, true);
+
+    if (future1.get() && future2.get()) {
+      System.out.println(counter.get());
+    } else {
+      System.out.println("실패");
+    }
+    executorService.shutdown();
+  }
+
 }
