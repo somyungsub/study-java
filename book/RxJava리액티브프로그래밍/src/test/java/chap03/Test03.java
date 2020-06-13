@@ -1,12 +1,14 @@
 package chap03;
 
 import io.reactivex.Flowable;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.ResourceSubscriber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Flow;
 import java.util.concurrent.TimeUnit;
 
 public class Test03 {
@@ -116,6 +118,61 @@ public class Test03 {
 
     System.out.println("end");
     Thread.sleep(1000L);
+  }
+
+  @Test
+  @DisplayName("유효한 스케쥴러")
+  public void ex3_8() throws InterruptedException {
+    Flowable.just(1, 2, 3, 4, 5)
+        .subscribeOn(Schedulers.computation())  // RxComputationThreadPool - 연산처리 관련 스레드로 생성 (처음만 적용)
+        .subscribeOn(Schedulers.io())           // RxCachedThreadScheduler - io 작업 관련 스레드로 생성 (이후부터 무시)
+        .subscribeOn(Schedulers.single())       // RxSingleScheduler- 무시
+        .subscribe(data -> {
+          String name = Thread.currentThread().getName();
+          System.out.println(name + " : " + data);
+        });
+
+    Thread.sleep(1000L);
+  }
+
+  @Test
+  @DisplayName("observeOn 메서드로 bufferSize를 지정")
+  public void ex3_9() throws InterruptedException {
+
+    // 1. 300밀리초마다 데이터 통지 (0,1,2,...)
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .onBackpressureDrop();
+
+    // 비동기로 데이터를 받게하고, 버퍼 사이즈 1로 설정
+    int bufferSize = 2;
+    flowable
+        .observeOn(Schedulers.computation(), false, bufferSize)
+        .subscribe(new ResourceSubscriber<Long>() {
+          @Override
+          public void onNext(Long data) {
+            // 무거운 작업 가정
+            try {
+              Thread.sleep(1000L);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+
+            String name = Thread.currentThread().getName();
+            System.out.println(name + " : " + data);
+          }
+
+          @Override
+          public void onError(Throwable throwable) {
+            throwable.printStackTrace();
+          }
+
+          @Override
+          public void onComplete() {
+            System.out.println("완료!!");
+          }
+        });
+
+    Thread.sleep(7000L);
   }
 
 }
