@@ -1,6 +1,7 @@
 package chap03;
 
 import io.reactivex.Flowable;
+import io.reactivex.subscribers.ResourceSubscriber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -51,13 +52,70 @@ public class Test03 {
     /*
       생산 속도 < 처리속도
        - 그럼에도 불구하고, 1초 간격으로 처리됨
-       - 처리에 대한 걱정은 필요없음
+       - 생산속도에 영향을 미치지 않
      */
     Flowable.interval(1000L, TimeUnit.MILLISECONDS)
         .doOnNext(data -> System.out.println("emit : " + System.currentTimeMillis() + " 밀리초 : " + data))
         .subscribe(data -> Thread.sleep(500L));
 
     Thread.sleep(3000L);
+  }
+
+  @Test
+  @DisplayName("메인스레드에서 처리작업을 하는 Flowable")
+  public void ex3_6() {
+    System.out.println("Start!!");
+
+    Flowable.just(1, 2, 3)
+        .subscribe(new ResourceSubscriber<Integer>() {
+          @Override
+          public void onNext(Integer integer) {
+            String name = Thread.currentThread().getName();
+            System.out.println(name + " : " + integer);
+          }
+
+          @Override
+          public void onError(Throwable throwable) {
+            throwable.printStackTrace();
+          }
+
+          @Override
+          public void onComplete() {
+            String name = Thread.currentThread().getName();
+            System.out.println(name + " : 완료");
+          }
+        });
+
+    System.out.println("End!!");
+  }
+
+  @Test
+  @DisplayName("메인스레드가 아닌 스레드에서 처리작업을 하는 Flowable")
+  public void ex3_7() throws InterruptedException {
+    System.out.println("start");
+
+    Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .subscribe(new ResourceSubscriber<Long>() {
+          @Override
+          public void onNext(Long data) {
+            String name = Thread.currentThread().getName();
+            System.out.println(name + " : " + data);
+          }
+
+          @Override
+          public void onError(Throwable throwable) {
+            throwable.printStackTrace();
+          }
+
+          @Override
+          public void onComplete() {
+            String name = Thread.currentThread().getName();
+            System.out.println(name + " : 완료");
+          }
+        });
+
+    System.out.println("end");
+    Thread.sleep(1000L);
   }
 
 }
