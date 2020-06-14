@@ -7,7 +7,9 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class Test04 {
@@ -270,6 +272,39 @@ public class Test04 {
   public void ex4_35(){
     Single<List<Integer>> single = Flowable.just(1, 2, 3, 4, 5).toList();
     single.subscribe(new DebugSingleObserver<>());
+  }
+
+  @Test
+  @DisplayName("toMap (keySelector)")
+  public void ex4_39(){
+    Single<Map<Long, String>> single = Flowable.just("1A", "2B", "3C", "1D", "2E")
+        .toMap(data -> Long.valueOf(data.substring(0, 1)));
+
+    single.subscribe(new DebugSingleObserver<>());
+  }
+  
+  @Test
+  @DisplayName("toMap(keySelector, valueSelector")
+  public void ex4_40(){
+    Single<Map<Long, String>> single = Flowable.just("1A", "2B", "3C", "1D", "2E")
+        .toMap(
+            key -> Long.valueOf(key.substring(0, 1)),
+            value -> value.substring(1)
+        );
+
+    single.subscribe(new DebugSingleObserver<>());
+  }
+
+  @Test
+  @DisplayName("toMultimap(keySelector)")
+  public void ex4_45() throws Exception{
+    Single<Map<String, Collection<Long>>> single =
+        Flowable.interval(500L, TimeUnit.MILLISECONDS)
+        .take(5)
+        .toMultimap(data -> data % 2 == 0 ? "짝수" : "홀수");
+
+    single.subscribe(new DebugSingleObserver<>());
+    Thread.sleep(3000L);
   }
 
 }
