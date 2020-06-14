@@ -1,6 +1,7 @@
 package chap04;
 
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -236,6 +237,39 @@ public class Test04 {
 
     flowable.subscribe(new DebugSubscriber<>());
     Thread.sleep(4000L);
+  }
+
+  @Test
+  @DisplayName("buffer size")
+  public void ex4_30() throws InterruptedException {
+    Flowable<List<Long>> flowable = Flowable.interval(100L, TimeUnit.MILLISECONDS)
+        .take(10)
+        .buffer(3);
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(3000L);
+  }
+
+  @Test
+  @DisplayName("buffer boundaryIndicatorSupplier")
+  public void ex4_32() throws Exception{
+    Flowable<List<Long>> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(7)
+        .buffer(
+            () -> Flowable.timer(1000L, TimeUnit.MILLISECONDS)
+        );
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(4000L);
+  }
+
+  @Test
+  @DisplayName("toList")
+  public void ex4_35(){
+    Single<List<Integer>> single = Flowable.just(1, 2, 3, 4, 5).toList();
+    single.subscribe(new DebugSingleObserver<>());
   }
 
 }
