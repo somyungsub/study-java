@@ -110,7 +110,7 @@ public class Test04 {
     System.out.println("=========================");
 
     Flowable
-        .just("A","B","C","D","","E","F")
+        .just("A", "B", "C", "D", "", "E", "F")
         .flatMap(string -> {
           if (string.isBlank()) {
             System.out.println("빈값");
@@ -130,5 +130,112 @@ public class Test04 {
         .subscribe(new DebugSubscriber<>());
   }
 
+  @Test
+  @DisplayName("map")
+  public void ex4_16() {
+    Flowable<String> flowable = Flowable.just("A", "B", "C", "D", "E")
+        .map(data -> data.toLowerCase());
+
+    flowable.subscribe(new DebugSubscriber<>());
+  }
+
+  @Test
+  @DisplayName("flatMap")
+  public void ex4_18() {
+    Flowable<String> flowable = Flowable.just("A", "", "B", "", "C")
+        .flatMap(data -> {
+          if ("".equals(data)) {
+            return Flowable.empty();
+          } else {
+            return Flowable.just(data.toLowerCase());
+          }
+        });
+
+    flowable.subscribe(new DebugSubscriber<>());
+  }
+
+  @Test
+  @DisplayName("flatMap - mapper, combiner")
+  public void ex4_20() throws InterruptedException {
+    Flowable<String> flowable = Flowable.range(1, 3)
+        .flatMap(data -> {
+          return Flowable.interval(100L, TimeUnit.MILLISECONDS)
+              .take(3);
+        }, (sourceData, newData) -> "[" + sourceData + "]" + newData);
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(1000L);
+  }
+
+  @Test
+  @DisplayName("flatMap(onNextMapper, onErrorMapper, onCompleteSupplier)")
+  public void ex4_24() {
+    Flowable<Integer> original = Flowable.just(1, 2, 0, 4, 5).map(data -> 10 / data);
+
+    Flowable<Integer> flowable = original.flatMap(
+        data -> Flowable.just(data),
+        error -> Flowable.just(-1),
+        () -> Flowable.just(100)
+    );
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+  }
+
+  @Test
+  @DisplayName("concatMap")
+  public void ex4_26() throws InterruptedException {
+    Flowable<String> flowable = Flowable.range(10, 3)
+        .concatMap(sourceData -> Flowable.interval(500L, TimeUnit.MILLISECONDS)
+            .take(2)
+            .map(data -> {
+              long time = System.currentTimeMillis();
+              return time + "ms: [" + sourceData + "] " + data;
+            })
+        );
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(4000L);
+  }
   
+  @Test
+  @DisplayName("concatMapEager")
+  public void ex4_28() throws InterruptedException {
+    Flowable<String> flowable = Flowable.range(10, 3)
+        .concatMapEager(
+            sourceData -> Flowable.interval(500L, TimeUnit.MILLISECONDS)
+                .take(2)
+                .map(data -> {
+                  long time = System.currentTimeMillis();
+                  return time + "ms: [" + sourceData + "] " + data;
+                })
+        );
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(4000L);
+  }
+
+  @Test
+  @DisplayName("concatMapEager")
+  public void ex4_29() throws InterruptedException {
+    Flowable<String> flowable = Flowable.range(10, 3)
+        .concatMapEagerDelayError(
+            sourceData -> Flowable.interval(500L, TimeUnit.MILLISECONDS)
+                .take(3)
+                .doOnNext(data -> {
+                  if (sourceData == 11 && data == 1) {
+                    throw new Exception("예외 발생!");
+                  }
+                })
+                .map(data -> "[" + sourceData + "]" + data),
+            true
+        );
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(4000L);
+  }
+
 }
