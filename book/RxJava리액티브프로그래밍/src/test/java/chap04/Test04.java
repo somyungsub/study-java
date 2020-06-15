@@ -307,4 +307,16 @@ public class Test04 {
     Thread.sleep(3000L);
   }
 
+  @Test
+  @DisplayName("filter")
+  public void ex4_47() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .filter(data -> data % 2 == 0)
+        .take(20);
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(3000L);
+  }
+
 }
