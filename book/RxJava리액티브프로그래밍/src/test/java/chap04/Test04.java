@@ -358,7 +358,38 @@ public class Test04 {
 
     flowable.subscribe(new DebugSubscriber<>());
   }
+  
+  @Test
+  @DisplayName("take")
+  public void ex4_55() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(1000L, TimeUnit.MILLISECONDS)
+        .take(3);
 
+    flowable.subscribe(new DebugSubscriber<>());
 
+    Thread.sleep(4000L);
+  }
+
+  @Test
+  @DisplayName("takeUntil")
+  public void ex4_57() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .takeUntil(data -> data == 5);
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(4000L);
+  }
+
+  @Test
+  @DisplayName("takeUntil ohter")
+  public void ex4_58() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .takeUntil(Flowable.timer(1000L, TimeUnit.MILLISECONDS));
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(3000L);
+  }
 
 }
