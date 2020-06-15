@@ -318,5 +318,13 @@ public class Test04 {
 
     Thread.sleep(3000L);
   }
+  
+  @Test
+  @DisplayName("distinct")
+  public void ex4_49(){
+    Flowable<String> flowable = Flowable.just("A", "a", "B", "b", "A", "a", "B")
+        .distinct();
+    flowable.subscribe(new DebugSubscriber<>());
+  }
 
 }
