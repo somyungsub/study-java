@@ -5,6 +5,7 @@ import io.reactivex.Single;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collection;
@@ -326,5 +327,38 @@ public class Test04 {
         .distinct();
     flowable.subscribe(new DebugSubscriber<>());
   }
+
+  @Test
+  @DisplayName("distinct-keySelector")
+  public void ex4_50(){
+    Flowable<String> flowable = Flowable.just("A", "a", "B", "b", "A", "a", "B")
+        .distinct(data -> data.toLowerCase());
+
+    flowable.subscribe(new DebugSubscriber<>());
+  }
+
+  @Test
+  @DisplayName("distinctUntilChanged")
+  public void ex4_53(){
+    Flowable<String> flowable = Flowable.just("A", "a", "a", "A", "a")
+        .distinctUntilChanged();
+
+    flowable.subscribe(new DebugSubscriber<>());
+  }
+  
+  @Test
+  @DisplayName("distinctUntilChanged")
+  public void ex4_54(){
+    Flowable<String> flowable = Flowable.just("1", "1.0", "0.1", "0.10", "1")
+        .distinctUntilChanged((data1, data2) -> {
+          BigDecimal convert1 = new BigDecimal(data1);
+          BigDecimal convert2 = new BigDecimal(data2);
+          return convert1.compareTo(convert2) == 0;
+        });
+
+    flowable.subscribe(new DebugSubscriber<>());
+  }
+
+
 
 }
