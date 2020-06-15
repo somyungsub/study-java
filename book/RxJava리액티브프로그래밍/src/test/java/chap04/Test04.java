@@ -382,7 +382,7 @@ public class Test04 {
   }
 
   @Test
-  @DisplayName("takeUntil ohter")
+  @DisplayName("takeUntil other")
   public void ex4_58() throws InterruptedException {
     Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
         .takeUntil(Flowable.timer(1000L, TimeUnit.MILLISECONDS));
@@ -390,6 +390,17 @@ public class Test04 {
     flowable.subscribe(new DebugSubscriber<>());
 
     Thread.sleep(3000L);
+  }
+
+  @Test
+  @DisplayName("takeWhile")
+  public void ex4_60() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .takeWhile(data -> data != 3);
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(2500L);
   }
 
 }
