@@ -2,6 +2,7 @@ package chap04;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -547,6 +548,16 @@ public class Test04 {
         .debounce(data -> Flowable.timer(500L, TimeUnit.MILLISECONDS));
 
     flowable.subscribe(new DebugSubscriber<>());
+  }
+  
+  @Test
+  @DisplayName("elementAt - 지정한 위치 통지 (Maybe, Single)")
+  public void ex4_74() throws Exception{
+    Maybe<Long> maybe = Flowable.interval(100L, TimeUnit.MILLISECONDS)
+        .elementAt(3);
+
+    maybe.subscribe(new DebugMaybeObserver<>());
+    Thread.sleep(1000L);
   }
 
   
