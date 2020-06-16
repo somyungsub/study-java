@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -559,6 +560,56 @@ public class Test04 {
     maybe.subscribe(new DebugMaybeObserver<>());
     Thread.sleep(1000L);
   }
+  
+  @Test
+  @DisplayName("merge - 동시에 실행")
+  public void ex4_75() throws InterruptedException {
+    Flowable<Long> flowable1 = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(20);
+
+    Flowable<Long> flowable2 = Flowable.interval(500L, TimeUnit.MILLISECONDS)
+        .take(10)
+        .map(data -> data + 100L);
+
+    Flowable<Long> result = Flowable.merge(flowable1, flowable2);
+
+    result.subscribe(new DebugSubscriber<>());
+    Thread.sleep(3000L);
+  }
+
+  @Test
+  @DisplayName("concat - flowable 순차적으로 ")
+  public void ex4_76() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(5);
+
+    Flowable<Long> flowable2 = Flowable.interval(500L, TimeUnit.MILLISECONDS)
+        .take(2)
+        .map(data -> data + 100L);
+
+    Flowable<Long> result = Flowable.concat(flowable, flowable2);
+
+    result.subscribe(new DebugSubscriber<>());
+    Thread.sleep(3000L);
+  }
+
+  @Test
+  @DisplayName("concatEager")
+  public void ex4_77() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(5);
+
+    Flowable<Long> flowable1 = Flowable.interval(500L, TimeUnit.MILLISECONDS)
+        .take(5)
+        .map(data -> data + 100L);
+
+    List<Flowable<Long>> flowables = Arrays.asList(flowable, flowable1);
+    Flowable<Long> result = Flowable.concatEager(flowables);
+
+    result.subscribe(new DebugSubscriber<>());
+    Thread.sleep(3000L);
+  }
+
 
   
 
