@@ -1,5 +1,6 @@
 package chap04;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import org.junit.jupiter.api.DisplayName;
@@ -402,5 +403,152 @@ public class Test04 {
 
     Thread.sleep(2500L);
   }
+  
+  @Test
+  @DisplayName("takeLast")
+  public void ex4_61() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(800L, TimeUnit.MILLISECONDS)
+        .take(5)
+        .takeLast(2);
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(5000L);
+
+  }
+
+  @Test
+  @DisplayName("takeLast - time")
+  public void ex4_62() throws Exception{
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(10)
+        .takeLast(2, 1000L, TimeUnit.MILLISECONDS);
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(4000L);
+  }
+
+  @Test
+  @DisplayName("skip - 건너뛴후 통지")
+  public void ex4_63() throws Exception{
+    Flowable<Long> flowable = Flowable.interval(1000L, TimeUnit.MILLISECONDS)
+        .skip(2);
+
+    flowable.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(5000L);
+  }
+
+  @Test
+  @DisplayName("skipUntil - 첫통지시점 통지")
+  public void ex4_64() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .skipUntil(Flowable.timer(1000L, TimeUnit.MILLISECONDS));
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(2000L);
+  }
+
+  @Test
+  @DisplayName("skipWhile - false 시점 통지")
+  public void ex4_66() throws Exception {
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .skipWhile(data -> data != 3);
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(2000L);
+  }
+  
+  @Test
+  @DisplayName("skipLast - 마지막건 스킵")
+  public void ex4_67() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(1000L, TimeUnit.MILLISECONDS)
+        .take(5)
+        .skipLast(2);
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(6000L);
+  }
+
+  @Test
+  @DisplayName("throttleFirst")
+  public void ex4_68() throws Exception {
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(10)
+        .throttleFirst(1000L, TimeUnit.MILLISECONDS);
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(4000L);
+  }
+  
+  @Test
+  @DisplayName("throttleLast")
+  public void ex4_69() throws Exception{
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(9)
+        .throttleLast(1000L, TimeUnit.MILLISECONDS);
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(3000L);
+  }
+  
+  @Test
+  @DisplayName("sample == throttleLast")
+  public void ex4_70() throws InterruptedException {
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(9)
+        .sample(Flowable.interval(1000L, TimeUnit.MILLISECONDS));
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(3000L);
+
+  }
+
+  @Test
+  @DisplayName("throttleWithTimeout - 기간내 다음데이터가 오지않으면 통지")
+  public void ex4_72() throws Exception {
+    Flowable<Object> flowable = Flowable.create(emitter -> {
+      emitter.onNext("A");
+      Thread.sleep(1000L);
+      emitter.onNext("B");
+      Thread.sleep(300L);
+      emitter.onNext("C");
+      Thread.sleep(300L);
+      emitter.onNext("D");
+      Thread.sleep(1000L);
+      emitter.onNext("E");
+      Thread.sleep(100L);
+
+      emitter.onComplete();
+    }, BackpressureStrategy.BUFFER)
+        .throttleWithTimeout(500L, TimeUnit.MILLISECONDS);
+
+    flowable.subscribe(new DebugSubscriber<>());
+  }
+
+  @Test
+  @DisplayName("debounce - 기간내 다음데이터가 오지않으면 통지")
+  public void ex4_73() throws Exception {
+    Flowable<Object> flowable = Flowable.create(emitter -> {
+      emitter.onNext("A");
+      Thread.sleep(1000L);
+      emitter.onNext("B");
+      Thread.sleep(300L);
+      emitter.onNext("C");
+      Thread.sleep(300L);
+      emitter.onNext("D");
+      Thread.sleep(1000L);
+      emitter.onNext("E");
+      Thread.sleep(100L);
+
+      emitter.onComplete();
+    }, BackpressureStrategy.BUFFER)
+        .debounce(data -> Flowable.timer(500L, TimeUnit.MILLISECONDS));
+
+    flowable.subscribe(new DebugSubscriber<>());
+  }
+
+  
 
 }
