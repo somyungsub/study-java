@@ -658,7 +658,38 @@ public class Test04 {
     Thread.sleep(2000L);
   }
 
+  @Test
+  @DisplayName("isEmpty")
+  public void ex4_84() throws Exception{
+    Single<Boolean> empty = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(3)
+        .filter(data -> data >= 3)
+        .isEmpty();
 
+    empty.subscribe(new DebugSingleObserver<>());
+    Thread.sleep(4000L);
+  }
   
+  @Test
+  @DisplayName("contains")
+  public void ex4_85() throws InterruptedException {
+    Single<Boolean> single = Flowable.interval(1000L, TimeUnit.MILLISECONDS)
+        .contains(3L);
+
+    single.subscribe(new DebugSingleObserver<>());
+    Thread.sleep(4000L);
+  }
+
+
+  @Test
+  @DisplayName("all")
+  public void ex4_87() throws Exception {
+    Single<Boolean> single = Flowable.interval(500L, TimeUnit.MILLISECONDS)
+        .take(5)
+        .all(data -> data < 5);
+
+    single.subscribe(new DebugSingleObserver<>());
+    Thread.sleep(4000L);
+  }
 
 }
