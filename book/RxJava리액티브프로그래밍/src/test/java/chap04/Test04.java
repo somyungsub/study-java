@@ -610,6 +610,54 @@ public class Test04 {
     Thread.sleep(3000L);
   }
 
+  @Test
+  @DisplayName("startWith")
+  public void ex4_78() throws Exception{
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(5);
+
+    Flowable<Long> other = Flowable.interval(500L, TimeUnit.MILLISECONDS)
+        .take(2)
+        .map(data -> data + 100L);
+
+    Flowable<Long> result = flowable.startWith(other);
+
+    result.subscribe(new DebugSubscriber<>());
+    Thread.sleep(3000L);
+  }
+
+  @Test
+  @DisplayName("zip")
+  public void ex4_81() throws Exception{
+    Flowable<Long> flowable = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(5);
+
+    Flowable<Long> flowable2 = Flowable.interval(500L, TimeUnit.MILLISECONDS)
+        .take(3)
+        .map(data -> data + 100L);
+
+    Flowable<List<Long>> result = Flowable.zip(flowable, flowable2, (data1, data2) -> Arrays.asList(data1, data2));
+    result.subscribe(new DebugSubscriber<>());
+
+    Thread.sleep(2000L);
+  }
+
+  @Test
+  @DisplayName("combineLatest")
+  public void ex4_83() throws Exception{
+    Flowable<Long> flowable1 = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(5);
+
+    Flowable<Long> flowable2 = Flowable.interval(500L, TimeUnit.MILLISECONDS)
+        .take(3)
+        .map(data -> data + 100L);
+
+    Flowable<List<Long>> result = Flowable.combineLatest(flowable1, flowable2, (aLong, aLong2) -> Arrays.asList(aLong, aLong2));
+
+    result.subscribe(new DebugSubscriber<>());
+    Thread.sleep(2000L);
+  }
+
 
   
 
