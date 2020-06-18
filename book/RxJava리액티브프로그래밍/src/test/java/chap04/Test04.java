@@ -735,4 +735,13 @@ public class Test04 {
 
     flowable.subscribe(new DebugSubscriber<>());
   }
+  
+  @Test
+  @DisplayName("repeat")
+  public void ex4_95(){
+    Flowable<String> flowable = Flowable.just("A", "B", "C")
+        .repeat(2);
+
+    flowable.subscribe(new DebugSubscriber<>());
+  }
 }
