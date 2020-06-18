@@ -692,4 +692,32 @@ public class Test04 {
     Thread.sleep(4000L);
   }
 
+  @Test
+  @DisplayName("sequenceEqual - 순서맞는지 체크")
+  public void ex4_89() throws Exception{
+
+    Flowable<Long> flowable1 = Flowable.interval(1000L, TimeUnit.MILLISECONDS)
+        .take(3);
+    Flowable<Long> flowable2 = Flowable.just(0L, 1L, 2L);
+
+    Single<Boolean> single = Flowable.sequenceEqual(flowable1, flowable2);
+    single.subscribe(new DebugSingleObserver<>());
+
+    Thread.sleep(4000L);
+  }
+
+  @Test
+  @DisplayName("count")
+  public void ex4_90() throws Exception{
+    Single<Long> single = Flowable.interval(1000L, TimeUnit.MILLISECONDS)
+        .take(3)
+        .count();
+
+    single.subscribe(new DebugSingleObserver<>());
+    Thread.sleep(4000L);
+
+  }
+
+
+
 }
