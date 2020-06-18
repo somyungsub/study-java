@@ -718,6 +718,13 @@ public class Test04 {
 
   }
 
+  @Test
+  @DisplayName("reduce")
+  public void ex4_92() throws Exception{
+    Single<Integer> single = Flowable.just(1, 10, 100, 1000, 10000)
+        .reduce(0, (sum, data) -> sum + data);
 
+    single.subscribe(new DebugSingleObserver<>());
+  }
 
 }
