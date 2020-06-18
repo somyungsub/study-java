@@ -727,4 +727,12 @@ public class Test04 {
     single.subscribe(new DebugSingleObserver<>());
   }
 
+  @Test
+  @DisplayName("scan")
+  public void ex4_94() throws Exception{
+    Flowable<Integer> flowable = Flowable.just(1, 10, 100, 1000, 10000)
+        .scan(0, (integer, integer2) -> integer + integer2);
+
+    flowable.subscribe(new DebugSubscriber<>());
+  }
 }
