@@ -744,4 +744,19 @@ public class Test04 {
 
     flowable.subscribe(new DebugSubscriber<>());
   }
+
+  @Test
+  @DisplayName("repeatUntil")
+  public void ex4_97() throws Exception{
+    final long startTime = System.currentTimeMillis();
+    Flowable<Long> flowable = Flowable.interval(100L, TimeUnit.MILLISECONDS)
+        .take(3)
+        .repeatUntil(() -> {
+          System.out.println("called");
+          return System.currentTimeMillis() - startTime > 500L;
+        });
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(1000L);
+  }
 }
