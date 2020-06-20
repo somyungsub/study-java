@@ -1,5 +1,8 @@
 package chap04;
 
+import common.DebugMaybeObserver;
+import common.DebugSingleObserver;
+import common.DebugSubscriber;
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
@@ -864,6 +867,6 @@ public class Test04 {
         .timeout(1000L, TimeUnit.MILLISECONDS);
 
     flowable.subscribe(new DebugSubscriber<>());
-    Thread.sleep(2000L);
+    Thread.sleep(2000);
   }
 }

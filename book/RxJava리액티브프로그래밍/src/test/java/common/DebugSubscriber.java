@@ -1,4 +1,4 @@
-package chap04;
+package common;
 
 import io.reactivex.subscribers.DisposableSubscriber;
 

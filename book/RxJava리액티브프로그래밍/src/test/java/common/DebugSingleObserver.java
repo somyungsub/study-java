@@ -1,4 +1,4 @@
-package chap04;
+package common;
 
 import io.reactivex.SingleObserver;
 import io.reactivex.annotations.NonNull;
