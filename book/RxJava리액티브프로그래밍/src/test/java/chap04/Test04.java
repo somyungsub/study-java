@@ -779,4 +779,91 @@ public class Test04 {
     flowable.subscribe(new DebugSubscriber<>());
     Thread.sleep(5000L);
   }
+
+  @Test
+  @DisplayName("repeatWhen2 - 3건")
+  public void ex4_99_2() throws Exception{
+    Flowable<String> flowable = Flowable.interval(100L, TimeUnit.MILLISECONDS)
+        .take(3)
+        .repeatWhen(completeHandler -> {
+          return completeHandler
+              .delay(1000L, TimeUnit.MILLISECONDS)
+              .take(2)
+              .doOnNext(data -> System.out.println("emit : " + data))
+              .doOnComplete(() -> System.out.println("완료!!"));
+        })
+        .map(data -> {
+          long time = System.currentTimeMillis();
+          return time + "ms: " + data;
+        });
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(5000L);
+  }
+
+  @Test
+  @DisplayName("delay")
+  public void ex4_102() throws Exception{
+
+    System.out.println("처리시작 : " + System.currentTimeMillis());
+
+    Flowable<Object> flowable = Flowable.create(emitter -> {
+      System.out.println("구독 시작 : " + System.currentTimeMillis());
+
+      emitter.onNext("A");
+      emitter.onNext("B");
+      emitter.onNext("C");
+
+      emitter.onComplete();
+    }, BackpressureStrategy.BUFFER)
+        .delay(2000L, TimeUnit.MILLISECONDS)
+        .doOnNext(data -> System.out.println("통지시각 : " + System.currentTimeMillis()));
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(3000L);
+
+  }
+  
+  @Test
+  @DisplayName("delaySubscription")
+  public void ex4_103() throws Exception{
+    System.out.println("처리시작 : " + System.currentTimeMillis());
+
+    Flowable<Object> flowable = Flowable.create(emitter -> {
+      System.out.println("구독 시작 : " + System.currentTimeMillis());
+
+      emitter.onNext("A");
+      emitter.onNext("B");
+      emitter.onNext("C");
+
+      emitter.onComplete();
+    }, BackpressureStrategy.BUFFER)
+        .delaySubscription(2000L, TimeUnit.MILLISECONDS);
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(3000L);
+  }
+
+  @Test
+  @DisplayName("timeout")
+  public void ex4_105() throws Exception{
+    Flowable<Object> flowable = Flowable.create(emitter -> {
+      emitter.onNext(1);
+      emitter.onNext(2);
+
+      try {
+        Thread.sleep(1200L);
+      } catch (InterruptedException e) {
+        emitter.onError(e);
+        return;
+      }
+
+      emitter.onNext(3);
+      emitter.onComplete();
+    }, BackpressureStrategy.BUFFER)
+        .timeout(1000L, TimeUnit.MILLISECONDS);
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(2000L);
+  }
 }
