@@ -759,4 +759,24 @@ public class Test04 {
     flowable.subscribe(new DebugSubscriber<>());
     Thread.sleep(1000L);
   }
+  
+  @Test
+  @DisplayName("repeatWhen")
+  public void ex4_99() throws Exception{
+    Flowable<String> flowable = Flowable.just(1, 2, 3)
+        .repeatWhen(completeHandler -> {
+          return completeHandler
+              .delay(1000L, TimeUnit.MILLISECONDS)
+              .take(2)
+              .doOnNext(data -> System.out.println("emit : " + data))
+              .doOnComplete(() -> System.out.println("완료!!"));
+        })
+        .map(data -> {
+          long time = System.currentTimeMillis();
+          return time + "ms: " + data;
+        });
+
+    flowable.subscribe(new DebugSubscriber<>());
+    Thread.sleep(5000L);
+  }
 }
