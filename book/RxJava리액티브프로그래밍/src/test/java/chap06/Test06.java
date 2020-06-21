@@ -25,4 +25,19 @@ public class Test06 {
         .doOnComplete(() -> System.out.println("doOnComplete"))
         .subscribe(new DebugSubscriber<>());
   }
+  
+  @Test
+  @DisplayName("doOnError")
+  public void ex6_6() throws Exception{
+    Flowable.range(1, 5)
+        .doOnError(error -> System.out.println("기존 데이터:" + error.getMessage()))
+        .map(data -> {
+          if (data == 3) {
+            throw new Exception("예외발생!!!");
+          }
+          return data;
+        })
+        .doOnError(error -> System.out.println("-- map 적용 후 : " + error.getMessage()))
+        .subscribe(new DebugSubscriber<>());
+  }
 }
