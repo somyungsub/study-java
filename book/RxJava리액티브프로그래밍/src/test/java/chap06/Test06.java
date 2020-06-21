@@ -2,14 +2,16 @@ package chap06;
 
 import common.DebugSubscriber;
 import io.reactivex.Flowable;
-import io.reactivex.functions.Action;
 import io.reactivex.schedulers.Schedulers;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class Test06 {
   @Test
@@ -152,4 +154,20 @@ public class Test06 {
     Thread.sleep(1500L);
   }
 
+  @Test
+  @DisplayName("blockingFirst")
+  public void ex6_13() throws Exception{
+    Long actual = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .blockingFirst();
+    assertEquals(0L, actual);
+  }
+
+  @Test
+  @DisplayName("blockingLast")
+  public void ex6_14() throws Exception {
+    Long actual = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(3)
+        .blockingLast();
+    assertEquals(2L, actual);
+  }
 }
