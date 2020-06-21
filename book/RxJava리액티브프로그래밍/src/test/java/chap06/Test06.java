@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.util.concurrent.TimeUnit;
+
 public class Test06 {
   @Test
   @DisplayName("doOnNext")
@@ -107,6 +109,47 @@ public class Test06 {
             System.out.println("완료!!!");
           }
         });
+  }
+
+  @Test
+  @DisplayName("doOnCancel")
+  public void ex6_12() throws Exception{
+    Flowable.interval(100L, TimeUnit.MILLISECONDS)
+        .doOnCancel(() -> System.out.println("doOnCancel"))
+        .subscribe(new Subscriber<Long>() {
+
+          private long startTime;
+          private Subscription subscription;
+
+          @Override
+          public void onSubscribe(Subscription subscription) {
+            this.startTime = System.currentTimeMillis();
+            this.subscription = subscription;
+            this.subscription.request(Long.MAX_VALUE);
+          }
+
+          @Override
+          public void onNext(Long aLong) {
+            if (System.currentTimeMillis() - startTime > 1000L) {
+              System.out.println("구독해지!!");
+              subscription.cancel();
+              return;
+            }
+            System.out.println(aLong);
+          }
+
+          @Override
+          public void onError(Throwable throwable) {
+            System.out.println("error ==> " + throwable);
+          }
+
+          @Override
+          public void onComplete() {
+            System.out.println("완료!!!");
+          }
+        });
+
+    Thread.sleep(1500L);
   }
 
 }
