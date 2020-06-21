@@ -5,6 +5,8 @@ import io.reactivex.Flowable;
 import io.reactivex.functions.Action;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 public class Test06 {
   @Test
@@ -40,4 +42,35 @@ public class Test06 {
         .doOnError(error -> System.out.println("-- map 적용 후 : " + error.getMessage()))
         .subscribe(new DebugSubscriber<>());
   }
+
+  @Test
+  @DisplayName("doOnSubscribe")
+  public void ex6_8() throws Exception{
+    Flowable.range(1, 5)
+        .doOnSubscribe(subscription -> System.out.println("doOnSubscribe"))
+        .subscribe(new Subscriber<Integer>() {
+          @Override
+          public void onSubscribe(Subscription subscription) {
+            System.out.println("--- Subscriber: onSubscribe");
+            subscription.request(Long.MAX_VALUE);
+          }
+
+          @Override
+          public void onNext(Integer integer) {
+            System.out.println("--- subscriber: onNext: " + integer);
+          }
+
+          @Override
+          public void onError(Throwable throwable) {
+
+          }
+
+          @Override
+          public void onComplete() {
+
+          }
+        });
+
+  }
+
 }
