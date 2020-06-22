@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -169,5 +170,28 @@ public class Test06 {
         .take(3)
         .blockingLast();
     assertEquals(2L, actual);
+  }
+  
+  @Test
+  @DisplayName("blockingIterable")
+  public void ex6_15() throws Exception{
+    Iterable<Long> result = Flowable.interval(300L, TimeUnit.MILLISECONDS)
+        .take(5)
+        .blockingIterable();
+
+    Iterator<Long> iterator = result.iterator();
+    assertTrue(iterator.hasNext());
+
+    assertEquals(0L, iterator.next());
+    assertEquals(1L, iterator.next());
+    assertEquals(2L, iterator.next());
+
+    Thread.sleep(1000L);
+
+    assertEquals(3L, iterator.next());
+    assertEquals(4L, iterator.next());
+
+    assertFalse(iterator.hasNext());
+
   }
 }
