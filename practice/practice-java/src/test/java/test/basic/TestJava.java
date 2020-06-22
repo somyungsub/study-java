@@ -96,4 +96,26 @@ class TestJava {
     System.out.println("synchronizedMap size is "+ hmSyn2.size());
 
   }
+
+  @Test
+  @DisplayName("copyOf")
+  public void copyOf(){
+    String[] str = {"A", "B", "C"};
+    String[] copyOf = Arrays.copyOf(str, str.length + 1);
+    copyOf[copyOf.length - 1] = "new!!";
+    for (String s : str) {
+      System.out.println("s = " + s);
+    }
+    System.out.println("========================");
+
+    for (String s : copyOf) {
+      System.out.println("s = " + s);
+    }
+    System.out.println("========================");
+
+    str = copyOf;
+    for (String s : str) {
+      System.out.println("s = " + s);
+    }
+  }
 }
