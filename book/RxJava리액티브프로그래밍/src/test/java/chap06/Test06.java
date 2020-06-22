@@ -3,7 +3,8 @@ package chap06;
 import common.DebugSubscriber;
 import io.reactivex.Flowable;
 import io.reactivex.schedulers.Schedulers;
-import org.junit.jupiter.api.Assertions;
+import io.reactivex.subscribers.DisposableSubscriber;
+import io.reactivex.subscribers.TestSubscriber;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.reactivestreams.Subscriber;
@@ -192,6 +193,51 @@ public class Test06 {
     assertEquals(4L, iterator.next());
 
     assertFalse(iterator.hasNext());
+
+  }
+
+  @Test
+  @DisplayName("blockingSubscribe")
+  public void ex6_17(){
+    Flowable<Long> flowable = Flowable.interval(100L, TimeUnit.MILLISECONDS)
+        .take(5);
+
+    Counter counter = new Counter();
+
+    flowable.blockingSubscribe(new DisposableSubscriber<Long>() {
+      @Override
+      public void onNext(Long aLong) {
+        counter.increment();
+      }
+
+      @Override
+      public void onError(Throwable throwable) {
+        fail(throwable.getMessage());
+      }
+
+      @Override
+      public void onComplete() {
+        System.out.println("완료!!");
+      }
+    });
+    assertEquals(5, counter.get());
+  }
+
+  @Test
+  @DisplayName("TestSubscriber")
+  public void ex6_18() throws Exception{
+
+    Flowable<Long> target = Flowable.interval(100L, TimeUnit.MILLISECONDS);
+
+    TestSubscriber<Long> testSubscriber = target.test();
+
+    testSubscriber.assertEmpty();
+
+    testSubscriber.await(150L, TimeUnit.MILLISECONDS);
+    testSubscriber.assertValues(0L);
+
+    testSubscriber.await(100L, TimeUnit.MILLISECONDS);
+    testSubscriber.assertValues(0L, 1L);
 
   }
 }
