@@ -38,7 +38,7 @@ public class FruitStore {
           return true;
         } else {
           // 판매불가
-          System.out.println("사과의 재고가 부족합니다");
+          System.out.println(fruit.getName() + "의 재고가 부족합니다");
           System.out.println("재고수 확인후 다시 입력해주세요");
           return false;
         }
