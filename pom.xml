@@ -46,5 +46,6 @@
     <module>practice/udemy-junit5</module>
     <module>book/모던자바인액션</module>
     <module>book/다이내믹프로그래밍</module>
+    <module>book/병렬프로그래밍</module>
   </modules>
 </project>
