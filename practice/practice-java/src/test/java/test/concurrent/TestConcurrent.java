@@ -1,9 +1,13 @@
 package test.concurrent;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.UUID;
 import java.util.concurrent.*;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class TestConcurrent {
   @Test
@@ -54,6 +58,73 @@ public class TestConcurrent {
       }
     }
     executorService.shutdown();
+  }
+
+  private static ConcurrentHashMap<String, String> tokenStore = new ConcurrentHashMap<>();
+  @Test
+  @DisplayName("concurrentHashMap")
+  public void computeIfAbsent() {
+
+    final String token = UUID.randomUUID().toString().substring(0, 3);
+    String s1 = tokenStore.computeIfAbsent(token, s -> "tT");
+    String s2 = tokenStore.computeIfAbsent(token, s -> "tt");
+
+    System.out.println("token = " + token);
+    System.out.println("s1 = " + s1);
+    System.out.println("s2 = " + s2);
+
+    System.out.println("tokenStore = " + tokenStore);
+
+  }
+  @Test
+  @DisplayName("concurrentHashMap")
+  public void computeIfPresent() {
+
+    final String token = UUID.randomUUID().toString().substring(0, 3);
+
+    tokenStore.put(token, token);
+    System.out.println("1.token = " + token);
+    String s1 = tokenStore.computeIfPresent(token, (s, s2) -> s + s2);
+    String s2 = tokenStore.computeIfPresent(token, (s, s21) -> s + s21);
+
+    System.out.println("token = " + token);
+    System.out.println("s1 = " + s1);
+    System.out.println("s2 = " + s2);
+
+    System.out.println("tokenStore = " + tokenStore);
+
+  }
+
+  @Test
+  @DisplayName("concurrentHashMap - putIfAbsent")
+  public void putIfAbsent() {
+
+    final String token = UUID.randomUUID().toString().substring(0, 3);
+
+    System.out.println("1.token = " + token);
+    String s1 = tokenStore.putIfAbsent(token, token);
+    String s2 = tokenStore.putIfAbsent(token, "tt2");
+
+    System.out.println("token = " + token);
+    System.out.println("s1 = " + s1);
+    System.out.println("s2 = " + s2);
+
+    System.out.println("tokenStore = " + tokenStore);
+
+  }
+
+  @Test
+  @DisplayName("hashmap")
+  public void hashmap() {
+    ConcurrentHashMap<String, String> map = new ConcurrentHashMap<>();
+    int size = 10_000_000;
+    for (int i = 0; i < size; i++) {
+      String value = String.valueOf(i);
+      map.put(value, value);
+    }
+
+    assertEquals(size, map.size());
+
   }
 
   private String test2(int size) {
