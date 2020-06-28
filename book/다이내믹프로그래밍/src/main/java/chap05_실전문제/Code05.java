@@ -2,6 +2,9 @@ package chap05_실전문제;
 
 public class Code05 {
 
+  /*
+    5.1 최소 교정 비용 구하기
+   */
   public int editDistance_5_1_재귀(String str1, String str2) {
     if (str1.isEmpty()) {
       return str2.length();
@@ -70,4 +73,47 @@ public class Code05 {
     return Math.min(Math.min(delete, update), insert);
   }
 
+
+  /*
+    5.2 직사각형 총경로 수 구하기
+   */
+  public int numOfPaths_5_2_재귀(int m, int n) {
+
+    // 종료 조건
+    if (m == 0 && n == 0) {
+      return 0;
+    }
+
+    // 첫 번째 행 or 첫 번째 열
+    if (m == 0 || n == 0) {
+      return 1;
+    }
+
+    // 위 접근, 왼쪽 접근
+    return numOfPaths_5_2_재귀(m - 1, n) + numOfPaths_5_2_재귀(m, n - 1);
+  }
+
+  public int numOfPaths_5_2_DP(int m, int n) {
+    int[][] arr = new int[m + 1][n + 1];
+
+
+    // 1. 1열
+    for (int i = 1; i <= m; i++) {
+      arr[i][0] = 1;
+    }
+
+    // 2. 1행
+    for (int j = 1; j <= n; j++) {
+      arr[0][j] = 1;
+    }
+
+    // 3. 나머지
+    for (int i = 1; i <= m; i++) {
+      for (int j = 1; j <= n; j++) {
+        arr[i][j] = arr[i - 1][j] + arr[i][j - 1];
+      }
+    }
+
+    return arr[m][n];
+  }
 }
