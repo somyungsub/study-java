@@ -116,4 +116,29 @@ public class Code05 {
 
     return arr[m][n];
   }
+
+  public boolean isInterleaving_5_3_재귀(String A, String B, String C) {
+    if (A.isEmpty() && B.isEmpty() && C.isEmpty()) {
+      return true;
+    }
+
+    if (A.length() + B.length() != C.length()) {
+      return false;
+    }
+
+    boolean caseA = false;
+    boolean caseB = false;
+
+
+    if (!A.isEmpty() && A.charAt(0) == C.charAt(0)) {
+      caseA = isInterleaving_5_3_재귀(A.substring(1), B, C.substring(1));
+    }
+
+    if (!B.isEmpty() && B.charAt(0) == C.charAt(0)) {
+      caseB = isInterleaving_5_3_재귀(A, B.substring(1), C.substring(1));
+    }
+
+    return caseA || caseB;
+
+  }
 }

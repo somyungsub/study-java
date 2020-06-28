@@ -62,4 +62,11 @@ class Code05Test {
     assertEquals(35, code05.numOfPaths_5_2_DP(3, 4));
   }
 
+  @Test
+  @DisplayName("5.3 문자열 인터리빙 확인 문제 - 재귀")
+  public void ex5_3_재귀(){
+
+    assertTrue(code05.isInterleaving_5_3_재귀("xyz", "abcd", "xabyczd"));
+  }
+
 }
