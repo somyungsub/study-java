@@ -69,4 +69,10 @@ class Code05Test {
     assertTrue(code05.isInterleaving_5_3_재귀("xyz", "abcd", "xabyczd"));
   }
 
+  @Test
+  @DisplayName("5.3 문자열 인터리빙 확인 문제 - DP")
+  public void ex5_3_DP(){
+
+    assertTrue(code05.isInterleaving_5_3_DP("xyz", "abcd", "xabyczd"));
+  }
 }

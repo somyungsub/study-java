@@ -141,4 +141,55 @@ public class Code05 {
     return caseA || caseB;
 
   }
+
+  public boolean isInterleaving_5_3_DP(String A, String B, String C) {
+    int M = A.length();
+    int N = B.length();
+    int lengthC = C.length();
+
+    if (lengthC != M + N) {
+      return false;
+    }
+
+    boolean[][] matrix = new boolean[M + 1][N + 1];
+    matrix[0][0] = true;
+
+
+    for (int i = 1; i <= M; i++) {
+      if (A.charAt(i - 1) != C.charAt(i - 1)) {
+        matrix[i][0] = false;
+      } else {
+        matrix[i][0] = matrix[i - 1][0];
+      }
+    }
+
+    for (int j = 1; j <= N; j++) {
+      if (B.charAt(j - 1) != C.charAt(j - 1)) {
+        matrix[0][j] = false;
+      } else {
+        matrix[0][j] = matrix[0][j - 1];
+      }
+    }
+
+
+    for (int i = 1; i <= M; i++) {
+      for (int j = 1; j <= N; j++) {
+        char currentA = A.charAt(i - 1);
+        char currentB = B.charAt(i - 1);
+        char currentC = C.charAt(i + j - 1);
+
+        if (currentA == currentC && currentB != currentC) {
+          matrix[i][j] = matrix[i - 1][j];
+        } else if (currentA != currentC && currentB == currentC) {
+          matrix[i][j] = matrix[i][j - 1];
+        } else if (currentA == currentC && currentB == currentC) {
+          matrix[i][j] = matrix[i - 1][j] || matrix[i][j - 1];
+        } else {
+          matrix[i][j] = false;
+        }
+      }
+    }
+
+    return matrix[M][N];
+  }
 }
