@@ -175,7 +175,7 @@ public class Code05 {
     for (int i = 1; i <= M; i++) {
       for (int j = 1; j <= N; j++) {
         char currentA = A.charAt(i - 1);
-        char currentB = B.charAt(i - 1);
+        char currentB = B.charAt(j - 1);
         char currentC = C.charAt(i + j - 1);
 
         if (currentA == currentC && currentB != currentC) {
