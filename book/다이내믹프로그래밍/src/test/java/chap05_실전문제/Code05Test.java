@@ -76,4 +76,16 @@ class Code05Test {
     assertTrue(code05.isInterleaving_5_3_재귀("xyz", "abcd", "xabyczd"));
     assertTrue(code05.isInterleaving_5_3_DP("bcc", "bbca", "bbcbcac"));
   }
+
+  @Test
+  @DisplayName("5.4 부분집합의 합 구하기")
+  public void ex5_4_재귀(){
+    assertTrue(code05.isSubsetSum_5_4_재귀(new int[]{3, 2, 7, 1}, 4, 6));
+    assertTrue(code05.isSubsetSum_5_4_재귀(new int[]{3, 2, 7, 1}, 4, 3));
+    assertFalse(code05.isSubsetSum_5_4_재귀(new int[]{3, 2, 7, 1}, 4, 20));
+
+    assertTrue(code05.isSubsetSum_5_4_재귀(new int[]{3, 2, 7, 1}, 1, 3));
+    assertFalse(code05.isSubsetSum_5_4_재귀(new int[]{3, 2, 7, 1}, 1, 8));
+
+  }
 }

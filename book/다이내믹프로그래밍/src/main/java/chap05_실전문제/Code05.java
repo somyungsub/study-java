@@ -1,5 +1,7 @@
 package chap05_실전문제;
 
+import java.util.Arrays;
+
 public class Code05 {
 
   /*
@@ -191,5 +193,23 @@ public class Code05 {
     }
 
     return matrix[M][N];
+  }
+
+  public boolean isSubsetSum_5_4_재귀(int[] arr, int n, int X) {
+
+    if (X == 0) {
+      return true;
+    }
+
+    if (n == 0) {
+      return false;
+    }
+
+    if (arr[0] > X) {
+      return isSubsetSum_5_4_재귀(Arrays.copyOfRange(arr, 1, arr.length), n - 1, X);
+    }
+
+    return isSubsetSum_5_4_재귀(Arrays.copyOfRange(arr, 1, arr.length), n - 1, X)
+        || isSubsetSum_5_4_재귀(Arrays.copyOfRange(arr, 1, arr.length), n - 1, X - arr[0]);
   }
 }
