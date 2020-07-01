@@ -99,4 +99,25 @@ class Code05Test {
     assertFalse(code05.isSubsetSum_5_4_DP(new int[]{3, 2, 7, 1}, 1, 8));
 
   }
+
+  @Test
+  @DisplayName("5.5 최장공통 부분 수열 길이 구하기 - 재귀")
+  public void ex5_5_재귀(){
+    assertEquals(3, code05.lcsLength_5_5_재귀("ABCD", "AEBD", 4, 4));
+
+  }
+
+  @Test
+  @DisplayName("5.5 최장공통 부분 수열 길이 구하기 - 메모전략")
+  public void ex5_5_메모전략(){
+    int[][] memo = new int[30][30];
+    for (int i = 0; i < memo.length; i++) {
+      for (int j = 0; j < memo[0].length; j++) {
+        memo[i][j] = -1;
+      }
+    }
+    code05 = new Code05(memo);
+    assertEquals(3, code05.lcsLength_5_5_memo("ABCD", "AEBD", 4, 4));
+  }
+
 }

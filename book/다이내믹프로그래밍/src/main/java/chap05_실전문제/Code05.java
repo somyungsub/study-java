@@ -245,5 +245,50 @@ public class Code05 {
 
     return subSum[n - 1][X];
   }
-  
+
+  public int lcsLength_5_5_재귀(String X, String Y, int m, int n) {
+    if (m == 0 || n == 0) {
+      return 0;
+    }
+
+    if (X.charAt(m - 1) == Y.charAt(n - 1)) {
+      return 1 + lcsLength_5_5_재귀(X, Y, m - 1, n - 1);
+    } else {
+      return getMax(lcsLength_5_5_재귀(X, Y, m, n - 1), lcsLength_5_5_재귀(X, Y, m - 1, n));
+    }
+  }
+
+  private int[][] LCS_TABLE;
+
+  public Code05(int[][] LCS_TABLE) {
+    this.LCS_TABLE = LCS_TABLE;
+  }
+
+  public Code05() {
+  }
+
+  public int lcsLength_5_5_memo(String X, String Y, int m, int n) {
+    if (m == 0 || n == 0) {
+      return 0;
+    }
+
+    if (LCS_TABLE[m][n] != -1) {
+      return LCS_TABLE[m][n];
+    }
+
+    if (X.charAt(m - 1) == Y.charAt(n - 1)) {
+      LCS_TABLE[m][n] =  1 + lcsLength_5_5_재귀(X, Y, m - 1, n - 1);
+    } else {
+      LCS_TABLE[m][n] = getMax(lcsLength_5_5_재귀(X, Y, m, n - 1), lcsLength_5_5_재귀(X, Y, m - 1, n));
+    }
+
+    return LCS_TABLE[m][n];
+  }
+
+
+
+  private int getMax(int a , int b) {
+    return Math.max(a, b);
+  }
+
 }
