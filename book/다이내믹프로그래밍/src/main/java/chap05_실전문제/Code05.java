@@ -212,4 +212,38 @@ public class Code05 {
     return isSubsetSum_5_4_재귀(Arrays.copyOfRange(arr, 1, arr.length), n - 1, X)
         || isSubsetSum_5_4_재귀(Arrays.copyOfRange(arr, 1, arr.length), n - 1, X - arr[0]);
   }
+
+  public boolean isSubsetSum_5_4_DP(int[] arr, int n, int X) {
+    boolean[][] subSum = new boolean[n][X + 1];
+
+    for (int i = 0; i < n; i++) {
+      for (int j = 0; j <= X; j++) {
+        subSum[i][j] = false;
+      }
+    }
+
+    for (int i = 0; i < n; i++) {
+      subSum[i][0] = true;
+    }
+
+    for (int j = 1; j <= X; j++) {
+      subSum[0][j] = arr[0] == j;
+    }
+
+    for (int i = 1; i < n; i++) {
+      int v = arr[i];
+      for (int j = 1; j <= X; j++) {
+        if (j < v) {
+          subSum[i][j] = subSum[i - 1][j];
+        } else if (subSum[i - 1][j]) {
+          subSum[i][j] = true;
+        } else {
+          subSum[i][j] = subSum[i - 1][j - v];
+        }
+      }
+    }
+
+    return subSum[n - 1][X];
+  }
+  
 }

@@ -78,7 +78,7 @@ class Code05Test {
   }
 
   @Test
-  @DisplayName("5.4 부분집합의 합 구하기")
+  @DisplayName("5.4 부분집합의 합 구하기 - 재귀")
   public void ex5_4_재귀(){
     assertTrue(code05.isSubsetSum_5_4_재귀(new int[]{3, 2, 7, 1}, 4, 6));
     assertTrue(code05.isSubsetSum_5_4_재귀(new int[]{3, 2, 7, 1}, 4, 3));
@@ -86,6 +86,17 @@ class Code05Test {
 
     assertTrue(code05.isSubsetSum_5_4_재귀(new int[]{3, 2, 7, 1}, 1, 3));
     assertFalse(code05.isSubsetSum_5_4_재귀(new int[]{3, 2, 7, 1}, 1, 8));
+
+  }
+  @Test
+  @DisplayName("5.4 부분집합의 합 구하기 - DP")
+  public void ex5_4_DP(){
+    assertTrue(code05.isSubsetSum_5_4_DP(new int[]{3, 2, 7, 1}, 4, 6));
+    assertTrue(code05.isSubsetSum_5_4_DP(new int[]{3, 2, 7, 1}, 4, 3));
+    assertFalse(code05.isSubsetSum_5_4_DP(new int[]{3, 2, 7, 1}, 4, 20));
+
+    assertTrue(code05.isSubsetSum_5_4_DP(new int[]{3, 2, 7, 1}, 1, 3));
+    assertFalse(code05.isSubsetSum_5_4_DP(new int[]{3, 2, 7, 1}, 1, 8));
 
   }
 }
