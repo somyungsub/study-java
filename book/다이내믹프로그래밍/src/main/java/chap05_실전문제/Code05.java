@@ -285,6 +285,29 @@ public class Code05 {
     return LCS_TABLE[m][n];
   }
 
+  public int lcsLength_5_5_DP(String X, String Y, int m, int n) {
+
+    int[][] LCS_DP = new int[m + 1][n + 1];
+
+    for (int i = 0; i <= m; i++) {
+      for (int j = 0; j <= n; j++) {
+        LCS_DP[i][j] = 0;
+      }
+    }
+
+    for (int i = 1; i <= m; i++) {
+      for (int j = 1; j <= n; j++) {
+        if (X.charAt(i - 1) == Y.charAt(j - 1)) {
+          LCS_DP[i][j] = LCS_DP[i - 1][j - 1] + 1;
+        } else {
+          LCS_DP[i][j] = getMax(LCS_DP[i - 1][j], LCS_DP[i][j - 1]);
+        }
+      }
+    }
+
+    return LCS_DP[m][n];
+  }
+
 
 
   private int getMax(int a , int b) {

@@ -120,4 +120,12 @@ class Code05Test {
     assertEquals(3, code05.lcsLength_5_5_memo("ABCD", "AEBD", 4, 4));
   }
 
+  @Test
+  @DisplayName("5.5 최장공통 부분 수열 길이 구하기 - DP")
+  public void ex5_5_DP(){
+    assertEquals(3, code05.lcsLength_5_5_DP("ABCD", "AEBD", 4, 4));
+
+  }
+
+
 }
