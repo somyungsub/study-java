@@ -387,8 +387,32 @@ public class Code05 {
     return result;
   }
 
+  public int minCoins_5_7_DP(int[] coin, int N, int S) {
 
+    int[] result = new int[S + 1];
 
+    result[0] = 0;
 
+    for (int i = 1; i <= S; i++) {
+      result[i] = Integer.MAX_VALUE;
+    }
+
+    // 1원부터 계산해 올라가기
+    for (int i = 1; i <= S ; i++) {
+      for (int j = 0; j < N; j++) {
+
+        // 현재 금액 보다 작은 액면가의 동전에 대해서만 검사
+        if (coin[j] <= i) {
+          int temp = result[i - coin[j]];
+          System.out.println("temp = " + temp);
+          if (temp != Integer.MAX_VALUE && temp + 1 < result[i]) {
+            result[i] = temp + 1;
+          }
+        }
+      }
+    }
+
+    return result[S];
+  }
 
 }

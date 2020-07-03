@@ -141,5 +141,12 @@ class Code05Test {
     System.out.println(code05.minCoins_5_7_재귀(new int[]{1, 5, 15}, 3, 65));
   }
 
+  @Test
+  @DisplayName("5.7 거스름돈 최적화 - DP")
+  public void ex5_7_DP() {
+    System.out.println(code05.minCoins_5_7_DP(new int[]{1, 5, 20}, 3, 65));
+//    System.out.println(code05.minCoins_5_7_DP(new int[]{1, 5, 15}, 3, 65));
+  }
+
 
 }
