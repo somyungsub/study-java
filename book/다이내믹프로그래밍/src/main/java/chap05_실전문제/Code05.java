@@ -308,10 +308,63 @@ public class Code05 {
     return LCS_DP[m][n];
   }
 
+  public int lcsLength_5_6_DP(String X, String Y, int m, int n) {
+    int[][] LCS_DP = new int[m + 1][n + 1];
+
+    for (int i = 0; i <= m; i++) {
+      for (int j = 0; j <= n; j++) {
+        LCS_DP[i][j] = 0;
+      }
+    }
+
+    for (int i = 1; i <= m; i++) {
+      for (int j = 1; j <= n; j++) {
+        if (X.charAt(i - 1) == Y.charAt(j - 1)) {
+          LCS_DP[i][j] = LCS_DP[i - 1][j - 1] + 1;
+        } else {
+          LCS_DP[i][j] = getMax(LCS_DP[i - 1][j], LCS_DP[i][j - 1]);
+        }
+      }
+    }
+
+    // 추가 !
+    int lcsLength = LCS_DP[m][n];
+
+    char[] lcs = new char[lcsLength + 1];
+    lcs[lcsLength] = '\0';
+
+    lcsLength--;
+
+    // 우하단 시작
+    int i = m, j = n;
+    while (i > 0 && j > 0) {
+
+      // X와 Y의 현재 글자가 같으면 LCS 포함
+      if (X.charAt(i - 1) == Y.charAt(j - 1)) {
+        lcs[lcsLength] = X.charAt(i - 1);
+        i--;
+        j--;
+        lcsLength--;
+      } else if (LCS_DP[i - 1][j] > LCS_DP[i][j - 1]) {
+        i--;
+      } else {
+        j--;
+      }
+    }
+
+    System.out.printf("LCS is %s \n", String.valueOf(lcs));
+
+    return LCS_DP[m][n];
+
+  }
+
 
 
   private int getMax(int a , int b) {
     return Math.max(a, b);
   }
+
+
+
 
 }

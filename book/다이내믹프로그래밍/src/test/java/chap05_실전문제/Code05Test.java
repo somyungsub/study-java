@@ -127,5 +127,12 @@ class Code05Test {
 
   }
 
+  @Test
+  @DisplayName("5.6 최장공통 부분 수열 길이 구하기 문자열 출력 - DP")
+  public void ex5_6_DP(){
+    assertEquals(3, code05.lcsLength_5_6_DP("ABCD", "AEBD", 4, 4));
+
+  }
+
 
 }
