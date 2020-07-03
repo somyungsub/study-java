@@ -134,5 +134,12 @@ class Code05Test {
 
   }
 
+  @Test
+  @DisplayName("5.7 거스름돈 최적화 - 재귀")
+  public void ex5_7_재귀() {
+    System.out.println(code05.minCoins_5_7_재귀(new int[]{1, 5, 20}, 3, 65));
+    System.out.println(code05.minCoins_5_7_재귀(new int[]{1, 5, 15}, 3, 65));
+  }
+
 
 }

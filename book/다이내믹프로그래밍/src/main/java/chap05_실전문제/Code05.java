@@ -358,11 +358,35 @@ public class Code05 {
 
   }
 
-
-
   private int getMax(int a , int b) {
     return Math.max(a, b);
   }
+
+
+  public int minCoins_5_7_재귀(int[] coin, int N, int S) {
+    if (S == 0) {
+      return 0;
+    }
+
+    // 최솟값을 저장하는 변수
+    int result = Integer.MAX_VALUE;
+
+    for (int i = 0; i < N; i++) {
+
+      // 액면가가 S보다 같거나 작은 모든 동전에 대해서 재귀
+      if (coin[i] <= S) {
+        int temp = minCoins_5_7_재귀(coin, N, S - coin[i]);
+
+        // 지금까지 최솟값보다 더 작으면 최소값 할당
+        if (temp + 1 < result) {
+          result = temp + 1;
+        }
+      }
+    }
+
+    return result;
+  }
+
 
 
 
