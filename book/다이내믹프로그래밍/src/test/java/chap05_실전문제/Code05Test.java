@@ -164,4 +164,11 @@ class Code05Test {
     System.out.println(code05.maxValue_5_8_memo(value, 4));
   }
 
+  @Test
+  @DisplayName("5.8 철근 자르기 - DP")
+  public void ex5_8_DP() {
+    int[] value = {0, 1, 5, 8, 9, 10, 17, 17, 20}; // i에 대한 가격
+    System.out.println(code05.maxValue_5_8_memo(value, 4));
+  }
+
 }

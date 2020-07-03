@@ -450,4 +450,19 @@ public class Code05 {
     return maxValues[N - 1];
   }
 
+  public int maxValue_5_8_DP(int[] value, int N) {
+    int[] max = new int[N + 1];
+    max[0] = 0;
+
+    for (int i = 1; i <= N; i++) {
+      max[i] = Integer.MIN_VALUE;
+
+      for (int j = 1; j <= i; j++) {
+        max[i] = getMax(max[i], value[j] + max[i - j]);
+      }
+    }
+
+    return max[N];
+  }
+
 }
