@@ -397,6 +397,8 @@ public class Code05 {
       result[i] = Integer.MAX_VALUE;
     }
 
+    System.out.println(result[1]);
+
     // 1원부터 계산해 올라가기
     for (int i = 1; i <= S ; i++) {
       for (int j = 0; j < N; j++) {
@@ -413,6 +415,39 @@ public class Code05 {
     }
 
     return result[S];
+  }
+
+  public int maxValue_5_8_재귀(int[] value, int N) {
+
+    if (N <= 0) {
+      return 0;
+    }
+
+    int price = Integer.MIN_VALUE;
+
+    for (int i = 1; i <= N; i++) {
+      price = getMax(price, value[i] + maxValue_5_8_재귀(value, N - i));
+    }
+    return price;
+  }
+
+  private static int[] maxValues = new int[100];
+  public int maxValue_5_8_memo(int[] value, int N) {
+
+    if (N <= 0) {
+      return 0;
+    }
+
+    if (maxValues[N - 1] != 0) {
+      return maxValues[N - 1];
+    }
+
+    maxValues[N - 1] = Integer.MIN_VALUE;
+
+    for (int i = 1; i <= N; i++) {
+      maxValues[N - 1] = getMax(maxValues[N - 1], value[i] + maxValue_5_8_재귀(value, N - i));
+    }
+    return maxValues[N - 1];
   }
 
 }
