@@ -1,5 +1,8 @@
 package algorithm.test;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 public class Page {
 
   int[] memo = new int[60];
@@ -46,5 +49,37 @@ public class Page {
       memo[n] = fibonacci(n - 1) + fibonacci(n - 2);
     }
     return memo[n];
+  }
+
+  public String page2(String contents) {
+    String[] lines = contents.split("\n");
+    StringBuilder sb = new StringBuilder();
+
+    int size = Integer.parseInt(lines[0]);
+    for (int i = 1; i <= size; i++) {
+      String input = lines[i];
+      String output = transInput(input);
+      sb.append(output).append(System.lineSeparator());
+    }
+
+    return sb.toString();
+  }
+
+  private String transInput(String input) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < input.length(); i++) {
+      char c = input.charAt(i);
+      if (Character.isAlphabetic(c) || Character.isDigit(c)) {
+        sb.append(c);
+      } else {
+        sb.append(" ");
+      }
+    }
+
+    String result = Arrays.stream(sb.toString().split(" "))
+        .filter(s -> !s.isBlank())
+        .collect(Collectors.joining(" "));
+
+    return result;
   }
 }
