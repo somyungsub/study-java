@@ -47,5 +47,6 @@
     <module>book/모던자바인액션</module>
     <module>book/다이내믹프로그래밍</module>
     <module>book/병렬프로그래밍</module>
+    <module>book/자료구조와_함께배우는_알고리즘_Java</module>
   </modules>
 </project>
