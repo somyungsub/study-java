@@ -31,4 +31,18 @@ class PageTest {
     String result = page.page2(sb.toString());
     System.out.println(result);
   }
+
+  @Test
+  @DisplayName("3. 정렬 O(n)")
+  public void sort_on(){
+    int[] arr1 = {1, 2, 3, 5, 9, 20, 33, 34};
+    int[] arr2 = {8, 9, 15, 30};
+
+    int[] sort = page.page3(arr1, arr2);
+
+    for (int i : sort) {
+      System.out.println("i = " + i);
+    }
+
+  }
 }

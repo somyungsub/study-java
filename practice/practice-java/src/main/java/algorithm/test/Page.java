@@ -82,4 +82,23 @@ public class Page {
 
     return result;
   }
+
+  public int[] page3(int[] arr1, int[] arr2) {
+    int[] sort = new int[arr1.length + arr2.length];
+    int key = 0;
+    int count = 0;
+
+    for (int i = 0; i < arr1.length; i++) {
+
+      for (int j = count; j < arr2.length; j++) {
+        if (arr1[i] >= arr2[j]) {
+          count++;
+          sort[key++] = arr2[j];
+        }
+      }
+      sort[key++] = arr1[i];
+    }
+
+    return sort;
+  }
 }
