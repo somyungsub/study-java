@@ -105,6 +105,22 @@ class NetTest {
     }
   }
 
+  @Test
+  @DisplayName("URL2")
+  public void url2() throws MalformedURLException {
+    URL u = new URL("http", "localhost", "/abc"); // port 80(기본포트 사용)
+    URL u2 = new URL("http", "localhost",8080, "/abc");
+    URL u3 = new URL("http", "localhost",8080, "/abc/index.html");
+
+    System.out.println("u = " + u);
+    System.out.println("u2 = " + u2);
+    System.out.println("u3 = " + u3);
+
+    URL u4 = new URL(u3, "test.html");
+    System.out.println("u4 = " + u4);
+  }
+
+
 
 
 }
