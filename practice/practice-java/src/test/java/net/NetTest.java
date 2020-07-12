@@ -62,6 +62,11 @@ class NetTest {
     for (InetAddress address : allByName) {
       System.out.println("address = " + address);
     }
+    System.out.println("======= localhost =======");
+    InetAddress[] addresses = InetAddress.getAllByName("localhost");
+    for (InetAddress address : addresses) {
+      System.out.println("address = " + address);
+    }
   }
 
   @Test
@@ -73,6 +78,7 @@ class NetTest {
     System.out.println("inetAddress.getCanonicalHostName() = " + inetAddress.getCanonicalHostName());
     System.out.println("inetAddress.getAddress() = " + inetAddress.getAddress());
   }
+
 
   @Test
   @DisplayName("network interface")
@@ -136,7 +142,7 @@ class NetTest {
 
   @Test
   @DisplayName("URL2")
-  public void url2() throws MalformedURLException {
+  public void url2() throws MalformedURLException, URISyntaxException {
     URL u = new URL("http", "localhost", "/abc"); // port 80(기본포트 사용)
     URL u2 = new URL("http", "localhost", 8080, "/abc");
     URL u3 = new URL("http", "localhost", 8080, "/abc/index.html");
@@ -145,8 +151,12 @@ class NetTest {
     System.out.println("u2 = " + u2);
     System.out.println("u3 = " + u3);
 
+
     URL u4 = new URL(u3, "test.html");
     System.out.println("u4 = " + u4);
+    System.out.println(u4.toExternalForm());
+    System.out.println(u4.toString());
+    System.out.println(u4.toURI());
   }
 
   @Test
@@ -160,6 +170,7 @@ class NetTest {
           System.out.println("key : " + key);
           System.out.println("-> " + values);
         });
+
   }
 
   @Test
