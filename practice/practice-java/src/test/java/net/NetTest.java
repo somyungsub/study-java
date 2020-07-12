@@ -5,9 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.IOException;
 import java.net.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -134,8 +138,8 @@ class NetTest {
   @DisplayName("URL2")
   public void url2() throws MalformedURLException {
     URL u = new URL("http", "localhost", "/abc"); // port 80(기본포트 사용)
-    URL u2 = new URL("http", "localhost",8080, "/abc");
-    URL u3 = new URL("http", "localhost",8080, "/abc/index.html");
+    URL u2 = new URL("http", "localhost", 8080, "/abc");
+    URL u3 = new URL("http", "localhost", 8080, "/abc/index.html");
 
     System.out.println("u = " + u);
     System.out.println("u2 = " + u2);
@@ -143,6 +147,30 @@ class NetTest {
 
     URL u4 = new URL(u3, "test.html");
     System.out.println("u4 = " + u4);
+  }
+
+  @Test
+  @DisplayName("URLConnection - 헤더")
+  public void header() throws Exception {
+    URL u = new URL("http://localhost:8080");
+    URLConnection urlConnection = u.openConnection();
+
+    urlConnection.getHeaderFields()
+        .forEach((key, values) -> {
+          System.out.println("key : " + key);
+          System.out.println("-> " + values);
+        });
+  }
+
+  @Test
+  @DisplayName("io")
+  public void io() throws IOException {
+    Files.newBufferedReader(Paths.get("/etc/hosts"))
+        .lines()
+        .filter(s -> !s.startsWith("#") && s.contains("127.0.0.1"))
+        .flatMap(s -> Stream.of(s.split("\\s")))
+        .filter(s -> !s.contains("127.0.0.1"))
+        .forEach(System.out::println);
   }
 
 
