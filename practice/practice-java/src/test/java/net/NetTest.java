@@ -6,6 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.net.*;
+import java.util.Enumeration;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,6 +87,30 @@ class NetTest {
     System.out.println(System.getProperty("http.nonProxyHosts"));
   }
 
+  @Test
+  @DisplayName("네트워크 인터페이스2")
+  public void net_interface2() throws SocketException {
+    Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
+
+    while (networkInterfaces.hasMoreElements()) {
+      NetworkInterface networkInterface = networkInterfaces.nextElement();
+      System.out.println("networkInterface = " + networkInterface);
+
+      if (networkInterface.isLoopback()) {
+        System.out.println("loopback = " + networkInterface);
+        Enumeration<InetAddress> inetAddresses = networkInterface.getInetAddresses();
+        while (inetAddresses.hasMoreElements()) {
+          InetAddress inetAddress = inetAddresses.nextElement();
+          System.out.println("inetAddress = " + inetAddress);
+          System.out.println("inetAddress.getHostName() = " + inetAddress.getHostName());
+          System.out.println("inetAddress.getCanonicalHostName() = " + inetAddress.getCanonicalHostName());
+          System.out.println("inetAddress.getHostAddress() = " + inetAddress.getHostAddress());
+
+        }
+      }
+    }
+  }
+
   @DisplayName("URL")
   @ParameterizedTest(name = "{index} : {displayName}")
   @ValueSource(strings = {
@@ -119,8 +144,6 @@ class NetTest {
     URL u4 = new URL(u3, "test.html");
     System.out.println("u4 = " + u4);
   }
-
-
 
 
 }
