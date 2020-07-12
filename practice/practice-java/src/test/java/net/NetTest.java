@@ -2,11 +2,10 @@ package net;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.net.*;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -86,6 +85,26 @@ class NetTest {
     System.out.println(System.getProperty("http.proxyPort"));
     System.out.println(System.getProperty("http.nonProxyHosts"));
   }
+
+  @DisplayName("URL")
+  @ParameterizedTest(name = "{index} : {displayName}")
+  @ValueSource(strings = {
+      "http://www.adc.org",
+      "https://www.amazon.com/exec/obidos/order2/",
+      "ftp://a/b/c",
+      "telnet://abc.asd/",
+      "file:///etc/passwd"
+  })
+  public void url(String url) {
+    // 위 프로콜외 다양 자바 네트워크 프로그래밍 -> p.157 참조
+    try {
+      URL u = new URL(url);
+      System.out.println(u.getProtocol() + " is supported");
+    } catch (MalformedURLException e) {
+      e.printStackTrace();
+    }
+  }
+
 
 
 }
