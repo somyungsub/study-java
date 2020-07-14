@@ -20,4 +20,29 @@ class FileTest {
     .forEach(path -> System.out.println("path = " + path));
   }
 
+  @Test
+  @DisplayName("parent")
+  public void parent() throws IOException {
+
+    String path = "../../../etc/passwd";
+
+    Path path1 = Paths.get(path);
+    System.out.println("path1 = " + path1);
+
+    System.out.println("path1.getParent() = " + path1.getParent());
+    System.out.println(path1.toUri());
+    Path path2 = Paths.get("src/main/resources");
+    Path path3 = Paths.get("src/main/resources");
+
+    System.out.println(path1.compareTo(path2));
+
+    System.out.println(path2.compareTo(path3));
+    System.out.println("path3.toUri() = " + path3.toUri());
+
+    System.out.println(path2.toFile().getCanonicalPath());
+    System.out.println(path3.toFile().getCanonicalPath());
+
+    System.out.println(path2.toFile().getCanonicalPath().compareTo(path3.toFile().getCanonicalPath()));
+  }
+
 }
