@@ -48,5 +48,6 @@
     <module>book/다이내믹프로그래밍</module>
     <module>book/병렬프로그래밍</module>
     <module>book/자료구조와_함께배우는_알고리즘_Java</module>
+    <module>book/자바네트워크소녀네티</module>
   </modules>
 </project>
