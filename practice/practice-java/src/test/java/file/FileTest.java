@@ -45,4 +45,12 @@ class FileTest {
     System.out.println(path2.toFile().getCanonicalPath().compareTo(path3.toFile().getCanonicalPath()));
   }
 
+  @Test
+  @DisplayName("test")
+  public void ttttt(){
+    String s = "<!DOCTYPE html><html lang=\"en\"><head>  <meta charset=\"UTF-8\">  <title>Title</title></head><body>item : 2020-07-14T23:06:56.100<br/>item : service.Hello 서블릿!<br/>  <h3>localhost index 페이지</h3></body></html>/html>";
+
+    System.out.println(s.matches(".*([0-9]{4}-[0-9]{2}-[0-9]{2}).*"));
+  }
+
 }
