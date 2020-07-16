@@ -15,6 +15,7 @@ public class HiddenIterator {
 
   public synchronized void add(Integer i) {
     set.add(i);
+    set2.add(i);
   }
 
   public synchronized void addTenThings() {
@@ -24,5 +25,6 @@ public class HiddenIterator {
     }
 
     System.out.println("DEBUG : added ten elements to" + set);
+    System.out.println("DEBUG : added ten elements to" + set2);
   }
 }
