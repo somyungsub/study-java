@@ -12,6 +12,7 @@ public class Indexer implements Runnable {
 
   @Override
   public void run() {
+    System.out.println("queue.size() = " + queue.size());
     try{
       while (true) {
         indexFile(queue.take());  // 소비

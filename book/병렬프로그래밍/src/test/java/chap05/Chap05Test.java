@@ -20,7 +20,7 @@ class Chap05Test {
 
   @Test
   @DisplayName("5.3 블로킹큐")
-  public void 블로킹큐() {
+  public void 블로킹큐() throws InterruptedException {
 
     File[] roots = {
         new File("src/main"),
@@ -35,12 +35,17 @@ class Chap05Test {
       }
     };
 
+    // 3개
     for (File root : roots) {
       new Thread(new FileCrawler(queue, fileFilter, root)).start();
     }
 
-//    new Thread(new Indexer(queue)).start();
-    for (int i = 0; i < 1000; i++) {
+    Thread.sleep(3000);
+    System.out.println("=============");
+    System.out.println(queue.size());
+    System.out.println("=============");
+
+    for (int i = 0; i < 100; i++) {
       new Thread(new Indexer(queue)).start();
     }
 
