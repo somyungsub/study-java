@@ -126,6 +126,13 @@ public class TestConcurrent {
 
   }
 
+
+  @Test
+  @DisplayName("volatile")
+  public void volatile가시성() {
+
+  }
+
   private String test2(int size) {
     final String name = Thread.currentThread().getName();
     System.out.println(name);
