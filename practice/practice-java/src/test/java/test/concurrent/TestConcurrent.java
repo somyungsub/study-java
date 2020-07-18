@@ -1,5 +1,6 @@
 package test.concurrent;
 
+import concurrent.Volataile;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -129,7 +130,25 @@ public class TestConcurrent {
 
   @Test
   @DisplayName("volatile")
-  public void volatile가시성() {
+  public void volatile가시성() throws ExecutionException, InterruptedException {
+    Volataile volataile = new Volataile();
+
+    CompletableFuture<Void> cf1 = CompletableFuture.runAsync(() -> {
+      for (int i = 0; i < 10_000; i++) {
+        volataile.increment();
+      }
+    });
+    CompletableFuture<Void> cf2 = CompletableFuture.runAsync(() -> {
+      for (int i = 0; i < 10_000; i++) {
+        volataile.increment();
+      }
+    });
+
+    System.out.println(cf1.thenCompose(aVoid -> cf2).get());
+
+
+    System.out.println(volataile.getCount());
+
 
   }
 
