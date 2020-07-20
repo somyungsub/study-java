@@ -9,10 +9,10 @@ import java.util.concurrent.*;
 public class ExecutorCompletionServiceClass {
 
   private ExecutorService executor = Executors.newFixedThreadPool(50);
-  private ExecutorCompletionService service;
+  private ExecutorCompletionService<Double> service;
 
   public ExecutorCompletionServiceClass() {
-    service = new ExecutorCompletionService(executor);
+    service = new ExecutorCompletionService<>(executor);
   }
 
   public void start() throws IOException {
@@ -20,32 +20,41 @@ public class ExecutorCompletionServiceClass {
 
     while (!executor.isShutdown()) {
       final Socket connection = serverSocket.accept();
-      double result = 0.0;
-      service.submit(() -> handleRequest(connection), result);
-      System.out.println("result = " + result);
+      long start = System.currentTimeMillis();
+      for (int i = 0; i < 50; i++) {
+        service.submit(() -> handleRequest(connection));
+      }
 
-//      try {
-//
-//
-//      } catch (InterruptedException e) {
-//        System.out.println("인터럽트 에" + e);
-//      } catch (ExecutionException e) {
-//        System.out.println("익스큐 에" + e);
-//      }
+      System.out.println("========");
+      try {
+        Double sum = 0.0;
+        for (int i = 0; i < 50; i++) {
+          Future<Double> take = service.take();
+          Double data = take.get();
+          System.out.println("data = " + data);
+          sum += data;
+        }
+
+        System.out.println("total = " + sum);
+
+        System.out.println("(System.currentTimeMillis() - start) = " + (System.currentTimeMillis() - start) + " ms");
+      } catch (InterruptedException e) {
+        System.out.println("인터럽트 에" + e);
+      } catch (ExecutionException e) {
+        System.out.println("익스큐 에" + e);
+      }
+
+      connection.close();
     }
   }
 
-  private Object handleRequest(Socket connection) {
+  private Double handleRequest(Socket connection) {
     System.out.println("connection = " + connection);
-//    try {
-//      Thread.sleep(1500);
-//    } catch (InterruptedException e) {
-//      System.out.println("test!! error " + e);
-//    }
-
-    double random = Math.random();
-    System.out.println("random = " + random);
-    return random;
+    Double sum = 0.0;
+    for (int i = 0; i < 1_000; i++) {
+       sum += Math.random();
+    }
+    return sum;
   }
 
   public static void main(String[] args) throws IOException {
