@@ -1,0 +1,7 @@
+package chap05_단위인터페이스는작게;
+
+public class MailMan {
+  public void sendMail(MailExample.Mail mail) {
+
+  }
+}
