@@ -44,5 +44,4 @@ public class UserServiceCoupling {
     return null;
   }
 
-
 }
