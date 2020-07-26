@@ -25,6 +25,7 @@ public class PrimeGenerator implements Runnable {
     public void run() {
         BigInteger p = BigInteger.ONE;
         while (!cancelled) {
+        while (!cancelled) {
             p = p.nextProbablePrime();
             synchronized (this) {
                 primes.add(p);
