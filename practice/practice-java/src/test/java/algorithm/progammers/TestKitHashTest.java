@@ -26,4 +26,17 @@ class TestKitHashTest {
     System.out.println(hash.notComplete2(participant, completion));
   }
 
+  @Test
+  @DisplayName("전화번호 목록")
+  public void test3(){
+    String[] phoneNumber = {"119", "97674223", "1195524421"};
+    System.out.println(hash.telephoneNumber(phoneNumber));
+
+    String[] phoneNumber2 = {"123", "456", "789"};
+    System.out.println(hash.telephoneNumber(phoneNumber2));
+
+    String[] phoneNumber3 = {"12", "123", "1235", "567", "88"};
+    System.out.println(hash.telephoneNumber(phoneNumber3));
+  }
+
 }

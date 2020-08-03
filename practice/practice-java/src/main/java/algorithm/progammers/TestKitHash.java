@@ -59,4 +59,29 @@ public class TestKitHash {
 
     return answer;
   }
+
+
+  public boolean telephoneNumber(String[] phone_book) {
+    boolean answer = true;
+
+    for (int i = 0; i < phone_book.length; i++) {
+      String number = phone_book[i];
+
+      for (int j = 0; j < phone_book.length; j++) {
+        String number2 = phone_book[j];
+        if (i != j && number2.startsWith(number)) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  public boolean telephoneNumberHash(String[] phone_book) {
+    boolean answer = true;
+
+
+    return true;
+  }
 }
