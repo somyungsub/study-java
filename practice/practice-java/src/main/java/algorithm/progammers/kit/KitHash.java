@@ -1,9 +1,9 @@
-package algorithm.progammers;
+package algorithm.progammers.kit;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TestKitHash {
+public class KitHash {
 
   public String notComplete(String[] participant, String[] completion) {
     String answer = "";
@@ -83,5 +83,63 @@ public class TestKitHash {
 
 
     return true;
+  }
+
+  public int clothesNumber(String[][] clothes) {
+    int answer = 0;
+
+//    Map<String, List<Clothes>> groupingClothes = Arrays.stream(clothes)
+//        .map(strings -> new Clothes(strings[0], strings[1]))
+//        .collect(Collectors.groupingBy(Clothes::getClothType));
+
+//    for (List<Clothes> value : groupingClothes.values()) {
+//      answer += value.size();
+//    }
+
+    Map<String, List<Clothes>> clothMap = Arrays.stream(clothes)
+        .map(strings -> new Clothes(strings[0], strings[1]))
+        .collect(Collectors.groupingBy(Clothes::getClothType));
+
+    System.out.println("clothMap = " + clothMap);
+
+//    for (int i = 0; i < clothes.length; i++) {
+//      String type = clothes[i][1];
+//      List<String[]> strings = clothMap.get(type);
+//
+//      for (int j = i + 1; j < clothes.length; j++) {
+//        String type2 = clothes[j][1];
+//        clothMap.get(type2);
+//      }
+//
+//    }
+
+//    for (List<String[]> value : clothMap.values()) {
+//      answer += value.size();
+//    }
+//
+//    if (clothMap.size() > 1) {
+//      int asInt = clothMap.values().stream()
+//          .mapToInt(value -> value.size())
+//          .reduce((left, right) -> left * right).getAsInt();
+//
+//      answer += asInt;
+//    }
+
+    return answer;
+  }
+
+  private class Clothes {
+
+    private final String clothName;
+    private final String clothType;
+
+    public Clothes(String clothName, String clothType) {
+      this.clothName = clothName;
+      this.clothType = clothType;
+    }
+
+    public String getClothType() {
+      return clothType;
+    }
   }
 }
