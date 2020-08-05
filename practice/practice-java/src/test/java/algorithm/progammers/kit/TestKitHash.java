@@ -1,4 +1,4 @@
-package algorithm.progammers;
+package algorithm.progammers.kit;
 
 import algorithm.progammers.kit.KitHash;
 import org.junit.jupiter.api.DisplayName;
@@ -57,7 +57,6 @@ class TestKitHash {
     };
 
     System.out.println(hash.clothesNumber(clothes2));
-
   }
 
 }
