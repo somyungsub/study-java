@@ -118,4 +118,30 @@ class TestJava {
       System.out.println("s = " + s);
     }
   }
+
+  @Test
+  @DisplayName("bit")
+  public void bit(){
+    int i = Integer.bitCount(10);
+    System.out.println("i = " + i);
+
+    String string = Integer.toBinaryString(20);
+    System.out.println("string = " + string);
+
+  }
+
+  @Test
+  @DisplayName("배열출력")
+  public void arrayPrint(){
+    int[] a = {1, 2, 3, 4, 5};
+    System.out.println(Arrays.toString(a));
+
+    int[][] b = {{1, 2}, {3, 4}, {5, 6}};
+    System.out.println(Arrays.toString(b));
+    System.out.println(Arrays.deepToString(b));
+
+    int[][][] c = {{{1, 2}, {1, 2}}, {{5, 4}, {7, 8}}};
+    System.out.println(Arrays.deepToString(c));
+
+  }
 }
