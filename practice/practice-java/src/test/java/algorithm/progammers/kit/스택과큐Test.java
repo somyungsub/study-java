@@ -3,11 +3,9 @@ package algorithm.progammers.kit;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+class 스택과큐Test {
 
-class KitStackAndQueueTest {
-
-  KitStackAndQueue kit = new KitStackAndQueue();
+  스택과큐 kit = new 스택과큐();
 
   @Test
   @DisplayName("주식가격")

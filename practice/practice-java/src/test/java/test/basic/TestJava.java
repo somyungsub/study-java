@@ -144,4 +144,11 @@ class TestJava {
     System.out.println(Arrays.deepToString(c));
 
   }
+
+  @Test
+  @DisplayName("Math")
+  public void max() {
+    int max = Math.max(0, 0);
+    System.out.println("max = " + max);
+  }
 }

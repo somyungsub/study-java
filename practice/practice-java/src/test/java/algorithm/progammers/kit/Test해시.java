@@ -1,12 +1,11 @@
 package algorithm.progammers.kit;
 
-import algorithm.progammers.kit.KitHash;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class TestKitHash {
+class Test해시 {
 
-  KitHash hash = new KitHash();
+  해시 hash = new 해시();
 
   @Test
   @DisplayName("완주하지 못한 선수")

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.stream.Stream;
 
-public class KitStackAndQueue {
+public class 스택과큐 {
 
   public int[] solutionStockPrice(int[] prices) {
     int[] answer = new int[prices.length];

@@ -3,7 +3,7 @@ package algorithm.progammers.kit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class KitHash {
+public class 해시 {
 
   public String notComplete(String[] participant, String[] completion) {
     String answer = "";
