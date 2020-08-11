@@ -25,4 +25,25 @@ class MediumTest {
     medium.extraLongFactorials(25);
   }
 
+  @Test
+  @DisplayName("다음철자 큰거찾기")
+  public void test3(){
+    System.out.println(medium.biggerIsGreater("ab"));
+    System.out.println(medium.biggerIsGreater("bb"));
+    System.out.println(medium.biggerIsGreater("hefg"));
+    System.out.println(medium.biggerIsGreater("dhck"));
+    System.out.println(medium.biggerIsGreater("dkhc"));
+  }
+
+  @Test
+  @DisplayName("다음철자 큰거찾기")
+  public void test3_2(){
+    System.out.println(medium.biggerIsGreater("lmno"));
+    System.out.println(medium.biggerIsGreater("dcba"));
+    System.out.println(medium.biggerIsGreater("dcbb"));
+    System.out.println(medium.biggerIsGreater("abdc"));
+    System.out.println(medium.biggerIsGreater("abcd"));
+    System.out.println(medium.biggerIsGreater("fedcbabcd"));
+  }
+
 }
