@@ -1,5 +1,6 @@
 package algorithm.hackerrank;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.stream.IntStream;
 
@@ -21,5 +22,19 @@ public class Medium {
         .map(ints -> Arrays.stream(ints).sum())
         .mapToInt(integer -> Math.abs(rowAvg - integer.intValue()))
         .sum();
+  }
+
+  /*
+    BigInteger 팩토리얼
+   */
+  public void extraLongFactorials(int n) {
+    System.out.println(factorial(BigInteger.valueOf(n)));
+  }
+
+  private BigInteger factorial(BigInteger n) {
+    if (n.intValue() == 1) {
+      return BigInteger.ONE;
+    }
+    return n.multiply(factorial(BigInteger.valueOf(n.intValueExact() - 1)));
   }
 }

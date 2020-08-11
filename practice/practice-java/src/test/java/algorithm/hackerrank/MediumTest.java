@@ -19,4 +19,10 @@ class MediumTest {
     assertEquals(14, medium.formingMagicSquare(s2));
   }
 
+  @Test
+  @DisplayName("팩토리얼")
+  public void test2(){
+    medium.extraLongFactorials(25);
+  }
+
 }
