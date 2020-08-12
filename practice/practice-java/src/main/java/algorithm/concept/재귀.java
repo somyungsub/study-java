@@ -86,6 +86,7 @@ public class 재귀 {
       prefixArr[prefixArr.length - 1] = S[i];
       int[] ints = Arrays.copyOfRange(S, 1, S.length);
       printPerm(prefixArr, ints);
+      prefixArr = Arrays.copyOf(prefix, prefix.length);;
     }
   }
 
