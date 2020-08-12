@@ -127,7 +127,9 @@ class TestJava {
 
     String string = Integer.toBinaryString(20);
     System.out.println("string = " + string);
-
+    String ss = "100100110011101011101010000011101101011011101101011";
+    int i1 = Integer.parseInt(ss, 2);
+    System.out.println("i1 = " + i1);
   }
 
   @Test
