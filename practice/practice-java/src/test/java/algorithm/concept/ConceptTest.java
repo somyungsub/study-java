@@ -90,4 +90,18 @@ class ConceptTest {
     recur.printReverseChar("a5123aasd");
   }
 
+  @Test
+  @DisplayName("재귀 - 2진수 변환출력")
+  public void print_binary() {
+    재귀 recur = new 재귀();
+    recur.printInBinary(10);
+    System.out.println();
+    recur.printInBinary(15);
+    System.out.println();
+    recur.printInBinary(12);
+    System.out.println();
+    recur.printInBinary(100);
+    System.out.println();
+  }
+
 }

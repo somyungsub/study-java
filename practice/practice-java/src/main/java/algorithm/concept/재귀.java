@@ -144,4 +144,13 @@ public class 재귀 {
     }
   }
 
+  public void printInBinary(int n) {
+    if (n < 2) {
+      System.out.print(n);
+    } else {
+      printInBinary(n / 2);
+      System.out.print(n % 2);
+    }
+  }
+
 }
