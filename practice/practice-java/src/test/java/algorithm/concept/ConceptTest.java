@@ -60,4 +60,16 @@ class ConceptTest {
     }
   }
 
+  @Test
+  @DisplayName("재귀-최대공약수")
+  public void test_euclid_method() {
+    재귀 recur = new 재귀();
+    System.out.println(recur.gcd(10, 5));
+    System.out.println(recur.gcd(11, 5));
+    System.out.println(recur.gcd(15, 7));
+    System.out.println(recur.gcd(20, 5));
+    System.out.println(recur.gcd(24, 9));
+
+  }
+
 }

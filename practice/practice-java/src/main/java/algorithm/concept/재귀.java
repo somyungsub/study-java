@@ -113,4 +113,19 @@ public class 재귀 {
     data[i] = temp;
   }
 
+
+  public int gcd(int m, int n) {
+    if (m < n) {
+      int temp = m;
+      m = n;
+      n = temp;
+    }
+
+    if (m % n == 0) {
+      return n;
+    }
+
+    return gcd(n, m % n);
+  }
+
 }
