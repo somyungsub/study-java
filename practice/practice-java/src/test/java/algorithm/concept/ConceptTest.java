@@ -72,4 +72,22 @@ class ConceptTest {
 
   }
 
+  @Test
+  @DisplayName("재귀-문자열출력")
+  public void print_str() {
+    재귀 recur = new 재귀();
+//    recur.printChar("abc");
+    recur.printChar("adasq");
+//    recur.printChar("a5123aasd");
+  }
+
+  @Test
+  @DisplayName("재귀-문자열 반대로 출력")
+  public void print_reverse_str() {
+    재귀 recur = new 재귀();
+//    recur.printReverseChar("abc");
+//    recur.printReverseChar("adasq");
+    recur.printReverseChar("a5123aasd");
+  }
+
 }

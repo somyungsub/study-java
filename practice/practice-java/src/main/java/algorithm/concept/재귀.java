@@ -120,12 +120,28 @@ public class 재귀 {
       m = n;
       n = temp;
     }
-
     if (m % n == 0) {
       return n;
     }
-
     return gcd(n, m % n);
+  }
+
+  public void printChar(String str) {
+    if (str.isEmpty()) {
+      return;
+    } else {
+      System.out.print(str.charAt(0));
+      printChar(str.substring(1));
+    }
+  }
+
+  public void printReverseChar(String str) {
+    if (str.isEmpty()) {
+      return;
+    } else {
+      printReverseChar(str.substring(1));
+      System.out.print(str.charAt(0));
+    }
   }
 
 }
