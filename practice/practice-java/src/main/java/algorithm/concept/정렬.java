@@ -1,5 +1,7 @@
 package algorithm.concept;
 
+import java.util.Arrays;
+
 public class 정렬 {
 
   public void selectionSort(int[] arr) {
@@ -56,6 +58,44 @@ public class 정렬 {
       arr[l] = tmp[l];
     }
 
+  }
+
+  public void quickSort(int[] arr, int p, int r) {
+    // 분할정복법 : 분할 -> 정복 -> 합병 (머지소트) 활용. 합병은 할 필요없음. 피봇 기준으로 앞뒤 이미 정렬이 이미됨
+    // 기준값 (피봇) 설정
+
+    // 1. 정렬할 배열 주어짐. pivot 설정 (대게 맨끝으로 설정)
+    // 2. 기준(피봇)보다 작은수는 왼쪽에, 나머지는 오른쪽에 오도록 배열을 재배치
+    // 3. 기준의 왼쪽과 오른쪽을 각각 순환적으로 정렬. (재귀활용)
+
+    if (p < r) {
+      int q = partition(arr, p, r);       // 분할. q -> 피봇의 위치
+      quickSort(arr, p, q - 1);   // 왼쪽 부분 배열 정렬
+      quickSort(arr, q + 1, r);   // 오른쪽 부분 배열 정렬
+    }
+
+  }
+
+  private int partition(int[] arr, int p, int r) {
+    // 배열 arr[p...r]의 원소들을 arr[r]을 기준으로 양쪽으로 재배치하고
+    // arr[r]이 자리한 위치를 return (index값)
+    int i = p - 1; // i는 앞부터 시작하여 arr[r]의 값보다 커지는 지점을 기억하기 위한 index
+
+    for (int j = p; j < r; j++) {
+      if (arr[j] <= arr[r]) {
+        i = i + 1;
+        exchange(arr, i, j);
+      }
+    }
+    exchange(arr, i + 1, r);
+    return i + 1;
+  }
+
+  private void exchange(int[] arr, int i, int j) {
+    System.out.println(Arrays.toString(arr));
+    int tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
   }
 
 
