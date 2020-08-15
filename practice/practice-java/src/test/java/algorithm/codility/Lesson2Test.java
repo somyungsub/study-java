@@ -5,8 +5,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 class Lesson2Test {
 
   Lesson2 lesson2 = new Lesson2();
@@ -18,6 +16,13 @@ class Lesson2Test {
 
     int[] ints = lesson2.cyclicRotation(arr, 3);
     System.out.println(Arrays.toString(ints));
+  }
+
+  @Test
+  @DisplayName("test2")
+  public void test2(){
+    int[] arr = {9, 3, 9, 3, 9, 7, 9};
+    System.out.println(lesson2.oddOccurrencesInArray(arr)); // 7
   }
 
 }
