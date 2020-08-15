@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Binary {
+public class Lesson1 {
   public int binaryGap(int N) {
 
     StringBuilder sb = new StringBuilder();
