@@ -23,7 +23,16 @@ class 정렬ConceptTest {
   @DisplayName("퀵정렬")
   public void test2(){
     int[] arr = {5, 1, 3, 4, 123, 5452, 112};
-    sort.quickSort(arr, 0, arr.length - 1); // 0~마지막 인덱스
+    sort.quickSort(arr, 0, arr.length - 1); // 마지막 인덱스를 피봇으로 선택
+
+    System.out.println(Arrays.toString(arr));     // 1,3,4,5,112,123,5452
+  }
+
+  @Test
+  @DisplayName("퀵정렬")
+  public void test2_2(){
+    int[] arr = {5, 1, 3, 4, 123, 5452, 112};
+    sort.quickSort(arr, 0, arr.length / 2); // 중간값을 피봇으로 선택
 
     System.out.println(Arrays.toString(arr));     // 1,3,4,5,112,123,5452
   }
