@@ -21,4 +21,14 @@ class 정렬Test {
     }
   }
 
+  @Test
+  @DisplayName("가장큰수")
+  public void test2(){
+    int[] numbers = {6, 10, 2};
+    System.out.println(sort.가장큰수(numbers));
+
+    int[] numbers2 = {3, 30, 34, 5, 9};
+    System.out.println(sort.가장큰수(numbers2));
+  }
+
 }
