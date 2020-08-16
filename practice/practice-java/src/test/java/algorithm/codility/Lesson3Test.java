@@ -13,6 +13,8 @@ class Lesson3Test {
   @DisplayName("수열 - 등차수열")
   public void test1(){
     System.out.println(lesson3.frog(10, 85, 30));
+    System.out.println(lesson3.frog(1, 1, 3));
+    System.out.println(lesson3.frog(3, 999111321, 7));
   }
 
 }
