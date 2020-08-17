@@ -11,4 +11,18 @@ public class Lesson3 {
 
     return count;
   }
+
+  public int permMissingElem(int[] A) {
+
+    int sum = 0, sum2 = 0;
+    for (int i = 1; i <= A.length + 1; i++) {
+      sum += i;
+    }
+
+    for (int i = 0; i < A.length ; i++) {
+      sum2 += A[i];
+    }
+
+    return sum - sum2;
+  }
 }
