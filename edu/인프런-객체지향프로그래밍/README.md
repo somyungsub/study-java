@@ -395,8 +395,68 @@ public class DefaultNotifierFactory() implements NotifierFactory {
 --- 
 
 ## 상속보단 조립
+- 스프링은, 상속을 통한 기능추가로 확장
+- 상속을 통한 기능 재사용시 단점
+  - 상위 클래스 변경어려움
+  - 클래스 증가.(복잡도 증가)
+  - 상속 오용. 무분별한 상속
 
+### 단점1
+- 상위클래스 변경이 어려움. -> 변경이 하위 클래스에 영향을 줌.
+- 상위클래스는 상관 없지만, 하위클래스가 오동작할수도 있음
+- 상위클래스의 동작도 어느정도 이해가 되어야 하위클래스에서 사용이 가능해짐
+  - 캡슐화가 약해지는 단점도 생김
+  - 변경에 대해 조심스러워짐
 
+### 단점2
+- 기능추가 -> 하위클래스 추가
+- 새로운 조합이 생길경우... A,B 조합 필요해 A,B 상속?? 이런 애매한상황이 발생함
 
+### 단점3
+- 상속오용
+- 상위에 상위 내용을 사용할 경우.... 공개된 API를 변경하고자 할때 문제 될 수 있다
+
+### 해결
+- 조립(Composition)을 사용 
+- 여러 객체를 묶어서(조립) 더 복잡한 기능을 제공
+- 보통 필드로 다른 객체를 참조하는 방식으로 조립 or 객체를 필요 시점에 생성/구함
+
+### 조립을 통한 기능 재사용
+- 클래스가 증식하는 문제 (상속 -> 상속 -> 상속) 해결.
+- 조립을 통한 기능 재사용. 상속의 적절성. 깊이등을 줄일 수 있음
+
+```java
+
+public class Container extends ArrayList<String> {
+  private int currentSize;
   
+  public void put(String s){
+    super.add(s);
+    currentSize += s.lengh();
+  }
+}
+```
 
+- 조립 사용 (has a~)
+
+```java
+
+public class Container {
+  private int currentSize;
+  private List<String> sList = new ArrayList<>();
+  
+  public void put(String s){
+    sList.add(s); // 객체 참조를 통해 처리 
+    currentSize += s.lengh();
+  }
+}
+```
+
+- 상속하기에 앞서 조립으로 풀수 없는지 검토
+- 진짜 하위 타입인 경우에만 상속 사용.
+- 기능 재사용 때문에 상속을 쓰는건... 맞는지 검토 필요. 
+- `기능 재사용 용도로 상속을 쓰는건 맞지 않다. -> 조립으로 대체 충분히 가능`
+
+--- 
+
+ 
