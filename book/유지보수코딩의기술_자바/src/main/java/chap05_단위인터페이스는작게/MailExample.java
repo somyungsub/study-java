@@ -12,7 +12,7 @@ public class MailExample {
     m.sendMail(mail);
   }
 
-  private class Mail {
+  class Mail {
 
     private final MailAddress mailAddress;
     private final MailBody mailBody;
