@@ -219,6 +219,6 @@ gradle-app.setting
 
 
 ## 제외 폴더
-book/CamelInAction_2rd/camel_in_action_2nd/
-book/CamelInAction_2rd/camel_in_action_2nd
+book/CamelInAction_2nd/camel_in_action_2nd/
+book/CamelInAction_2nd/camel_in_action_2nd
 book/자바와Junit을 활용한 실용주의 단위테스트/006814
