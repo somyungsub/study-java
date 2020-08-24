@@ -216,3 +216,8 @@ gradle-app.setting
 
 
 *.txt
+
+
+## 제외 폴더
+book/CamelInAction_2rd/camel_in_action_2nd/
+book/CamelInAction_2rd/camel_in_action_2nd/**

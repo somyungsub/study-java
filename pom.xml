@@ -51,5 +51,7 @@
     <module>book/자바네트워크소녀네티</module>
     <module>book/유지보수코딩의기술_자바</module>
     <module>book/이펙티브자바_3rd</module>
+    <module>book/코딩의기술-자바</module>
+    <module>book/CamelInAction_2nd</module>
   </modules>
 </project>

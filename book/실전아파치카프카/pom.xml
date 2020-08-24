@@ -10,7 +10,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>kafak-test</artifactId>
+  <artifactId>kafak-paractice</artifactId>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

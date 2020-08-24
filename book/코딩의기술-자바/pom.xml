@@ -10,7 +10,6 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>data-structure-algorithm-java</artifactId>
-
+  <artifactId>coding-skill-java2</artifactId>
 
 </project>

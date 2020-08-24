@@ -10,6 +10,8 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
+  <artifactId>parallel-programming</artifactId>
+
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -17,8 +19,4 @@
       <version>2.5</version>
     </dependency>
   </dependencies>
-
-  <artifactId>병렬프로그래밍</artifactId>
-
-
 </project>

@@ -10,7 +10,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <artifactId>스파크완벽가이드</artifactId>
+  <artifactId>spark-complete-guide</artifactId>
 
   <dependencies>
     <dependency>

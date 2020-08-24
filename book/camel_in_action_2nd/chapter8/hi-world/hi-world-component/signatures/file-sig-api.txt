@@ -1,3 +1,0 @@
-public String sayHi();
-public String greetMe(String name);
-public String greetUs(String name1, String name2);
