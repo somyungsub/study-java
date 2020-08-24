@@ -53,5 +53,6 @@
     <module>book/이펙티브자바_3rd</module>
     <module>book/코딩의기술-자바</module>
     <module>book/CamelInAction_2nd</module>
+    <module>book/자바와_JUnit을_활용한_실용주의_단위테스트</module>
   </modules>
 </project>
