@@ -12,11 +12,12 @@ public class BankStatementAnalyzer {
   private static final String RESOURCES = "book/실전자바소프트웨어개발/src/main/resources/";
   private static final BankStatementCSVParser bankStatementCSVParser = new BankStatementCSVParser();
 
-  public static void main(String[] args) throws IOException {
-    Path path = Paths.get(RESOURCES, "bank-data-simple.csv");
-    List<String> lines = Files.readAllLines(path);
-    List<BankTransaction> bankTransactions = bankStatementCSVParser.parseLinesFromCSV(lines);
-    BankStatementProcessor bankStatementProcessor = new BankStatementProcessor(bankTransactions);
+  public void analyze(final String fileName, final BankStatementParser bankStatementParser) throws IOException{
+    final Path path = Paths.get(RESOURCES, fileName);
+    final List<String> lines = Files.readAllLines(path);
+
+    final List<BankTransaction> bankTransactions = bankStatementParser.parseLinesFrom(lines);
+    final BankStatementProcessor bankStatementProcessor = new BankStatementProcessor(bankTransactions);
 
     collectSummary(bankStatementProcessor);
   }
