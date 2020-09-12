@@ -1,0 +1,37 @@
+[
+  {
+    "date": "30-01-2017",
+    "amount" : -100,
+    "description":"Deliveroo"
+  },
+  {
+    "date": "30-01-2017",
+    "amount" : -50,
+    "description":"Tesco"
+  },
+  {
+    "date": "01-02-2017",
+    "amount" : 6000,
+    "description":"Salary"
+  },
+  {
+    "date": "02-02-2017",
+    "amount" : 2000,
+    "description":"Royalties"
+  },
+  {
+    "date": "02-02-2017",
+    "amount" : -4000,
+    "description":"Rent"
+  },
+  {
+    "date": "03-02-2017",
+    "amount" : 3000,
+    "description":"Tesco"
+  },
+  {
+    "date": "05-02-2017",
+    "amount" : -30,
+    "description":"Cinema"
+  }
+]

@@ -14,7 +14,7 @@ public class BankTransactionAnalyzerSRP {
     Path path = Paths.get(RESOURCES, "bank-data-simple.csv");
     List<String> lines = Files.readAllLines(path);
     final BankStatementCSVParser bankStatementCSVParser = new BankStatementCSVParser();
-    List<BankTransaction> bankTransactions = bankStatementCSVParser.parseLinesFromCSV(lines);
+    List<BankTransaction> bankTransactions = bankStatementCSVParser.parseLinesFrom(lines);
 
     double totalAmount = calculateTotalAmount(bankTransactions);
     System.out.println("totalAmount = " + totalAmount);
