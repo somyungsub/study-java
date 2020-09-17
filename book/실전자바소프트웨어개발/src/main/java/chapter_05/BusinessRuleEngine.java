@@ -23,6 +23,7 @@ public class BusinessRuleEngine {
   }
 
   public void run() {
+    actions.forEach(Action::perform);
 
 //    throw new UnsupportedOperationException();
   }

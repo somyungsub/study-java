@@ -4,6 +4,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 class BusinessRuleEngineTest {
 
@@ -25,4 +27,15 @@ class BusinessRuleEngineTest {
     assertEquals(2, engine.count());
   }
 
+  @Test
+  @DisplayName("5-5모킹으로 Action객체 상호작용 검증하기")
+  public void shouldExecuteOneAction(){
+    final BusinessRuleEngine engine = new BusinessRuleEngine();
+    final Action mockAction = mock(Action.class);
+
+    engine.addAction(mockAction);
+    engine.run();
+
+    verify(mockAction).perform();
+  }
 }
