@@ -1,30 +1,27 @@
 package chapter_05;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BusinessRuleEngine {
 
   private List<Action> actions;
+  private final Facts facts;
 
-  public BusinessRuleEngine() {
+  public BusinessRuleEngine(final Facts facts) {
     this.actions = new ArrayList<>();
+    this.facts = facts;
   }
 
   public void addAction(final Action action) {
     actions.add(action);
-//    throw new UnsupportedOperationException();
   }
 
   public int count() {
     return actions.size();
-//    throw new UnsupportedOperationException();
   }
 
   public void run() {
-    actions.forEach(Action::perform);
-
-//    throw new UnsupportedOperationException();
+    actions.forEach(action -> action.perform(facts));
   }
 }
