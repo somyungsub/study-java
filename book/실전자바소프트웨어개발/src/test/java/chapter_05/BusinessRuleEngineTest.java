@@ -52,7 +52,7 @@ class BusinessRuleEngineTest {
     engine.addAction(mockAction);
     engine.run();
 
-    verify(mockAction).perform(facts);
+    verify(mockAction).execute(facts);
   }
 
 }
