@@ -55,5 +55,6 @@
     <module>book/CamelInAction_2nd</module>
     <module>book/자바와_JUnit을_활용한_실용주의_단위테스트</module>
     <module>book/실전자바소프트웨어개발</module>
+    <module>book/DDD_START</module>
   </modules>
 </project>
